@@ -1,0 +1,36 @@
+body {
+        background-color: #F8F9FA;
+}
+
+.content {
+    margin-left: 260px;
+    padding: 20px;
+}
+
+.welcome-bg-col {
+    background-color: #686464;
+}
+
+.btn-dark {
+    background-color: black;
+    border: none;
+}
+
+.profile-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #D6D8DB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: white;
+}
+
+.recommended-profiles img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #D6D8DB;
+}
