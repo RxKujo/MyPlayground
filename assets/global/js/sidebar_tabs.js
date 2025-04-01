@@ -1,4 +1,3 @@
-
 function listenTabs() {
     sidebarTabs.forEach((tab) => {
         tab.addEventListener("click", function (e) {
@@ -19,5 +18,4 @@ document.addEventListener("DOMContentLoaded", function() {
     sidebarTabs = document.querySelectorAll("#sidebar-list li a");
     
     listenTabs();
-    
 });

@@ -15,4 +15,4 @@
     </div>
 </div>
 
-<?php include_once "../../includes/admin/footer.php"; ?>
+<?php include_once "../../includes/global/footer.php"; ?>

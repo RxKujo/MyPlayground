@@ -1,17 +1,17 @@
 <?php include_once "includes/public/header.php"; ?>
 
-<header class="navbar navbar-dark bg-dark">
+<header class="navbar navbar-dark bg-dark py-0 my-0">
     <div class="container-fluid">
-        <img src="logo.png" alt="Logo" class="logo">
-        <a class="navbar-brand" href="#">Basketball Platform</a>
-        <h1 class="text-center">My PlayGround</h1>
+        <a class="navbar-brand pb-0" href="#">
+            <img src="assets/public/img/logo.png" alt="Logo" class="logo d-inline-block align-text-center">
+            <span class="logo-text" style="font-size: 28px;">My PlayGround</span>
+        </a>
     </div>
 </header>
 
 
 <div class="d-flex">
     <nav class="bg-light text-black p-3" style="width: 280px; min-height: 100vh;">
-        <h4>My PlayGround</h4>
         <ul id="sidebar-list" class="nav nav-pills flex-column">
             <li class="nav-item"><a class="nav-link active text-black" href="#">🏠 Home</a></li>
             <li class="nav-item"><a class="nav-link text-black" href="#">🏀 Find Partners</a></li>
@@ -23,34 +23,63 @@
     
     
     <div class="container-fluid px-0">
-        <div class="d-flex align-items-center welcome-bg-col p-3">
-            <div class="profile-img me-3">👤</div>
-            <div>
-                <h3>Welcome, User!</h3>
-                <button class="btn btn-dark">Join Tournament</button>
-                <button class="btn btn-outline-light">Find Partners</button>
+        <div class="d-flex align-items-center welcome-section">
+            <div class="ms-5 px-5">
+                <img class="profile-img" src="assets/public/img/morad.png"></img>
+            </div>
+
+            <div class="me-auto">
+                <div>
+                    <h3 class="text-white mb-0">Welcome, User!</h3>
+                    <span class="badge bg-dark-subtle my-2">
+                        <p class="text-black my-0">Pick up games near you</p>
+                    </span>
+                    <span class="badge bg-dark-subtle my-2">
+                        <p class="text-black my-0">NEW Tournaments</p>
+                    </span>
+                </div>
+            </div>
+
+            <div class="d-flex flex-column m-auto">
+                <button class="btn btn-dark m-2">Join Tournament</button>
+                <button class="btn btn-outline-light m-2">Find Partners</button>
             </div>
         </div>
 
 
-        <div class="mt-4">
-            <h3>Search for Partners</h3>
-            <p>Select player level, position, and type of request</p>
-            <div class="d-flex gap-2 mb-3">
-                <button class="btn btn-outline-dark">Beginner</button>
-                <button class="btn btn-outline-dark">Intermediate</button>
-                <button class="btn btn-outline-dark">Advanced</button>
+        <div class="d-flex mt-4">
+            <div class="d-flex align-items-center mx-5 search-partners-section">
+                <div class="d-flex align-items-center flex-column">
+                    <h3 class="fs-2 fw-bold">Search for Partners</h3>
+                    <p>Select player level, position, and type of request</p>
+                </div>
             </div>
-            <div class="d-flex gap-2 mb-3">
-                <button class="btn btn-outline-dark">Point Guard</button>
-                <button class="btn btn-outline-dark">Winger</button>
-                <button class="btn btn-outline-dark">Pivot</button>
-                <button class="btn btn-outline-dark">Others</button>
+
+            <div class="d-flex flex-column align-items-start mx-5">
+                <div class="my-3 me-5">
+                    <h4>Player level</h4>
+                    <span>
+                        <button class="btn btn-outline-dark">Beginner</button>
+                        <button class="btn btn-outline-dark">Intermediate</button>
+                        <button class="btn btn-outline-dark">Advanced</button>
+                    </span>
+                </div>
+                <div class="my-3">
+                    <h4>Position</h4>
+                    <div>
+                        <button class="btn btn-outline-dark">Point Guard</button>
+                        <button class="btn btn-outline-dark">Winger</button>
+                        <button class="btn btn-outline-dark">Pivot</button>
+                        <button class="btn btn-outline-dark">Others</button>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-evenly mt-5 mx-auto">
+                    <button class="btn btn-secondary">Clear</button>
+                    <button class="btn btn-dark">Search</button>
+                </div>
             </div>
-            <input type="text" class="form-control mb-3" placeholder="Enter your request here">
-            <button class="btn btn-secondary">Clear</button>
-            <button class="btn btn-dark">Search</button>
-    </div>
+        </div>
+        
         <div class="mt-4">
             <h3>Recommended Partners</h3>
             <div class="d-flex gap-4 recommended-profiles">
@@ -73,15 +102,4 @@
     </div>
 </div>
 
-<footer class="bg-dark text-white text-center py-4 mt-4">
-    <div>
-        <p>© 2025 Basketball Platform. All rights reserved.</p>
-        <div class="d-flex justify-content-center gap-4">
-            <a href="#" class="text-white">Privacy Policy</a>
-            <a href="#" class="text-white">Terms of Service</a>
-            <a href="#" class="text-white">Contact Us</a>
-        </div>
-    </div>
-</footer>
-
-<?php include_once "includes/public/footer.php"; ?>
+<?php include_once "includes/global/footer.php"; ?>

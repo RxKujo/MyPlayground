@@ -1,5 +1,17 @@
 body {
-        background-color: #F8F9FA;
+    font-family: 'Roboto', sans-serif;
+    background-color: #F8F9FA;
+}
+
+header {
+    height: 80px;
+}
+
+
+.logo {
+    width: 40px;
+    height: 40px;
+    margin: 20px;
 }
 
 .content {
@@ -7,7 +19,8 @@ body {
     padding: 20px;
 }
 
-.welcome-bg-col {
+.welcome-section {
+    height: 228px;
     background-color: #686464;
 }
 
@@ -33,4 +46,10 @@ body {
     height: 60px;
     border-radius: 50%;
     background-color: #D6D8DB;
+}
+
+.nav-pills 
+.nav-link.active{
+    color: #000 !important;
+    background-color: #C4C4C5 !important;
 }
