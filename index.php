@@ -13,7 +13,7 @@
 <div class="d-flex">
     <nav class="bg-light text-black p-3" style="width: 280px; min-height: 100vh;">
         <ul id="sidebar-list" class="nav nav-pills flex-column">
-            <li class="nav-item"><a class="nav-link active text-black" href="#" data-page="home" onclick="loadContent('home')">🏠 Home</a></li>
+            <li class="nav-item"><a class="nav-link text-black active fs-5 fw-bold" href="#" data-page="home" onclick="loadContent('home')">🏠 Home</a></li>
             <li class="nav-item"><a class="nav-link text-black" href="#" onclick="loadContent('partners')">🏀 Find Partners</a></li>
             <li class="nav-item"><a class="nav-link text-black" href="#" onclick="loadContent('home')">🏆 Tournaments</a></li>
             <li class="nav-item"><a class="nav-link text-black" href="#" onclick="loadContent('profile')">👤 Profile</a></li>

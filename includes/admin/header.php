@@ -9,7 +9,6 @@
         <title>My Playground - Page Administrateur</title>
         
         <script src="../../assets/admin/js/switch_script.js"></script>
-        <script src="../../assets/global/js/sidebar_tabs.js"></script>
     </head>
 
     <body onload="loadContent('dashboard')">

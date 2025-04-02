@@ -1,11 +1,18 @@
+const classList = [
+    "active",
+    "fs-5",
+    "fw-bold"
+];
+
 function listenTabs() {
     sidebarTabs.forEach((tab) => {
         tab.addEventListener("click", function (e) {
             e.preventDefault();
-            tab.classList.add("active");
+            tab.classList.add(...classList);
+            
             sidebarTabs.forEach((otherTab) => {
                 if (otherTab !== tab) {
-                    otherTab.classList.remove("active");
+                    otherTab.classList.remove(...classList);
                 }
             });
         });
