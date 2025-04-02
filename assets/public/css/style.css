@@ -53,3 +53,18 @@ header {
     color: #000 !important;
     background-color: #C4C4C5 !important;
 }
+
+.px-6 {
+    padding-left: 3.25rem !important;
+    padding-right: 3.25rem !important;
+}
+
+.px-7 {
+    padding-left: 3.5rem !important;
+    padding-right: 3.5rem !important;
+}
+
+.px-xl {
+    padding-left: 8rem !important;
+    padding-right: 8rem !important;
+}
