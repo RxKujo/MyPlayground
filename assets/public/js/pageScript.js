@@ -1,6 +1,5 @@
 import { loadContent } from "./pageLoader.js";
 import { refreshTabs } from "../../shared/js/tabManager.js";
-import { listenNav } from "./navHandler.js";
 import { getCurrentPage, setCurrentPage } from "./storageUtils.js";
 import { checkFilterDivAttach } from "./filterButtons.js";
 import { listenPTButtons } from "./generalButtons.js";

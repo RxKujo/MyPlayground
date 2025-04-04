@@ -2,6 +2,7 @@ import { refreshTabs } from "../../shared/js/tabManager.js";
 import { setCurrentPage } from "./storageUtils.js";
 
 export function listenPTButtons(contentElement) {
+    listenNav(contentElement);
     listenFindPartners(contentElement);
     listenJoinTournaments(contentElement);
 }
@@ -21,6 +22,15 @@ function listenJoinTournaments(contentElement) {
         joinButton.addEventListener("click", () => {
             gotoPartners("tournaments");
         });
+    }
+}
+
+function listenNav(contentElement) {
+    const nav_logo = document.querySelector("#nav-logo");
+    if (nav_logo) {
+        nav_logo.addEventListener("click", () => {
+            gotoPartners("home");
+        })
     }
 }
 
