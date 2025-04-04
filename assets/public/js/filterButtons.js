@@ -1,9 +1,16 @@
-let filter_div = document.getElementById("search-filters");
+export function attachButtonListeners(contentElement, filter_div) {
+    const clearButton = contentElement.querySelector("#clear-button");
+    const searchButton = contentElement.querySelector("#search-button");
 
-let clearButton = document.querySelector("#clear-button");
-let searchButton = document.querySelector("#search-button");
+    clearButton.addEventListener("click", () => {
+        clear(filter_div);
+    });
+    searchButton.addEventListener("click", () => {
+        search(filter_div);
+    });
+}
 
-function clear() {
+function clear(filter_div) {
     let filter_buttons = filter_div.querySelectorAll("button");
     filter_buttons.forEach((button) => {
         button.classList.remove("active");
@@ -11,7 +18,7 @@ function clear() {
     });
 }
 
-function search() {
+function search(filter_div) {
     let filter_buttons = filter_div.querySelectorAll("button");
     let selected_filters = [];
     filter_buttons.forEach((button) => {
@@ -22,12 +29,3 @@ function search() {
 
     console.log("Selected filters:", selected_filters);
 }
-
-
-clearButton.addEventListener("click", function() {
-    clear();
-});
-
-searchButton.addEventListener("click", function() {
-    search();
-});

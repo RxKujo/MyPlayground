@@ -8,7 +8,7 @@
 	    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <title>My Playground - Page Administrateur</title>
         
-        <script src="../../assets/admin/js/switch_script.js"></script>
+        <script type="module" src="../../assets/admin/js/switchScript.js"></script>
     </head>
 
-    <body onload="loadContent('dashboard')">
+    <body>
