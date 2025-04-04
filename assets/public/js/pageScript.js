@@ -2,7 +2,8 @@ import { loadContent } from "./pageLoader.js";
 import { refreshTabs } from "../../shared/js/tabManager.js";
 import { listenNav } from "./navHandler.js";
 import { getCurrentPage, setCurrentPage } from "./storageUtils.js";
-import { attachButtonListeners } from "./filterButtons.js";
+import { checkFilterDivAttach } from "./filterButtons.js";
+import { listenPTButtons } from "./generalButtons.js";
 
 
 document.addEventListener("DOMContentLoaded", async function() {
@@ -12,26 +13,29 @@ document.addEventListener("DOMContentLoaded", async function() {
     const contentElement = document.querySelector("#content");
     
     let currentPage = getCurrentPage();
+
     refreshTabs(sidebarTabs, currentPage);
     await loadContent(currentPage, contentElement);
     
     
-    const filterDiv = document.querySelector("#search-filters");
-    attachButtonListeners(contentElement, filterDiv);
+    listenPTButtons(contentElement);
+    checkFilterDivAttach(contentElement);
     listenNav(nav_logo, sidebarTabs, contentElement)
     
     sidebarTabs.forEach((tab) => {
-        tab.addEventListener("click", (e) => {
+        tab.addEventListener("click", async (e) => {
             e.preventDefault();
+            
             const page = tab.getAttribute("data-page");
-            if (currentPage !== page) {
-                currentPage = page;
-                setCurrentPage(page);
-                loadContent(page, contentElement);
-                refreshTabs(sidebarTabs, page);
-            }
+
+            currentPage = page;
+            setCurrentPage(page);
+            await loadContent(page, contentElement);
+            refreshTabs(sidebarTabs, page);
+
+            listenPTButtons(contentElement);
+            checkFilterDivAttach(contentElement);
+    
         });
     });
-    
-    console.log("Current page:", contentElement.outerHTML);
 });
