@@ -7,7 +7,6 @@ import { listenPTButtons } from "./generalButtons.js";
 
 document.addEventListener("DOMContentLoaded", async function() {
     
-    const nav_logo = document.querySelector("#nav-logo");
     const sidebarTabs = document.querySelectorAll("#sidebar-list li a");
     const contentElement = document.querySelector("#content");
     
@@ -19,7 +18,6 @@ document.addEventListener("DOMContentLoaded", async function() {
     
     listenPTButtons(contentElement);
     checkFilterDivAttach(contentElement);
-    listenNav(nav_logo, sidebarTabs, contentElement)
     
     sidebarTabs.forEach((tab) => {
         tab.addEventListener("click", async (e) => {
