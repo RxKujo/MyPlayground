@@ -11,7 +11,7 @@ function listenFindPartners(contentElement) {
     const findButton = contentElement.querySelector("#find-button");
     if (findButton) {
         findButton.addEventListener("click", () => {
-            gotoPartners("partners");
+            gotoPage("partners");
         });
     }
 }
@@ -20,7 +20,7 @@ function listenJoinTournaments(contentElement) {
     const joinButton = contentElement.querySelector("#tournament-button");
     if (joinButton) {
         joinButton.addEventListener("click", () => {
-            gotoPartners("tournaments");
+            gotoPage("tournaments");
         });
     }
 }
@@ -29,12 +29,12 @@ function listenNav(contentElement) {
     const nav_logo = document.querySelector("#nav-logo");
     if (nav_logo) {
         nav_logo.addEventListener("click", () => {
-            gotoPartners("home");
+            gotoPage("home");
         })
     }
 }
 
-async function gotoPartners(pageName) {
+async function gotoPage(pageName) {
     import("./pageLoader.js").then((module) => {
         const page = pageName;
         const contentElement = document.querySelector("#content");
