@@ -1,4 +1,15 @@
-<?php include_once "includes/public/header.php"; ?>
+<?php 
+session_start();
+$isAuthenticated = isset($_SESSION['authenticated']) && $_SESSION['authenticated'];
+
+if (!$isAuthenticated) {
+    header("Location: login.php");
+    exit();
+}
+
+
+include_once "includes/public/header.php";
+?>
 
 <header class="navbar navbar-dark bg-dark py-0 my-0">
     <div class="container-fluid">
