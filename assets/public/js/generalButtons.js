@@ -5,6 +5,7 @@ export function listenPTButtons(contentElement) {
     listenNav(contentElement);
     listenFindPartners(contentElement);
     listenJoinTournaments(contentElement);
+    listenDC(contentElement);
 }
 
 function listenFindPartners(contentElement) {
@@ -31,6 +32,15 @@ function listenNav(contentElement) {
         nav_logo.addEventListener("click", () => {
             gotoPage("home");
         })
+    }
+}
+
+function listenDC(contentElement) {
+    const dcButton = contentElement.querySelector("#disconnect-button");
+    if (dcButton) {
+        dcButton.addEventListener("click", () => {
+            setCurrentPage("home");
+        });
     }
 }
 

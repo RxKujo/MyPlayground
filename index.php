@@ -7,14 +7,18 @@ if (!$isAuthenticated) {
     exit();
 }
 
-
-include_once "includes/public/header.php";
+include_once "data.php";
+include_once $includesPublic . "header.php";
 ?>
 
 <header class="navbar navbar-dark bg-dark py-0 my-0">
     <div class="container-fluid">
         <a id="nav-logo" class="navbar-brand pb-0" href="#" data-page="home">
-            <img src="assets/public/img/logo.png" alt="Logo" class="logo d-inline-block align-text-center">
+            <img 
+                src="assets/public/img/logo.png"
+                alt="Logo"
+                class="logo d-inline-block align-text-center"
+                >
             <span class="logo-text" style="font-size: 28px;">My PlayGround</span>
         </a>
     </div>
@@ -37,4 +41,4 @@ include_once "includes/public/header.php";
     </div>
 </div>
 
-<?php include_once "includes/global/footer.php"; ?>
+<?php include_once $includesGlobal . "footer.php"; ?>

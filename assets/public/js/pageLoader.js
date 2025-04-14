@@ -3,7 +3,12 @@ import { addScript, isScriptPresent, removeScript, replaceScript } from "./scrip
 
 export async function fetchPage(page) {
     try {
-        const response = await fetch(`pages/public/${page}.html`);
+        let response;
+        if (page === "settings") {
+            response = await fetch("pages/public/settings.php");
+        } else {
+            response = await fetch(`pages/public/${page}.html`);
+        }
         const content = await response.text();
         return content;
     } catch (error) {

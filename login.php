@@ -1,7 +1,5 @@
 <?php
 
-include_once "includes/public/header.php";
-
 session_start();
 $isAuthenticated = isset($_SESSION['authenticated']) && $_SESSION['authenticated'];
 
@@ -9,6 +7,8 @@ if ($isAuthenticated) {
     header("Location: index.php");
     exit();
 }
+
+include_once 'includes/public/header.php';
 ?>
 
 <header class="navbar navbar-dark bg-dark py-0 my-0">
@@ -21,21 +21,22 @@ if ($isAuthenticated) {
 </header>
 
 <div id="login-page" class="container-fluid d-flex flex-column align-items-center vh-100 mt-5">
-    
     <div>
         <div>
             <h1 style="font-size: 60px;">Se connecter</h1>
         </div>
         <div role="form-container">
             <div class="mb-3">
-                <label for="username" class="form-label">Email*</label>
-                <input type="text" class="form-control" id="username" placeholder="Entrez votre adresse email" required>
+                <form method="post" action="auth.php" id="auth-form">
+                    <label for="username" class="form-label">Email*</label>
+                    <input type="text" class="form-control" name="username" id="username" placeholder="Entrez votre adresse email" required>
 
-                <label for="password">Password*</label>
-                <input type="password" class="form-control" id="password" placeholder="Entrez votre mot de passe" required>
+                    <label for="password">Password*</label>
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Entrez votre mot de passe" required>
 
-                <button type="submit" class="btn btn-primary mt-3" id="login-button">Se connecter</button>
-                <button type="button" class="btn btn-secondary mt-3" id="register-button">S'inscrire</button>
+                    <button type="submit" class="btn btn-primary mt-3" id="login-button">Se connecter</button>
+                    <button type="button" class="btn btn-secondary mt-3" id="register-button">S'inscrire</button>
+                </form>
             </div>
         </div>
     </div>
