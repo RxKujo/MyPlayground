@@ -6,6 +6,7 @@
         <ul id="sidebar-list" class="nav nav-pills flex-column">
             <li class="nav-item"><a class="nav-link active text-white" href="#" data-page="dashboard">🏠 Dashboard</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="#" data-page="users">👤 Users</a></li>
+            <li class=
             <li class="nav-item"><a class="nav-link text-white" href="#" data-page="settings">⚙ Settings</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="#" data-page="disconnect">🚪 Disconnect</a></li>
         </ul>

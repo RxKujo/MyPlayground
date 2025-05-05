@@ -1,8 +1,10 @@
 <?php
-session_start();
+
 $error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
+
 unset($_SESSION['error']);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

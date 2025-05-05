@@ -1,12 +1,10 @@
 <?php
-	echo "Hello world";
 
 	define("DB_HOST", "localhost");
 	define("DB_USER", "root");
-	define("DB_PASSWORD", "root");
-	define("DB_BASE", "mysql");
+	define("DB_PASSWORD", "");
+	define("DB_BASE", "myplayground");
 
-	
 	try {
 		$dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_BASE . ";charset=utf8";
 		$options = [
