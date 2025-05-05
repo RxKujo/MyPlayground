@@ -48,8 +48,8 @@ if ($password !== $confirmPassword) {
     exit();
 }
 
-$query = $pdo->prepare("SELECT COUNT(*) FROM users WHERE username = :username OR email = :email");
-$query->execute(['username' => $username, 'email' => $email]);
+$query = $pdo->prepare("SELECT COUNT(*) FROM utilisateur WHERE pseudo = :pseudo OR email = :email");
+$query->execute(['pseudo' => $username, 'email' => $email]);
 if ($query->fetchColumn() > 0) {
     $_SESSION['error'] = 'Le nom d\'utilisateur ou l\'adresse e-mail est déjà utilisé.';
     
@@ -63,19 +63,21 @@ $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
 
 $query = $pdo->prepare("
-    INSERT INTO users (username, email, password, phone, firstname, lastname, address, position)
-    VALUES (:username, :email, :password, :phone, :firstname, :lastname, :address, :position)
+    INSERT INTO utilisateur (pseudo, email, mdp, tel, prenom, nom, localisation, poste, role, droits)
+    VALUES (:pseudo, :email, :mdp, :tel, :prenom, :nom, :localisation, :poste, :role, :droits)
 ");
 
 $query->execute([
-    'username' => $username,
+    'pseudo' => $username,
     'email' => $email,
-    'password' => $hashedPassword,
-    'phone' => $phone,
-    'firstname' => $firstname,
-    'lastname' => $lastname,
-    'address' => $address,
-    'position' => $position,
+    'mdp' => $hashedPassword,
+    'tel' => $phone,
+    'prenom' => $firstname,
+    'nom' => $lastname,
+    'localisation' => $address,
+    'poste' => $position,
+    'role' => 0,
+    'droits' => 0,
 ]);
 
 

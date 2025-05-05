@@ -1,3 +1,14 @@
+<?php
+
+if (!isset($_COOKIE['user'])) {
+    setcookie("user", "", time() - 3600, "/"); // Supprime le cookie
+    exit();
+}
+
+$utilisateur = json_decode($_COOKIE['user'], true);
+
+?>
+
 <div class="d-flex align-items-center welcome-section mb-3">
     <div class="ms-5 px-5">
         <img class="profile-img" src="assets/public/img/morad.png"></img>
@@ -5,9 +16,9 @@
 
     <div class="me-auto">
         <div>
-            <h3 class="text-white mb-0">Morad De Visch</h3>
+            <h3 class="text-white mb-0"><?= $utilisateur["prenom"] ?> <?= $utilisateur["nom"] ?></h3>
             <span class="badge bg-dark-subtle my-2">
-                <p class="text-black my-0">Shooting Guard</p>
+                <p class="text-black my-0"><?= $utilisateur["poste"] ?></p>
             </span>
             <span class="badge bg-dark-subtle my-2">
                 <p class="text-black my-0">Point Guard</p>

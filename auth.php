@@ -25,7 +25,7 @@ $password = $_POST["password"];
 
 // Stocker les données saisies pour les réafficher en cas d'erreur
 $_SESSION['form_data'] = [
-    'username' => $username,
+    'pseudo' => $username,
 ];
 
 // --- Vérifications des champs ---
@@ -36,17 +36,19 @@ if (!$username || !$password) {
 }
 
 // --- Vérification dans la base de données ---
-$sql = "SELECT * FROM users WHERE username = :username LIMIT 1";
+$sql = "SELECT * FROM utilisateur WHERE pseudo = :pseudo LIMIT 1";
 $stmt = $pdo->prepare($sql);
-$stmt->bindParam(':username', $username);
+$stmt->bindParam(':pseudo', $username);
 $stmt->execute();
 
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($user && password_verify($password, $user['password'])) {
+if ($user && password_verify($password, $user['mdp'])) {
     // Connexion réussie
     $_SESSION['authenticated'] = true;
-    $_SESSION['username'] = $user['username'];
+    $_SESSION['pseudo'] = $user['pseudo'];
+    $userJson = json_encode($user);
+    setcookie("user", $userJson, time() + 86400, "/"); // 86400 = 1 jour
     header("location: index.php");
     exit();
 } else {

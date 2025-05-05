@@ -4,11 +4,9 @@ import { addScript, isScriptPresent, removeScript, replaceScript } from "./scrip
 export async function fetchPage(page) {
     try {
         let response;
-        if (page === "settings") {
-            response = await fetch("pages/public/settings.php");
-        } else {
-            response = await fetch(`pages/public/${page}.html`);
-        }
+        
+        response = await fetch(`pages/public/${page}.php`);
+
         const content = await response.text();
         return content;
     } catch (error) {
