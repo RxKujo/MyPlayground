@@ -15,6 +15,10 @@ $role = filter_input(INPUT_POST, 'role', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $adresse = filter_input(INPUT_POST, 'adresse', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $commentaire = filter_input(INPUT_POST, 'commentaire', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
+switch ($niveau) {
+    case
+}
+
 $sql = 'UPDATE utilisateur SET nom = :nom, prenom = :prenom, pseudo = :pseudo, poste = :poste, niveau = :niveau, tel = :tel, email = :email, role = :role, adresse = :adresse, commentaire = :commentaire WHERE id = :id';
 $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':nom', $nom);
@@ -27,4 +31,8 @@ $stmt->bindParam(':email', $email);
 $stmt->bindParam(':role', $role);
 $stmt->bindParam(':adresse', $adresse);
 $stmt->bindParam(':commentaire', $commentaire);
+
+$stmt->execute();
+$utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
+
 ?>
