@@ -6,6 +6,7 @@ export function listenPTButtons(contentElement) {
     listenFindPartners(contentElement);
     listenJoinTournaments(contentElement);
     listenDC(contentElement);
+    listenEditProfile(contentElement);
 }
 
 function listenFindPartners(contentElement) {
@@ -43,6 +44,16 @@ function listenDC(contentElement) {
         });
     }
 }
+
+function listenEditProfile(contentElement) {
+    const editButton = contentElement.querySelector("#edit-profile");
+    if (editButton) {
+        editButton.addEventListener("click", () => {
+            gotoPage("edit-profile");
+        });
+    }
+}
+
 
 async function gotoPage(pageName) {
     import("./pageLoader.js").then((module) => {

@@ -6,43 +6,15 @@ $formData = isset($_SESSION['form_data']) ? $_SESSION['form_data'] : [];
 unset($_SESSION['error'], $_SESSION['form_data']);
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créer un compte</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/public/css/style.css" rel="stylesheet">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <style>
-        .form-container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
-        .form-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .header-title {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
-        .header-title img {
-            height: 50px;
-            margin-right: 15px;
-        }
-        .header-title h1 {
-            font-size: 36px;
-            font-weight: bold;
-            margin: 0;
-        }
-    </style>
+
 </head>
 <body>
 <div class="container">
@@ -68,6 +40,11 @@ unset($_SESSION['error'], $_SESSION['form_data']);
                 <label for="lastname" class="form-label">Nom*</label>
                 <input type="text" class="form-control" id="lastname" name="lastname" 
                        value="<?= htmlspecialchars($formData['lastname'] ?? '') ?>" required>
+            </div>
+            <div class="mb-3">
+                <label for="naisssance" class="form-label">Date de Naissance*</label>
+                <input type="date" class="form-control" id="naissance" name="naissance" 
+                       value="<?= htmlspecialchars($formData['naissance'] ?? '') ?>" required>
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Adresse e-mail*</label>

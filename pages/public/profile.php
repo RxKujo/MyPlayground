@@ -27,7 +27,7 @@ $utilisateur = json_decode($_COOKIE['user'], true);
     </div>
 
     <div class="d-flex flex-column m-auto">
-        <button id="" class="btn btn-dark btn-lg m-2 px-5">Edit profile</button>
+        <button id="edit-profile" class="btn btn-dark btn-lg m-2 px-5">Edit profile</button>
     </div>
 </div>
 

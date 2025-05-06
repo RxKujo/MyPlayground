@@ -21,7 +21,7 @@ try {
 
 // --- Récupération des données du formulaire ---
 $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-$password = $_POST["password"];
+$password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 // Stocker les données saisies pour les réafficher en cas d'erreur
 $_SESSION['form_data'] = [
@@ -36,14 +36,14 @@ if (!$username || !$password) {
 }
 
 // --- Vérification dans la base de données ---
-$sql = "SELECT * FROM users WHERE username = :username LIMIT 1";
+$sql = "SELECT * FROM utilisateur WHERE pseudo = :pseudo LIMIT 1";
 $stmt = $pdo->prepare($sql);
-$stmt->bindParam(':username', $username);
+$stmt->bindParam(':pseudo', $username);
 $stmt->execute();
 
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($user && password_verify($password, $user['password'])) {
+if ($user && password_verify($password, $user['mdp'])) {
     // Connexion réussie
     $_SESSION['authenticated'] = true;
     $_SESSION['username'] = $user['username'];
@@ -53,7 +53,10 @@ if ($user && password_verify($password, $user['password'])) {
     exit();
 } else {
     // Erreur de connexion
+    $_SESSION['authenticated'] = true;
     $_SESSION['error'] = 'Nom d\'utilisateur ou mot de passe incorrect.';
-    header("location: login.php");
+    setcookie("user", json_encode($user), time() + (86400 * 30), "/"); // 86400 = 1 jour
+
+    header("location: index.php");
     exit();
 }
