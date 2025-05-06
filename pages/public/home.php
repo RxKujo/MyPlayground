@@ -1,7 +1,6 @@
 <?php
 
 if (!isset($_COOKIE['user'])) {
-    setcookie("user", "", time() - 3600, "/"); // Supprime le cookie
     exit();
 }
 

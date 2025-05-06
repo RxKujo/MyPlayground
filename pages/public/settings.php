@@ -1,6 +1,8 @@
 <?php
-    session_start();
-    $isAuthenticated = isset($_SESSION['authenticated']) && $_SESSION['authenticated'];
+    include_once $includesConfig . "functions.php";
+
+    $isAuthenticated = isAuthenticated();
+
     if (!$isAuthenticated) {
         header("Location: login.php");
         exit();
@@ -8,11 +10,11 @@
 
     if(isset($_POST['disconnect'])) {
         session_destroy();
+        deleteCookie('user');
         header("Location: login.php");
         exit();
     }
 
-include_once $_SERVER['DOCUMENT_ROOT'] . "/MyPlayground/data.php";
 $settings_path = $root . "/Myplayground/deauth.php";
 
 echo "<form method='post' action=deauth.php id='settings-form'>";

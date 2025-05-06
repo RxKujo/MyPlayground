@@ -1,5 +1,6 @@
 <?php 
 
+include_once $includesConfig . "config.php";
 include_once $includesPublic . "header.php";
 ?>
 

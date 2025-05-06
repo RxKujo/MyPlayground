@@ -1,8 +1,6 @@
 <?php
 
-$error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
 
-unset($_SESSION['error']);
 ?>
 
 <!DOCTYPE html>
@@ -40,11 +38,11 @@ unset($_SESSION['error']);
 </head>
 <body>
 <div class="container">
-
     <div class="header-title">
         <img src="assets/public/img/logo.png" alt="Logo">
         <h1>Se connecter</h1>
     </div>
+
     <div class="form-container">
      
         <?php if ($error): ?>

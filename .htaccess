@@ -1,1 +1,2 @@
 ErrorDocument 404 /MyPlayground/pages/errors/404.html
+ErrorDocument 500 /MyPlayground/pages/errors/500.html
