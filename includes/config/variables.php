@@ -1,13 +1,14 @@
 <?php
 
-$positions = [
-    0 => 'Meneur de jeu',
-    1 => 'Arrière',
-    2 => 'Ailier',
-    3 => 'Ailier fort',
-    4 => 'Pivot'
-];
+$root = $_SERVER['DOCUMENT_ROOT'];
 
+$includesPublic = $root . "/includes/public/";
+$includesAdmin = $root . "/includes/admin/";
+$includesGlobal = $root . "/includes/global/";
+$includesConfig = $root . "/includes/config/";
 
+$assetsPublic = $root . "/assets/public/";
+$assetsAdmin = $root . "/assets/admin/";
+$assetsGlobal = $root . "/assets/global/";
 
 ?>
