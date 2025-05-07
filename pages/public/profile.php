@@ -6,6 +6,23 @@ if (!isset($_COOKIE['user'])) {
 }
 
 $utilisateur = json_decode($_COOKIE['user'], true);
+switch ($utilisateur['poste']) {
+    case 0:
+        $position = 'Meneur de jeu';
+        break;
+    case 1:
+        $position = 'Arrière';
+        break;
+    case 2:
+        $position = 'Ailier';
+        break;
+    case 3:
+        $position = 'Ailier fort';
+        break;
+    case 4:
+        $position = 'Pivot';
+        break;
+}
 
 ?>
 
@@ -18,10 +35,7 @@ $utilisateur = json_decode($_COOKIE['user'], true);
         <div>
             <h3 class="text-white mb-0"><?= $utilisateur["prenom"] ?> <?= $utilisateur["nom"] ?></h3>
             <span class="badge bg-dark-subtle my-2">
-                <p class="text-black my-0"><?= $utilisateur["poste"] ?></p>
-            </span>
-            <span class="badge bg-dark-subtle my-2">
-                <p class="text-black my-0">Point Guard</p>
+                <p class="text-black my-0"><?= $position ?></p>
             </span>
         </div>
     </div>

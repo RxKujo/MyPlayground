@@ -1,5 +1,10 @@
 <?php
 
+if (isset($_SESSION['error'])) {
+    $error = $_SESSION['error'];
+} else {
+    $error = null;
+}
 
 ?>
 
@@ -45,7 +50,7 @@
 
     <div class="form-container">
      
-        <?php if ($error): ?>
+        <?php if (!is_null($error)): ?>
             <div class="alert alert-danger text-center">
                 <?= htmlspecialchars($error) ?>
             </div>

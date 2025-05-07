@@ -16,6 +16,7 @@ $assetsAdmin = $root . "/MyPlayground/assets/admin/";
 $assetsGlobal = $root . "/MyPlayground/assets/global/";
 
 include_once $includesConfig . 'functions.php';
+include_once $includesConfig . 'variables.php';
 
 $isAuthenticated = isAuthenticated();
 

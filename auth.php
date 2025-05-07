@@ -31,7 +31,7 @@ $_SESSION['form_data'] = [
 // --- Vérifications des champs ---
 if (!$username || !$password) {
     $_SESSION['error'] = 'Tous les champs sont obligatoires.';
-    header("location: login.php");
+    header("location: index.php");
     exit();
 }
 
@@ -44,7 +44,7 @@ $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
-if (!$user) {
+if (!$user || is_null($user)) {
     $_SESSION['error'] = 'Nom d\'utilisateur ou mot de passe incorrect.';
     header("location: index.php");
     exit();
