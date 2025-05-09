@@ -20,7 +20,7 @@ function deleteCookie($key) {
 function isAuthenticated() {
     if (isset($_SESSION['authenticated']) && $_SESSION['authenticated']) {
         return true;
-    } else if (isset($_COOKIE['user']) && $_COOKIE['']) {
+    } else if (isset($_COOKIE['user']) && $_COOKIE['user']) {
         return true;
     }
     return false;

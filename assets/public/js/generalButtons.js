@@ -2,11 +2,7 @@ import { refreshTabs } from "../../shared/js/tabManager.js";
 import { setCurrentPage } from "./storageUtils.js";
 
 export function listenPTButtons(contentElement) {
-    listenNav(contentElement);
-    listenFindPartners(contentElement);
-    listenJoinTournaments(contentElement);
     listenDC(contentElement);
-    listenEditProfile(contentElement);
 }
 
 function listenFindPartners(contentElement) {

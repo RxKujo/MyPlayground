@@ -13,28 +13,21 @@ document.addEventListener("DOMContentLoaded", async function() {
     let currentPage = getCurrentPage();
 
     refreshTabs(sidebarTabs, currentPage);
-    await loadContent(currentPage, contentElement);
+    // await loadContent(currentPage, contentElement);
     
     
     listenPTButtons(contentElement);
     checkFilterDivAttach(contentElement);
     
     sidebarTabs.forEach((tab) => {
-        tab.addEventListener("click", async (e) => {
-            e.preventDefault();
-            
+        tab.addEventListener("click", async (e) => {            
             const page = tab.getAttribute("data-page");
 
-            currentPage = page;
             setCurrentPage(page);
 
-            if (currentPage !== 'settings') {
-                await loadContent(page, contentElement);
-            }
-            refreshTabs(sidebarTabs, page);
-
-            listenPTButtons(contentElement);
-            checkFilterDivAttach(contentElement);
+            // if (currentPage !== 'settings') {
+            //     await loadContent(page, contentElement);
+            // }
     
         });
     });

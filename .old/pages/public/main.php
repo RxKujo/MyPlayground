@@ -1,7 +1,9 @@
 <?php 
 
-include_once $includesConfig . "config.php";
-include_once $includesPublic . "header.php";
+$root = $_SERVER['DOCUMENT_ROOT'];
+
+include_once $root . "/includes/config/config.php";
+include_once $root . "/includes/public/header.php";
 ?>
 
 <header class="navbar navbar-dark bg-dark py-0 my-0">

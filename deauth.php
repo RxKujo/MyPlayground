@@ -11,8 +11,8 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 }
 
 session_destroy();
-deleteCookie();
-header("index.php");
+deleteCookie('user');
+header("location: index.php");
 
 exit();
 ?>
