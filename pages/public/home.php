@@ -25,6 +25,7 @@ include_once $includesPublic . "header.php";
         
         <?php
             if (!isset($_COOKIE['user'])) {
+                header("location: ../../index.php");
                 exit();
             }
 
@@ -49,8 +50,8 @@ include_once $includesPublic . "header.php";
             </div>
             
             <div class="d-flex flex-column m-auto">
-                <a href="partners.php" id="find-button" class="btn btn-outline-light m-2">Find Partners</a>
-                <a href="tournaments.php" id="tournament-button" class="btn btn-dark m-2">Join Tournament</a>
+                <a href="partners" id="find-button" class="btn btn-outline-light m-2">Find Partners</a>
+                <a href="tournaments" id="tournament-button" class="btn btn-dark m-2">Join Tournament</a>
             </div>
         </div>
 

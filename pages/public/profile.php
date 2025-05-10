@@ -62,7 +62,7 @@ include_once $includesPublic . "header.php";
             </div>
             
             <div class="d-flex flex-column m-auto">
-                <a href="edit-profile.php" id="edit-profile" class="btn btn-dark btn-lg m-2 px-5">Edit profile</a>
+                <a href="edit-profile" id="edit-profile" class="btn btn-dark btn-lg m-2 px-5">Edit profile</a>
             </div>
         </div>
 

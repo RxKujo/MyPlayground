@@ -10,7 +10,7 @@ $isAuthenticated = isAuthenticated();
 if (!$isAuthenticated) {
     header("location: login.php");
 } else {
-    header("location: pages/public/home.php");
+    header("location: home");
 }
 
 ?>

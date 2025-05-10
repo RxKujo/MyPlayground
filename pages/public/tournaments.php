@@ -120,7 +120,7 @@ include_once $root . "/includes/public/header.php";
             </div>
             
             <div class="d-flex align-items-center m-auto ms-5">
-                <a href="partners.php" id="find-button" class="btn btn-dark btn-lg">
+                <a href="partners" id="find-button" class="btn btn-dark btn-lg">
                     Find teammates
                 </a>
             </div>
