@@ -2,14 +2,18 @@ import { refreshTabs } from "../../shared/js/tabManager.js";
 import { setCurrentPage } from "./storageUtils.js";
 
 export function listenPTButtons(contentElement) {
+    listenNav(contentElement);
     listenDC(contentElement);
+    listenFindPartners(contentElement);
+    listenJoinTournaments(contentElement);
+    listenEditProfile(contentElement)
 }
 
 function listenFindPartners(contentElement) {
     const findButton = contentElement.querySelector("#find-button");
     if (findButton) {
         findButton.addEventListener("click", () => {
-            gotoPage("partners");
+            setCurrentPage("partners");
         });
     }
 }
@@ -18,7 +22,7 @@ function listenJoinTournaments(contentElement) {
     const joinButton = contentElement.querySelector("#tournament-button");
     if (joinButton) {
         joinButton.addEventListener("click", () => {
-            gotoPage("tournaments");
+            setCurrentPage("tournaments");
         });
     }
 }
@@ -27,7 +31,7 @@ function listenNav(contentElement) {
     const nav_logo = document.querySelector("#nav-logo");
     if (nav_logo) {
         nav_logo.addEventListener("click", () => {
-            gotoPage("home");
+            setCurrentPage("home");
         })
     }
 }
@@ -45,7 +49,7 @@ function listenEditProfile(contentElement) {
     const editButton = contentElement.querySelector("#edit-profile");
     if (editButton) {
         editButton.addEventListener("click", () => {
-            gotoPage("edit-profile");
+            setCurrentPage("edit-profile");
         });
     }
 }

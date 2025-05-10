@@ -49,8 +49,8 @@ include_once $includesPublic . "header.php";
             </div>
             
             <div class="d-flex flex-column m-auto">
-                <button id="find-button" class="btn btn-outline-light m-2">Find Partners</button>
-                <button id="tournament-button" class="btn btn-dark m-2">Join Tournament</button>
+                <a href="partners.php" id="find-button" class="btn btn-outline-light m-2">Find Partners</a>
+                <a href="tournaments.php" id="tournament-button" class="btn btn-dark m-2">Join Tournament</a>
             </div>
         </div>
 
