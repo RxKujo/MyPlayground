@@ -26,7 +26,7 @@ export async function loadContent(page, contentElement) {
             } else {
                 replaceScript(src, src);
             }
-        }
+        } else if (page === "settings") {}
     } else {
         console.error("Failed to load page content.");
     }

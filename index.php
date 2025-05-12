@@ -1,27 +1,16 @@
 <?php
 session_start();
 
-// --- Connexion à la base de données ---
-include("includes/config/config.php");
+include_once "includes/config/variables.php";
 
-$isAuthenticated = isset($_SESSION['authenticated']) && $_SESSION['authenticated'];
+include_once $includesConfig . "functions.php";
 
-
-
-$root = $_SERVER['DOCUMENT_ROOT'];
-
-$includesPublic = $root . "/MyPlayground/includes/public/";
-$includesAdmin = $root . "/MyPlayground/includes/admin/";
-$includesGlobal = $root . "/MyPlayground/includes/global/";
-
-$assetsPublic = $root . "/MyPlayground/assets/public/";
-$assetsAdmin = $root . "/MyPlayground/assets/admin/";
-$assetsGlobal = $root . "/MyPlayground/assets/global/";
+$isAuthenticated = isAuthenticated();
 
 if (!$isAuthenticated) {
-    include("login.php");
+    header("location: login.php");
 } else {
-    include("home.php");
+    header("location: home");
 }
 
 ?>

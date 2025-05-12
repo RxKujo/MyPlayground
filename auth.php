@@ -6,18 +6,18 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit();
 }
 
-// --- Connexion à la base de données ---
-$host = 'localhost';
-$dbname = 'myplayground';
-$user = 'root';
-$pass = ''; // Ajoutez votre mot de passe si nécessaire
-
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Erreur de connexion à la base de données : " . $e->getMessage());
+if (isset($_SESSION['authenticated']) && $_SESSION['authenticated']) {
+    header("location: index.php");
+    exit();
 }
+
+include_once 'includes/config/functions.php';
+
+print_error($_SESSION);
+
+include_once 'includes/config/config.php';
+
+    
 
 // --- Récupération des données du formulaire ---
 $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -31,7 +31,7 @@ $_SESSION['form_data'] = [
 // --- Vérifications des champs ---
 if (!$username || !$password) {
     $_SESSION['error'] = 'Tous les champs sont obligatoires.';
-    header("location: login.php");
+    header("location: index.php");
     exit();
 }
 
@@ -43,20 +43,24 @@ $stmt->execute();
 
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($user && password_verify($password, $user['mdp'])) {
+
+if (!$user || is_null($user)) {
+    $_SESSION['error'] = 'Nom d\'utilisateur ou mot de passe incorrect.';
+    header("location: index.php");
+    exit();
+}
+
+$isPasswordCorrect = password_verify($password, $user['mdp']);
+
+if ($isPasswordCorrect) {
     // Connexion réussie
     $_SESSION['authenticated'] = true;
-    $_SESSION['username'] = $user['username'];
     setcookie("user", json_encode($user), time() + (86400 * 30), "/"); // 86400 = 1 jour
     $_SESSION['success'] = 'Connexion réussie !';
     header("location: index.php");
     exit();
 } else {
-    // Erreur de connexion
-    $_SESSION['authenticated'] = true;
     $_SESSION['error'] = 'Nom d\'utilisateur ou mot de passe incorrect.';
-    setcookie("user", json_encode($user), time() + (86400 * 30), "/"); // 86400 = 1 jour
-
     header("location: index.php");
     exit();
 }

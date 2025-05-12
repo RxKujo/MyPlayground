@@ -1,1 +1,14 @@
-ErrorDocument 404 /MyPlayground/pages/errors/404.html
+ErrorDocument 404 /pages/errors/404.html
+ErrorDocument 500 /pages/errors/500.html
+
+RewriteEngine On
+
+
+RewriteBase /
+
+# Ne pas réécrire si c'est un fichier ou un dossier existant
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Rediriger /page vers pages/public/page.php
+RewriteRule ^([a-zA-Z0-9_-]+)$ pages/public/$1.php [L]

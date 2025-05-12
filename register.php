@@ -42,39 +42,39 @@ unset($_SESSION['error'], $_SESSION['form_data']);
                        value="<?= htmlspecialchars($formData['lastname'] ?? '') ?>" required>
             </div>
             <div class="mb-3">
-                <label for="naisssance" class="form-label">Date de Naissance*</label>
+                <label for="naissance" class="form-label">Date de Naissance*</label>
                 <input type="date" class="form-control" id="naissance" name="naissance" 
-                       value="<?= htmlspecialchars($formData['naissance'] ?? '') ?>" required>
+                       value="" required>
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Adresse e-mail*</label>
                 <input type="email" class="form-control" id="email" name="email" 
-                       value="<?= htmlspecialchars($formData['email'] ?? '') ?>" required>
+                       value="" required>
             </div>
             <div class="mb-3">
                 <label for="phone" class="form-label">Numéro de téléphone*</label>
                 <input type="tel" class="form-control" id="phone" name="phone" 
-                       value="<?= htmlspecialchars($formData['phone'] ?? '') ?>" required>
+                       value="" required>
             </div>
             <div class="mb-3">
                 <label for="address" class="form-label">Adresse*</label>
                 <input type="text" class="form-control" id="address" name="address" 
-                       value="<?= htmlspecialchars($formData['address'] ?? '') ?>" required>
+                       value="" required>
             </div>
             <div class="mb-3">
                 <label for="username" class="form-label">Nom d'utilisateur*</label>
                 <input type="text" class="form-control" id="username" name="username" 
-                       value="<?= htmlspecialchars($formData['username'] ?? '') ?>" required>
+                       value="" required>
             </div>
             <div class="mb-3">
                 <label for="position" class="form-label">Poste*</label>
                 <select class="form-select" id="position" name="position" required>
                     <option value="" disabled <?= empty($formData['position']) ? 'selected' : '' ?>>Choisissez un poste</option>
-                    <option value="meneur" <?= (isset($formData['position']) && $formData['position'] === 'meneur') ? 'selected' : '' ?>>Meneur</option>
-                    <option value="arrière" <?= (isset($formData['position']) && $formData['position'] === 'arrière') ? 'selected' : '' ?>>Arrière</option>
-                    <option value="ailier" <?= (isset($formData['position']) && $formData['position'] === 'ailier') ? 'selected' : '' ?>>Ailier</option>
-                    <option value="ailier fort" <?= (isset($formData['position']) && $formData['position'] === 'ailier fort') ? 'selected' : '' ?>>Ailier fort</option>
-                    <option value="pivot" <?= (isset($formData['position']) && $formData['position'] === 'pivot') ? 'selected' : '' ?>>Pivot</option>
+                    <option value="0">Meneur</option>
+                    <option value="1">Arrière</option>
+                    <option value="2">Ailier</option>
+                    <option value="3">Ailier fort</option>
+                    <option value="4">Pivot</option>
                 </select>
             </div>
             <div class="mb-3">

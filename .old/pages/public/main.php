@@ -1,11 +1,14 @@
 <?php 
 
-include_once $includesPublic . "header.php";
+$root = $_SERVER['DOCUMENT_ROOT'];
+
+include_once $root . "/includes/config/config.php";
+include_once $root . "/includes/public/header.php";
 ?>
 
 <header class="navbar navbar-dark bg-dark py-0 my-0">
     <div class="container-fluid">
-        <a id="nav-logo" class="navbar-brand pb-0" href="#" data-page="home">
+        <a id="nav-logo" class="navbar-brand pb-0" href="index.php" data-page="home">
             <img 
                 src="assets/public/img/logo.png"
                 alt="Logo"
@@ -24,7 +27,7 @@ include_once $includesPublic . "header.php";
             <li class="nav-item"><a class="nav-link text-black" href="#" data-page="partners">🏀 Find Partners</a></li>
             <li class="nav-item"><a class="nav-link text-black" href="#" data-page="tournaments">🏆 Tournaments</a></li>
             <li class="nav-item"><a class="nav-link text-black" href="#" data-page="profile">👤 Profile</a></li>
-            <li class="nav-item"><a class="nav-link text-black" href="#" data-page="settings">⚙️ Settings</a></li>
+            <li class="nav-item"><a class="nav-link text-black" href="pages/public/settings.php" data-page="settings">⚙️ Settings</a></li>
         </ul>
     </nav>
     
