@@ -30,7 +30,7 @@ unset($_SESSION['error'], $_SESSION['form_data']);
             </div>
         <?php endif; ?>
         
-        <form method="post" action="register_process.php">
+        <form method="post" action="processes/register_process.php">
             <div class="mb-3">
                 <label for="firstname" class="form-label">Prénom*</label>
                 <input type="text" class="form-control" id="firstname" name="firstname" 

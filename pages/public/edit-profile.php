@@ -6,6 +6,10 @@ $error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
 $formData = isset($_SESSION['form_data']) ? $_SESSION['form_data'] : [];
 unset($_SESSION['error'], $_SESSION['form_data']);
 
+
+include_once('../../includes/public/header.php');
+include_once('../../includes/config/config.php');
+
 ?>
 <div class="container">	
 	<div class="header-title">
@@ -95,3 +99,6 @@ unset($_SESSION['error'], $_SESSION['form_data']);
 		</form>
 	</div>
 </div>
+<?php
+include_once('../../includes/global/footer.php');
+?>
