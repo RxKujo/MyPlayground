@@ -16,9 +16,11 @@ function deleteCookie($key) {
     }
 }
 
-function isAuthenticated() {
-    if (isset($_SESSION['authenticated']) && $_SESSION['authenticated']) {
-        return true;
+function isAuthenticated($session) {
+    if (isset($session['user_id'])) {
+        if ($session['user_id']) {
+            return true;
+        }
     }
     return false;
 }

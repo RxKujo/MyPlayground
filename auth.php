@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit();
 }
 
-if (isset($_SESSION['authenticated']) && $_SESSION['authenticated']) {
+if (isset($_SESSION['user_id']) && $_SESSION['user_id']) {
     header("location: index.php");
     exit();
 }
@@ -54,7 +54,6 @@ $isPasswordCorrect = password_verify($password, $user['mdp']);
 
 if ($isPasswordCorrect) {
     // Connexion réussie
-    $_SESSION['authenticated'] = true;
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['success'] = 'Connexion réussie !';
     header("location: index.php");

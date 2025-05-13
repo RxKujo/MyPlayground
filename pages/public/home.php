@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+if (!isset($_SESSION['user_id'])) {
+    header("location: ../../index.php");
+    exit();
+}
+
 $root = $_SERVER['DOCUMENT_ROOT'];
 
 include_once $root . "/includes/config/variables.php";
@@ -21,11 +26,6 @@ include_once "navbar/header.html";
     <div class="container-fluid px-0" id="content">
         
         <?php
-            if (!isset($_SESSION['user_id'])) {
-                header("location: ../../index.php");
-                exit();
-            }
-
             $user = getUser($pdo, $_SESSION['user_id']);
         ?>
 

@@ -59,6 +59,24 @@ switch ($user['poste']) {
 		break;
 }
 
+switch ($user['role']) {
+    case 0:
+        $role = 'Joueur';
+        break;
+    case 1:
+        $role = 'Arbitre';
+        break;
+    case 2:
+        $role = 'Organisateur';
+        break;
+    case 3:
+        $role = 'Spectateur';
+		break;
+	default:
+		$role = 'Inconnu';
+		break;
+}
+
 ?>
 <div class="d-flex">
     <?php
@@ -89,8 +107,23 @@ switch ($user['poste']) {
 				</div>
 				
 				<div class="mb-3">
+					<label class="form-label" for="tel">Téléphone</label>
+					<input class="form-control" id="tel" name="tel" type="tel" value="<?= $user['tel'] ?>"/>
+				</div>
+				
+				<div class="mb-3">
+					<label class="form-label" for="email">Email</label>
+					<input class="form-control" id="email" name="email" type="email" value="<?= $user['email'] ?>"/>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" for="localisation">Adresse</label>
+					<input class="form-control" id="localisation" name="localisation" type="text" value="<?= $user['localisation'] ?>"/>
+				</div>
+				
+				<div class="mb-3">
 					<label class="form-label" for="niveau">Niveau</label>
-					<select class="form-select" id="niveau" aria-label="">
+					<select class="form-select" id="niveau" name="niveau" aria-label="">
 						<option value="<?= $user['niveau'] ?>" selected><?= $niveau ?></option>
 						<option value="0">Débutant</option>
 						<option value="1">Intermédiaire</option>
@@ -99,20 +132,11 @@ switch ($user['poste']) {
 					</select>
 				</div>
 				
-				<div class="mb-3">
-					<label class="form-label" for="tel">Téléphone</label>
-					<input class="form-control" id="tel" name="tel" type="tel" value="<?= $user['tel'] ?>"/>
-				</div>
-				
-				<div class="mb-3">
-					<label class="form-label" for="Email">Email</label>
-					<input class="form-control" id="email" name="email" type="email" value="<?= $user['email'] ?>"/>
-				</div>
 				
 				<div class="mb-3">
 					<label class="form-label" for="role">Role</label>
-					<select class="form-select" id="role" aria-label="">
-						<option value="<?= $user['role'] ?>" selected disabled>Selectionner un role</option>
+					<select class="form-select" id="role" name="role" aria-label="">
+						<option value="<?= $user['role'] ?>" selected><?= $role ?></option>
 						<option value="0">Joueur</option>
 						<option value="1">Arbitre</option>
 						<option value="2">Organisateur</option>
@@ -121,13 +145,8 @@ switch ($user['poste']) {
 				</div>
 				
 				<div class="mb-3">
-					<label class="form-label" for="adresse">Adresse</label>
-					<input class="form-control" id="adresse" name="adresse" type="text" value="<?= $user['localisation'] ?>"/>
-				</div>
-				
-				<div class="mb-3">
 					<label class="form-label" for="poste">Poste</label>
-					<select class="form-select" id="poste">
+					<select class="form-select" id="poste" name="poste">
 						<option value="<?= $user['poste'] ?>" selected=""><?= $position ?></option>
 						<option value="0">Meneur</option>
 						<option value="1">Arrière</option>

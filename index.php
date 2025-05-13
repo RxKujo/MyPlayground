@@ -5,7 +5,7 @@ include_once "includes/config/variables.php";
 
 include_once $includesConfig . "functions.php";
 
-$isAuthenticated = isAuthenticated();
+$isAuthenticated = isAuthenticated($_SESSION);
 
 if (!$isAuthenticated) {
     header("location: login.php");
