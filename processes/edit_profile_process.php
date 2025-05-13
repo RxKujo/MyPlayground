@@ -1,15 +1,19 @@
 <?php
 
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header("location: ../index.php");
     exit();
 }
 
 if (isset($_SESSION) && $_SESSION['user_id']) {
     $id = $_SESSION['user_id'];
 } else {
+    header("location: ../index.php");
     exit();
 }
 
+include_once '../includes/config/config.php';
 
 $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -40,5 +44,8 @@ $stmt->bindParam(':id', $id);
 
 $stmt->execute();
 $utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$_SESSION['success'] = 'Votre profil a été mis à jour avec succès.';
+header("location: ../test.php");
 
 ?>

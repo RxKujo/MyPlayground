@@ -10,6 +10,7 @@ unset($_SESSION['error'], $_SESSION['form_data']);
 include_once('../../includes/public/header.php');
 include_once('../../includes/config/config.php');
 
+
 ?>
 <div class="container">	
 	<div class="header-title">
@@ -17,7 +18,7 @@ include_once('../../includes/config/config.php');
 	</div>
 	<div class="form-container">
 
-		<form method="post" action="profile.php">
+		<form method="post" action="../../processes/edit_profile_process.php">
 			<input class="form-control" name="id" type="hidden" value="" />
 			
 			<div class="mb-3">
@@ -94,7 +95,7 @@ include_once('../../includes/config/config.php');
 				</div>
 			</div>
 			<div class="mb-3">
-				<button type="valider" class="btn btn-primary w-100">Valider</button>
+				<button type="submit" class="btn btn-primary w-100">Valider</button>
 			</div>
 		</form>
 	</div>
