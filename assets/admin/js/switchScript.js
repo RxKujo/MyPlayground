@@ -1,23 +1,33 @@
 import { loadContent } from "./pageLoader.js";
 import { refreshTabs } from "../../shared/js/tabManager.js";
 
+export function getCurrentPage() {
+    const currentPage = sessionStorage.getItem("currentPage");
+    return currentPage ? currentPage : "dashboard";
+}
+
+export function setCurrentPage(page) {
+    sessionStorage.setItem("currentPage", page);
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     const sidebarTabs = document.querySelectorAll("#sidebar-list li a");
     const contentElement = document.querySelector("#content");
 
-    let currentPage = "dashboard";
-    refreshTabs(sidebarTabs, currentPage);
-    loadContent(currentPage, contentElement);
-
+    let currentPage = getCurrentPage();
+    
     sidebarTabs.forEach((tab) => {
-        tab.addEventListener("click", (e) => {
-            e.preventDefault();
+        tab.addEventListener("click", async (e) => {            
             const page = tab.getAttribute("data-page");
-            if (currentPage !== page) {
-                currentPage = page;
-                loadContent(page, contentElement);
-                refreshTabs(sidebarTabs, page);
-            }
+            
+            setCurrentPage(page);
+            
+            // if (currentPage !== 'settings') {
+                //     await loadContent(page, contentElement);
+                // }
+                
+            });
         });
-    });
+        
+    refreshTabs(sidebarTabs, currentPage);
 });
