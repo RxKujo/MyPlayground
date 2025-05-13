@@ -55,7 +55,6 @@ $isPasswordCorrect = password_verify($password, $user['mdp']);
 if ($isPasswordCorrect) {
     // Connexion réussie
     $_SESSION['authenticated'] = true;
-    setcookie("user", json_encode($user), time() + (86400 * 30), "/"); // 86400 = 1 jour
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['success'] = 'Connexion réussie !';
     header("location: index.php");

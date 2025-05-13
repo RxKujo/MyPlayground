@@ -1,20 +1,17 @@
 <?php
+session_start();
 
 $root = $_SERVER['DOCUMENT_ROOT'];
+
 include_once $root . "/includes/config/variables.php";
 
 include_once $includesConfig . "config.php";
+include_once $includesConfig . "functions.php";
+
 include_once $includesPublic . "header.php";
 
+include_once "navbar/header.html";
 ?>
-
-<?php
-    if (isset($_SESSION)) {
-        $_SESSION['current_page'] = 'home';
-    }
-    include_once "navbar/header.html";
-?>
-
 
 <div class="d-flex">
     <?php
@@ -24,12 +21,12 @@ include_once $includesPublic . "header.php";
     <div class="container-fluid px-0" id="content">
         
         <?php
-            if (!isset($_COOKIE['user'])) {
+            if (!isset($_SESSION['user_id'])) {
                 header("location: ../../index.php");
                 exit();
             }
 
-            $utilisateur = json_decode($_COOKIE['user'], true);
+            $user = getUser($pdo, $_SESSION['user_id']);
         ?>
 
         <div class="d-flex align-items-center welcome-section">
@@ -39,7 +36,7 @@ include_once $includesPublic . "header.php";
 
             <div class="me-auto">
                 <div>
-                    <h3 class="text-white mb-0">Welcome, <?= $utilisateur["prenom"]?>!</h3>
+                    <h3 class="text-white mb-0">Welcome, <?= $user["prenom"] ?>!</h3>
                     <span class="badge bg-dark-subtle my-2">
                         <p class="text-black my-0">Pick up games near you</p>
                     </span>

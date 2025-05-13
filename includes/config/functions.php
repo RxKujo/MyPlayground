@@ -1,5 +1,4 @@
 <?php
-
 function print_error($session) {
     if (isset( $session["error"] ) ) {
         $error = $session["error"];
@@ -20,8 +19,15 @@ function deleteCookie($key) {
 function isAuthenticated() {
     if (isset($_SESSION['authenticated']) && $_SESSION['authenticated']) {
         return true;
-    } else if (isset($_COOKIE['user']) && $_COOKIE['user']) {
-        return true;
     }
     return false;
+}
+
+function getUser(PDO $pdo, int $id) {
+    $sql = "SELECT * FROM utilisateur WHERE id = :id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }

@@ -1,9 +1,17 @@
 <?php
 
+session_start();
+
 if (isset($_SESSION['error'])) {
     $error = $_SESSION['error'];
 } else {
     $error = null;
+}
+
+if (isset($_SESSION['register-success'])) {
+    $success = $_SESSION['register-success'];
+} else {
+    $success = null;
 }
 
 ?>
@@ -55,7 +63,13 @@ if (isset($_SESSION['error'])) {
                 <?= htmlspecialchars($error) ?>
             </div>
         <?php endif; ?>
-        
+    
+        <?php if (!is_null($success)): ?>
+            <div class="alert alert-success text-center">
+                <?= htmlspecialchars($success) ?>
+            </div>
+        <?php endif; ?>
+
         <form method="post" action="auth.php">
             <div class="mb-3">
                 <label for="username" class="form-label">Nom d'utilisateur</label>

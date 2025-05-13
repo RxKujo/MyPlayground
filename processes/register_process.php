@@ -4,16 +4,16 @@ session_start();
 include_once '../includes/config/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $pseudo = filter_input(INPUT_POST, "username", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $pseudo = filter_input(INPUT_POST, "username", FILTER_SANITIZE_SPECIAL_CHARS);
     $email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
     $mdp = $_POST['password'];
     $mdp_confirm = $_POST['confirm_password'];
     $tel = filter_input(INPUT_POST, "phone", FILTER_SANITIZE_NUMBER_INT);
-    $prenom = filter_input(INPUT_POST, "firstname", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $nom = filter_input(INPUT_POST, "lastname", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $localisation = filter_input(INPUT_POST, "address", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $prenom = filter_input(INPUT_POST, "firstname", FILTER_SANITIZE_SPECIAL_CHARS);
+    $nom = filter_input(INPUT_POST, "lastname", FILTER_SANITIZE_SPECIAL_CHARS);
+    $localisation = filter_input(INPUT_POST, "address", FILTER_SANITIZE_SPECIAL_CHARS);
     $poste = filter_input(INPUT_POST, "position", FILTER_VALIDATE_INT);
-    $naissance = filter_input(INPUT_POST, "naissance", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $naissance = filter_input(INPUT_POST, "naissance", FILTER_SANITIZE_SPECIAL_CHARS);
     $role = 0;
     $droits = 0;
 } else {
@@ -98,7 +98,7 @@ $query->execute();
 
 unset($_SESSION['form_data']);
 
-$_SESSION['success'] = 'Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.';
+$_SESSION['register-success'] = 'Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.';
 header("location: ../index.php");
 exit();
 ?>

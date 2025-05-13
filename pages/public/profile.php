@@ -1,12 +1,18 @@
 <?php
 
-if (!isset($_COOKIE['user'])) {
-    setcookie("user", "", time() - 3600, "/"); // Supprime le cookie
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("location: ../../index.php");
     exit();
 }
 
-$utilisateur = json_decode($_COOKIE['user'], true);
-switch ($utilisateur['poste']) {
+include_once '../../includes/config/config.php';
+include_once "../../includes/config/functions.php";
+
+$user = getUser($pdo, $_SESSION['user_id']);
+
+switch ($user['poste']) {
     case 0:
         $position = 'Meneur de jeu';
         break;
@@ -54,7 +60,7 @@ include_once $includesPublic . "header.php";
             
             <div class="me-auto">
                 <div>
-                    <h3 class="text-white mb-0"><?= $utilisateur["prenom"] ?> <?= $utilisateur["nom"] ?></h3>
+                    <h3 class="text-white mb-0"><?= $user["prenom"] ?> <?= $user["nom"] ?></h3>
                     <span class="badge bg-dark-subtle my-2">
                         <p class="text-black my-0"><?= $position ?></p>
                     </span>
@@ -142,7 +148,6 @@ include_once $includesPublic . "header.php";
                         </div>
                     </div>
                 </div>
-                
             </div>
         </div>
 
