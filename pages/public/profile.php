@@ -32,9 +32,9 @@ switch ($user['poste']) {
         break;
 }
 
-include_once $assetsShared . 'icons/icons.php';
 include_once $includesPublic . "header.php";
-include_once "navbar/header.html";
+include_once $assetsShared . 'icons/icons.php';
+include_once "navbar/header.php";
 
 ?>
 

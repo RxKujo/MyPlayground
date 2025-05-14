@@ -10,7 +10,7 @@ include_once('../../includes/public/header.php');
 include_once('../../includes/config/config.php');
 include_once('../../includes/config/functions.php');
 
-include_once "navbar/header.html";
+include_once "navbar/header.php";
 
 $user = getUser($pdo, $_SESSION['user_id']);
 

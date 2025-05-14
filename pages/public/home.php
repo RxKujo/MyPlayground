@@ -14,8 +14,10 @@ include_once $includesConfig . "config.php";
 include_once $includesConfig . "functions.php";
 
 include_once $includesPublic . "header.php";
+include_once $assetsShared . 'icons/icons.php';
 
-include_once "navbar/header.html";
+
+include_once "navbar/header.php";
 ?>
 
 <div class="d-flex">
