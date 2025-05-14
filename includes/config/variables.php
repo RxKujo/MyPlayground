@@ -9,6 +9,6 @@ $includesConfig = $root . "includes/config/";
 
 $assetsPublic = $root . "assets/public/";
 $assetsAdmin = $root . "assets/admin/";
-$assetsGlobal = $root . "assets/global/";
+$assetsShared = $root . "assets/shared/";
 
 ?>

@@ -13,8 +13,6 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id']) {
 
 include_once 'includes/config/functions.php';
 
-print_error($_SESSION);
-
 include_once 'includes/config/config.php';
 
     
@@ -30,7 +28,7 @@ $_SESSION['form_data'] = [
 
 // --- Vérifications des champs ---
 if (!$username || !$password) {
-    $_SESSION['error'] = 'Tous les champs sont obligatoires.';
+    $_SESSION['field_error'] = 'Tous les champs sont obligatoires.';
     header("location: index.php");
     exit();
 }
@@ -45,7 +43,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
 if (!$user || is_null($user)) {
-    $_SESSION['error'] = 'Nom d\'utilisateur ou mot de passe incorrect.';
+    $_SESSION['login_error'] = "Nom d'utilisateur ou mot de passe incorrect.";
     header("location: index.php");
     exit();
 }
@@ -59,7 +57,7 @@ if ($isPasswordCorrect) {
     header("location: index.php");
     exit();
 } else {
-    $_SESSION['error'] = 'Nom d\'utilisateur ou mot de passe incorrect.';
+    $_SESSION['login_error'] = "Nom d'utilisateur ou mot de passe incorrect.";
     header("location: index.php");
     exit();
 }

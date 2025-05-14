@@ -3,7 +3,6 @@
 // $utilisateur['id'] ;
 session_start();
 $error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
-$formData = isset($_SESSION['form_data']) ? $_SESSION['form_data'] : [];
 unset($_SESSION['error'], $_SESSION['form_data']);
 
 

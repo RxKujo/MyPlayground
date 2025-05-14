@@ -2,16 +2,22 @@
 
 session_start();
 
-if (isset($_SESSION['error'])) {
-    $error = $_SESSION['error'];
+include_once 'includes/config/variables.php';
+
+include_once $assetsShared . 'icons/icons.php';
+
+include_once $includesConfig . 'functions.php';
+
+if (isset($_SESSION['login_error'])) {
+    $login_error = $_SESSION['login_error'];
 } else {
-    $error = null;
+    $login_error = null;
 }
 
 if (isset($_SESSION['register-success'])) {
-    $success = $_SESSION['register-success'];
+    $register_success = $_SESSION['register-success'];
 } else {
-    $success = null;
+    $register_success = null;
 }
 
 ?>
@@ -56,19 +62,22 @@ if (isset($_SESSION['register-success'])) {
         <h1>Se connecter</h1>
     </div>
 
+    <?php
+
+    if (!is_null($login_error)) {
+        alertMessage($login_error, 1);
+        $_SESSION['login_error'] = null;
+    }
+
+    if (!is_null($register_success)) {
+        alertMessage($register_success, 0);
+        $_SESSION['register_success'] = null;
+    }
+
+    ?>
+    
     <div class="form-container">
      
-        <?php if (!is_null($error)): ?>
-            <div class="alert alert-danger text-center">
-                <?= htmlspecialchars($error) ?>
-            </div>
-        <?php endif; ?>
-    
-        <?php if (!is_null($success)): ?>
-            <div class="alert alert-success text-center">
-                <?= htmlspecialchars($success) ?>
-            </div>
-        <?php endif; ?>
 
         <form method="post" action="auth.php">
             <div class="mb-3">

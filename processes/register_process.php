@@ -99,6 +99,6 @@ $query->execute();
 unset($_SESSION['form_data']);
 
 $_SESSION['register-success'] = 'Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.';
-header("location: ../index.php");
+header("location: ../login.php");
 exit();
 ?>

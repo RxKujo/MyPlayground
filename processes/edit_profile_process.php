@@ -50,7 +50,7 @@ $utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
 
-$_SESSION['success'] = 'Votre profil a été mis à jour avec succès.';
-header("location: ../home");
+$_SESSION['modif_success'] = "Votre compte a été modifié avec succès !";
+header("location: ../profile");
 
 ?>

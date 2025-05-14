@@ -7,8 +7,10 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-include_once '../../includes/config/config.php';
-include_once "../../includes/config/functions.php";
+include_once '../../includes/config/variables.php';
+include_once $includesConfig . 'config.php';
+include_once $includesConfig . 'functions.php';
+
 
 $user = getUser($pdo, $_SESSION['user_id']);
 
@@ -30,29 +32,30 @@ switch ($user['poste']) {
         break;
 }
 
-?>
-
-<?php 
-
-include_once "../../includes/config/variables.php";
-
-include_once $includesConfig . "config.php";
+include_once $assetsShared . 'icons/icons.php';
 include_once $includesPublic . "header.php";
-?>
+include_once "navbar/header.html";
 
-<?php
-    include_once "navbar/header.html";
 ?>
 
 <div class="d-flex">
     <?php
         if (isset($_SESSION)) {
             $_SESSION['current_page'] = 'profile';
+            $modif_success = $_SESSION['modif_success'];
         }
         include_once "navbar/navbar.php";
     ?>
     
     <div class="container-fluid px-0" id="content">        
+
+        <?php 
+            if (!is_null($modif_success)) {
+                alertMessage("Votre compte a été modifié avec succès !", 0);
+                $_SESSION['modif_success'] = null;
+            } 
+        ?>
+        
         <div class="d-flex align-items-center welcome-section mb-3">
             <div class="ms-5 px-5">
                 <img class="profile-img" src="../../assets/public/img/morad.png"></img>

@@ -149,4 +149,6 @@ include_once $root . "/includes/public/header.php";
         </div>
     </div>    
 </div>
+
+<script src="../../assets/public/js/carouselLoader.js"></script>
 <?php include_once $includesGlobal . "footer.php"; ?>
