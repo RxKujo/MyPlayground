@@ -1,5 +1,13 @@
 <?php
 
+$id = $_SESSION['user_id'];
+
+$sql = 'SELECT droits FROM utilisateur WHERE id = :id';
+$stmt = $pdo->prepare($sql);
+$stmt->bindParam(':id', $id);
+$stmt->execute();
+
+$userRights = $stmt->fetch(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -9,6 +17,9 @@
         <li class="nav-item"><a class="nav-link text-black" href="partners" data-page="partners"><?= $shareFill ?> Trouver des coéquipiers</a></li>
         <li class="nav-item"><a class="nav-link text-black" href="tournaments" data-page="tournaments"><?= $trophyFill ?> Tournois</a></li>
         <li class="nav-item"><a class="nav-link text-black" href="profile" data-page="profile"><?= $personFill ?> Profil</a></li>
+        <?php if ($userRights['droits'] == 1): ?>
+            <li class="nav-item"><a class="nav-link text-black" href="admin/dashboard"><?= $personFillGear ?> Espace Administrateur</a></li>
+        <?php endif; ?>
         <li class="nav-item"><a class="nav-link text-black" href="settings" data-page="settings"><?= $gearFill ?> Paramètres</a></li>
     </ul>
 </nav>
