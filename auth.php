@@ -52,7 +52,7 @@ if ($isPasswordCorrect) {
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['success'] = 'Connexion réussie !';
     unset($_SESSION['form_data']);
-    header("Location: pages/public/home.php");
+    header("Location: home");
     exit();
 } else {
     $_SESSION['login_error'] = "Nom d'utilisateur ou mot de passe incorrect.";
