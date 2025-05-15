@@ -1,26 +1,14 @@
-<?php
-
-include_once '../../includes/config/config.php';
-
-?>
-
 <header class="container-fluid bg-dark py-0 my-0">
-    <div class="container ms-0 ps-0">
-        <div class="row align-items-center">
-            <a class="col-8 pb-0 text-white text-decoration-none" href="index.php" data-page="home">
-                <div class="pt-0">
-                    <img 
-                        src="../../assets/public/img/logo.png"
-                        alt="Logo"
-                        class="logo"
-                        >
-                    <span class="text-reset fs-1">My PlayGround</span>
-                </div>
-            </a>
+    <div class="container ms-0 ps-0 d-flex align-items-center">
+        <a class="d-flex align-items-center text-white text-decoration-none" href="index.php" data-page="home" style="gap: 10px;">
+            <img src="../../assets/public/img/logo.png" alt="Logo" class="logo">
+            <span class="fs-1">My PlayGround</span>
+        </a>
 
-            <span class="col text-white"><?= $chatLeftTextFill ?></a></span>
-            <span class="col text-white"><?= $bellFill ?></span>
-            <span class="col text-white"><a class="text-decoration-none" href="profile"><?= $personFill ?></a></span>
+        <div class="header-icons d-flex align-items-center ms-auto">
+            <span class="me-3 text-primary"><?= $chatLeftTextFill ?></span>
+            <span class="me-3 text-primary"><?= $bellFill ?></span>
+            <a href="profile" class="text-primary text-decoration-none"><?= $personFill ?></a>
         </div>
     </div>
 </header>
