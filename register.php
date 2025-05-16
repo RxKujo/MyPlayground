@@ -85,25 +85,38 @@ $random_shape = $shapes[array_rand($shapes)];
 
   <div class="form-container">
     <form method="post" action="processes/register_process.php" id="register-form" novalidate>
-      <div class="mb-3">
-        <label for="firstname" class="form-label">Prénom*</label>
-        <input type="text" class="form-control" id="firstname" name="firstname" value="<?= htmlspecialchars($formData['firstname'] ?? '') ?>" required>
+      <label for="name" class="form-label">Nom*</label>
+      <div id="name" class="row gx-3 justify-content-start mb-3">
+        <div class="col">
+          <input type="text" class="form-control" id="firstname" name="firstname" value="<?= htmlspecialchars($formData['firstname'] ?? '') ?>" required>
+          <span class="form-text">
+            Prénom
+          </span>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" id="lastname" name="lastname" value="<?= htmlspecialchars($formData['lastname'] ?? '') ?>" required>
+            <span class="form-text">
+              Nom
+            </span>
+        </div>
       </div>
-      <div class="mb-3">
-        <label for="lastname" class="form-label">Nom*</label>
-        <input type="text" class="form-control" id="lastname" name="lastname" value="<?= htmlspecialchars($formData['lastname'] ?? '') ?>" required>
+
+      <div class="row gx-3 justify-content-start mb-3">
+        <div class="col">
+          <label for="email" class="form-label">Adresse e-mail*</label>
+          <input type="email" class="form-control" id="email" name="email" value="<?= htmlspecialchars($formData['email'] ?? '') ?>" placeholder="nom@exemple.fr" required>
+        </div>
+  
+        <div class="col">
+          <label for="phone" class="form-label">Numéro de téléphone*</label>
+          <input type="tel" class="form-control" id="phone" name="phone" value="<?= htmlspecialchars($formData['phone'] ?? '') ?>" required>
+        </div>
       </div>
+
+      
+      <label for="naissance" class="form-label">Date de naissance*</label>
       <div class="mb-3">
-        <label for="naissance" class="form-label">Date de naissance*</label>
         <input type="date" class="form-control" id="naissance" name="naissance" value="<?= htmlspecialchars($formData['naissance'] ?? '') ?>" required>
-      </div>
-      <div class="mb-3">
-        <label for="email" class="form-label">Adresse e-mail*</label>
-        <input type="email" class="form-control" id="email" name="email" value="<?= htmlspecialchars($formData['email'] ?? '') ?>" required>
-      </div>
-      <div class="mb-3">
-        <label for="phone" class="form-label">Numéro de téléphone*</label>
-        <input type="tel" class="form-control" id="phone" name="phone" value="<?= htmlspecialchars($formData['phone'] ?? '') ?>" required>
       </div>
       <div class="mb-3">
         <label for="address" class="form-label">Adresse*</label>
@@ -113,17 +126,43 @@ $random_shape = $shapes[array_rand($shapes)];
         <label for="username" class="form-label">Nom d'utilisateur*</label>
         <input type="text" class="form-control" id="username" name="username" value="<?= htmlspecialchars($formData['username'] ?? '') ?>" required>
       </div>
+
       <div class="mb-3">
-        <label for="position" class="form-label">Poste*</label>
-        <select class="form-select" id="position" name="position" required>
-          <option value="" disabled <?= empty($formData['position']) ? 'selected' : '' ?>>Choisissez un poste</option>
-          <option value="0" <?= (isset($formData['position']) && $formData['position'] === '0') ? 'selected' : '' ?>>Meneur</option>
-          <option value="1" <?= (isset($formData['position']) && $formData['position'] === '1') ? 'selected' : '' ?>>Arrière</option>
-          <option value="2" <?= (isset($formData['position']) && $formData['position'] === '2') ? 'selected' : '' ?>>Ailier</option>
-          <option value="3" <?= (isset($formData['position']) && $formData['position'] === '3') ? 'selected' : '' ?>>Ailier fort</option>
-          <option value="4" <?= (isset($formData['position']) && $formData['position'] === '4') ? 'selected' : '' ?>>Pivot</option>
-        </select>
+        <label for="position-container" class="form-label">Poste*</label>
+        <div id="position-container">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="position" id="meneur" value="0" checked>
+            <label class="form-check-label" for="meneur">
+              Meneur de jeu
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="position" id="arriere" value="1">
+            <label class="form-check-label" for="arriere">
+              Arrière
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="position" id="ailier" value="2">
+            <label class="form-check-label" for="ailier">
+              Ailier
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="position" id="ailierfort" value="3">
+            <label class="form-check-label" for="ailierfort">
+              Ailier fort
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="position" id="pivot" value="4">
+            <label class="form-check-label" for="pivot">
+              Pivot
+            </label>
+          </div>
+        </div>
       </div>
+          
       <div class="mb-3">
         <label for="password" class="form-label">Mot de passe*</label>
         <input type="password" class="form-control" id="password" name="password" required>
