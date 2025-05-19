@@ -1,104 +1,107 @@
 <?php
 session_start();
 
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    header("location: register.php");
+    exit();
+}
+
+include_once '../includes/config/functions.php';
 include_once '../includes/config/config.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $pseudo = filter_input(INPUT_POST, "username", FILTER_SANITIZE_SPECIAL_CHARS);
-    $email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
-    $mdp = $_POST['password'];
-    $mdp_confirm = $_POST['confirm_password'];
-    $tel = filter_input(INPUT_POST, "phone", FILTER_SANITIZE_NUMBER_INT);
-    $prenom = filter_input(INPUT_POST, "firstname", FILTER_SANITIZE_SPECIAL_CHARS);
-    $nom = filter_input(INPUT_POST, "lastname", FILTER_SANITIZE_SPECIAL_CHARS);
-    $localisation = filter_input(INPUT_POST, "address", FILTER_SANITIZE_SPECIAL_CHARS);
-    $poste = filter_input(INPUT_POST, "position", FILTER_VALIDATE_INT);
-    $naissance = filter_input(INPUT_POST, "naissance", FILTER_SANITIZE_SPECIAL_CHARS);
-    $role = 0;
-    $droits = 0;
-} else {
-    header("location: ../register.php");
-    exit();
-}
+// Récupération et nettoyage des données
+$prenom = filter_input(INPUT_POST, "prenom", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$nom = filter_input(INPUT_POST, "nom", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
+$tel = filter_input(INPUT_POST, "tel", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$naissance = filter_input(INPUT_POST, "naissance", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$adresse = filter_input(INPUT_POST, "adresse", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$pseudo = filter_input(INPUT_POST, "pseudo", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-$parameters = [
-    $pseudo,
-    $email,
-    $mdp,
-    $mdp_confirm,
-    $tel,
-    $prenom,
-    $nom,
-    $localisation,
-    $poste,
-    $naissance,
-];
+$role = filter_input(INPUT_POST, "role", FILTER_VALIDATE_INT);
+$position = filter_input(INPUT_POST, "position", FILTER_VALIDATE_INT);
+$niveau = filter_input(INPUT_POST, "niveau", FILTER_VALIDATE_INT);
 
+$password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$confirm_password = filter_input(INPUT_POST, "confirm_password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$captcha = filter_input(INPUT_POST, "captcha", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$expected_captcha = filter_input(INPUT_POST, "expected_captcha", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+// Stockage des données pour réaffichage en cas d'erreur (sauf mdp)
 $_SESSION['form_data'] = [
+    'prenom' => $prenom,
+    'nom' => $nom,
     'email' => $email,
-    'phone' => $tel,
-    'firstname' => $prenom,
-    'lastname' => $nom,
-    'address' => $localisation,
-    'position' => $poste,
+    'tel' => $tel,
+    'naissance' => $naissance,
+    'adresse' => $adresse,
+    'pseudo' => $pseudo
 ];
 
-if (!$pseudo || !$email || !$mdp || !$mdp_confirm || !$tel || !$prenom || !$nom || !$localisation || ($poste === null) || !$naissance) {
-    if (!$email) {
-        $_SESSION['error'] = 'L\'adresse e-mail est invalide.';
-    } else {
-        $_SESSION['error'] = 'Tous les champs sont obligatoires.';
-    }
+// Vérification des champs obligatoires
+if (!$prenom || !$nom || !$email || !$tel || !$naissance || !$adresse || !$pseudo || !$password || !$confirm_password) {
+    $_SESSION['register_error'] = "Tous les champs sont obligatoires. " . json_encode($_SESSION['form_data']) . $password . $confirm_password;
     header("location: ../register.php");
     exit();
 }
 
-
-if ($mdp !== $mdp_confirm) {
-    $_SESSION['error'] = 'Les mots de passe ne correspondent pas.';
+// Vérification confirmation mot de passe
+if ($password !== $confirm_password) {
+    $_SESSION['register_error'] = "Les mots de passe ne correspondent pas.";
     header("location: ../register.php");
     exit();
 }
 
-$query = $pdo->prepare("SELECT COUNT(*) FROM utilisateur WHERE pseudo = :pseudo OR email = :email");
-$query->bindParam(':pseudo', $pseudo);
-$query->bindParam(':email', $email);
-$query->execute();
-if ($query->fetchColumn() > 0) {
-    $_SESSION['error'] = 'Le nom d\'utilisateur ou l\'adresse e-mail est déjà utilisé.';
-
-    unset($_SESSION['form_data']['username']);
+// Vérification captcha
+if (!$captcha || !$expected_captcha || strtolower($captcha) !== strtolower($expected_captcha)) {
+    $_SESSION['captcha_error'] = "Veuillez valider correctement le captcha.";
     header("location: ../register.php");
     exit();
 }
 
+// Vérifier si l'utilisateur existe déjà
+$sql = "SELECT id FROM utilisateur WHERE pseudo = :pseudo OR email = :email LIMIT 1";
+$stmt = $pdo->prepare($sql);
+$stmt->bindParam(':pseudo', $username);
+$stmt->bindParam(':email', $email);
+$stmt->execute();
 
-$hashedPassword = password_hash($mdp, PASSWORD_BCRYPT);
+if ($stmt->fetch()) {
+    $_SESSION['register_error'] = "Nom d'utilisateur ou email déjà utilisé.";
+    header("location: ../register.php");
+    exit();
+}
+
+// Hachage du mot de passe
+$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+// Insertion en base
+$sql = "INSERT INTO utilisateur (pseudo, prenom, nom, date_naissance, email, mdp, tel, poste, role, localisation, niveau, description) 
+VALUES (:pseudo, :prenom, :nom, :naissance, :email, :mdp, :tel, :poste, :role, :localisation, :niveau, :description)";
+
+$stmt = $pdo->prepare($sql);
+$stmt->bindParam(':pseudo', $pseudo);
+$stmt->bindParam(':prenom', $prenom);
+$stmt->bindParam(':nom', $nom);
+$stmt->bindParam(':naissance', $naissance);
+$stmt->bindParam(':email', $email);
+$stmt->bindParam(':mdp', $hashedPassword);
+$stmt->bindParam(':tel', $tel);
+$stmt->bindParam(':poste', $poste);
+$stmt->bindParam(':role', $role);
+$stmt->bindParam(':localisation', $localisation);
+$stmt->bindParam(':niveau', $niveau);
+$stmt->bindParam(':description', $description);
 
 
-$query = $pdo->prepare("
-    INSERT INTO utilisateur (pseudo, email, mdp, tel, prenom, nom, localisation, date_naissance, poste, role, droits)
-    VALUES (:pseudo, :email, :mdp, :tel, :prenom, :nom, :localisation, :naissance, :poste, :role, :droits)
-");
+if ($stmt->execute()) {
+    unset($_SESSION['form_data']);
+    $_SESSION['register_success'] = "Inscription réussie ! Vous pouvez maintenant vous connecter.";
+    header("location: ../login.php");
+    exit();
+} else {
+    $_SESSION['register_error'] = "Une erreur est survenue lors de l'inscription. Veuillez réessayer.";
+    header("location: ../register.php");
+    exit();
+}
 
-$query->bindParam(':pseudo', $pseudo);
-$query->bindParam(':email', $email);
-$query->bindParam(':mdp', $hashedPassword);
-$query->bindParam(':tel', $tel);
-$query->bindParam(':prenom', $prenom);
-$query->bindParam(':nom', $nom);
-$query->bindParam(':localisation', $localisation);
-$query->bindParam(':naissance', $naissance);
-$query->bindParam(':poste', $poste);
-$query->bindParam(':role', $role);
-$query->bindParam(':droits', $droits);
-
-$query->execute();
-
-
-unset($_SESSION['form_data']);
-
-$_SESSION['register-success'] = 'Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.';
-header("location: ../index.php");
-exit();
-?>

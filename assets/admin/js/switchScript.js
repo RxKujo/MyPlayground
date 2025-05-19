@@ -15,6 +15,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const contentElement = document.querySelector("#content");
 
     let currentPage = getCurrentPage();
+            
+    setCurrentPage(currentPage);
     
     sidebarTabs.forEach((tab) => {
         tab.addEventListener("click", async (e) => {            

@@ -2,11 +2,12 @@ import { refreshTabs } from "../../shared/js/tabManager.js";
 import { setCurrentPage } from "./storageUtils.js";
 
 export function listenPTButtons(contentElement) {
-    listenNav(contentElement);
+    listenNav();
     listenDC(contentElement);
     listenFindPartners(contentElement);
     listenJoinTournaments(contentElement);
     listenEditProfile(contentElement)
+    listenRegistrationPlayer(contentElement);
 }
 
 function listenFindPartners(contentElement) {
@@ -27,7 +28,7 @@ function listenJoinTournaments(contentElement) {
     }
 }
 
-function listenNav(contentElement) {
+function listenNav() {
     const nav_logo = document.querySelector("#nav-logo");
     if (nav_logo) {
         nav_logo.addEventListener("click", () => {
@@ -54,6 +55,26 @@ function listenEditProfile(contentElement) {
     }
 }
 
+function listenRegistrationPlayer(contentElement) {
+    try {
+        const roleInputs = contentElement.querySelectorAll('input[name="role"]');
+        console.log(roleInputs);
+        const positionCol = contentElement.querySelector('#position-container').closest('.col');
+
+        function togglePositionContainer() {
+        const isJoueur = contentElement.querySelector('#joueur').checked;
+        positionCol.style.display = isJoueur ? 'block' : 'none';
+        }
+
+        // Attach event listeners to all role radio buttons
+        roleInputs.forEach(input => {
+        input.addEventListener('change', togglePositionContainer);
+        console.log("changed");
+        });
+    } catch {
+
+    }
+}
 
 async function gotoPage(pageName) {
     import("./pageLoader.js").then((module) => {

@@ -1,14 +1,14 @@
 <?php
 session_start();
 
-$root = $_SERVER['DOCUMENT_ROOT'];
-
-include_once $root . "/includes/config/config.php";
-include_once $root . "/includes/public/header.php";
+include_once '../../includes/config/variables.php';
+include_once $includesConfig . 'config.php';
+include_once $includesPublic . 'header.php';
 ?>
 
 <?php
-    include_once "navbar/header.html";
+    include_once $assetsShared . 'icons/icons.php';
+    include_once "navbar/header.php";
 ?>
 
 <div class="d-flex">

@@ -1,14 +1,44 @@
-<?php include_once "../../includes/admin/header.php"; ?>
+<?php
+// captcha.php
+session_start();
 
-<div class="d-flex">
-    <?php
-        include_once "navbar/navbar.php";
-    ?>
+$shape = $_GET['shape'] ?? '';
 
-    <div class="container-fluid p-4" style="flex-grow: 1;" id="content">
-        <h2>Captchas</h2>
-        <p>Do you want to disconnect ?</p>
-    </div>
-</div>
+$width = 80;
+$height = 80;
 
-<?php include_once "../../includes/global/footer.php"; ?>
+header("Content-Type: image/png");
+$image = imagecreatetruecolor($width, $height);
+
+// Couleurs
+$white = imagecolorallocate($image, 255, 255, 255);
+$black = imagecolorallocate($image, 0, 0, 0);
+$blue = imagecolorallocate($image, 50, 50, 255);
+
+imagefill($image, 0, 0, $white);
+
+switch ($shape) {
+    case 'cercle':
+        imagefilledellipse($image, $width / 2, $height / 2, 60, 60, $blue);
+        break;
+    case 'carré':
+        imagefilledrectangle($image, 10, 10, 70, 70, $blue);
+        break;
+    case 'rectangle':
+        imagefilledrectangle($image, 10, 25, 70, 55, $blue);
+        break;
+    case 'triangle':
+        $points = [
+            $width / 2, 10,
+            10, 70,
+            70, 70
+        ];
+        imagefilledpolygon($image, $points, 3, $blue);
+        break;
+    default:
+        // image vide
+        break;
+}
+
+imagepng($image);
+imagedestroy($image);
