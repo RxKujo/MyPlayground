@@ -6,10 +6,13 @@ $error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
 unset($_SESSION['error'], $_SESSION['form_data']);
 
 
-include_once('../../includes/public/header.php');
-include_once('../../includes/config/config.php');
-include_once('../../includes/config/functions.php');
+include_once('../../includes/config/variables.php');
 
+include_once($includesConfig . 'config.php');
+include_once($includesConfig . 'functions.php');
+include_once($assetsShared . 'icons/icons.php');
+
+include_once($includesPublic . 'header.php');
 include_once "navbar/header.php";
 
 $user = getUser($pdo, $_SESSION['user_id']);
@@ -21,7 +24,7 @@ if (!$user || is_null($user)) {
 
 $niveau = getUserLevel($user);
 $poste = getUserPosition($user);
-$role = getUserRole($role);
+$role = getUserRole($user);
 
 ?>
 <div class="d-flex">
@@ -93,7 +96,7 @@ $role = getUserRole($role);
 				<div class="mb-3">
 					<label class="form-label" for="poste">Poste</label>
 					<select class="form-select" id="poste" name="poste">
-						<option value="<?= $user['poste'] ?>" selected=""><?= $position ?></option>
+						<option value="<?= $user['poste'] ?>" selected=""><?= $poste ?></option>
 						<option value="0">Meneur</option>
 						<option value="1">Arrière</option>
 						<option value="2">Ailier</option>
