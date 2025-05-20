@@ -14,4 +14,5 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^([a-zA-Z0-9_-]+)$ pages/public/$1.php [L]
 
 # Rediriger /admin/page vers pages/admin/page.php
+RewriteRule ^admin/$ pages/admin/dashboard.php [L]
 RewriteRule ^admin/([a-zA-Z0-9_-]+)$ pages/admin/$1.php [L]
