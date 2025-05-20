@@ -1,19 +1,22 @@
-<?php 
+<?php
+session_start();
 
 include_once '../../includes/config/variables.php';
-include_once $includesConfig . '/config.php';
-include_once $includesPublic . "/header.php";
+include_once $includesConfig . 'config.php';
+include_once $includesPublic . 'header.php';
 ?>
 
 <?php
     include_once $assetsShared . 'icons/icons.php';
-    include_once "navbar/header.php";
+    include_once 'navbar/header.php';
 ?>
 
 <div class="d-flex">
     <?php
         if (isset($_SESSION)) {
             $_SESSION['current_page'] = 'tournaments';
+        } else {
+            header('location: index.php');
         }
         include_once "navbar/navbar.php";
     ?>

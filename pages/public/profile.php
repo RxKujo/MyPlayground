@@ -42,7 +42,12 @@ include_once "navbar/header.php";
     <?php
         if (isset($_SESSION)) {
             $_SESSION['current_page'] = 'profile';
-            $modif_success = $_SESSION['modif_success'];
+            
+            if (isset($_SESSION['modif_success'])) {
+                $modif_success = $_SESSION['modif_success'];
+            } else {
+                $modif_success = null;
+            }
         }
         include_once "navbar/navbar.php";
     ?>
@@ -53,7 +58,7 @@ include_once "navbar/header.php";
             if (!is_null($modif_success)) {
                 alertMessage("Votre compte a été modifié avec succès !", 0);
                 $_SESSION['modif_success'] = null;
-            } 
+            }
         ?>
         
         <div class="d-flex align-items-center welcome-section mb-3">

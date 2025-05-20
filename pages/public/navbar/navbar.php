@@ -1,6 +1,11 @@
 <?php
 
-$id = $_SESSION['user_id'];
+if (isset($_SESSION) and $_SESSION['user_id']) {
+    $id = $_SESSION['user_id'];
+} else {
+    header('location: index.php');
+    exit();
+}
 
 $sql = 'SELECT droits FROM utilisateur WHERE id = :id';
 $stmt = $pdo->prepare($sql);

@@ -19,62 +19,9 @@ if (!$user || is_null($user)) {
 	exit();
 }
 
-switch ($user['niveau']) {
-    case 0:
-        $niveau = 'Débutant';
-        break;
-    case 1:
-        $niveau = 'Intérmediaire';
-        break;
-    case 2:
-        $niveau = 'Avancé';
-        break;
-    case 3:
-        $niveau = 'Pro';
-        break;
-	default:
-		$niveau = 'Inconnu';
-		break;
-}
-
-switch ($user['poste']) {
-    case 0:
-        $position = 'Meneur de jeu';
-        break;
-    case 1:
-        $position = 'Arrière';
-        break;
-    case 2:
-        $position = 'Ailier';
-        break;
-    case 3:
-        $position = 'Ailier fort';
-        break;
-    case 4:
-        $position = 'Pivot';
-        break;
-	default:
-		$position = 'Inconnu';
-		break;
-}
-
-switch ($user['role']) {
-    case 0:
-        $role = 'Joueur';
-        break;
-    case 1:
-        $role = 'Arbitre';
-        break;
-    case 2:
-        $role = 'Organisateur';
-        break;
-    case 3:
-        $role = 'Spectateur';
-		break;
-	default:
-		$role = 'Inconnu';
-		break;
-}
+$niveau = getUserLevel($user);
+$poste = getUserPosition($user);
+$role = getUserRole($role);
 
 ?>
 <div class="d-flex">

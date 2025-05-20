@@ -1,6 +1,6 @@
 
 <?php
-
+include_once "includes/public/header.php";
 include_once "includes/config/config.php";
 include_once 'includes/config/functions.php';
 
@@ -14,4 +14,8 @@ $user = getUser($pdo, 1);
 echo var_dump($user['prenom']);
 
 
+?>
+
+<?php
+include_once "includes/global/footer.php";
 ?>
