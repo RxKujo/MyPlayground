@@ -2,48 +2,65 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Créateur d'avatar</title>
+  <title>Créateur d'avatar pixel</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    #avatarCanvas {
-      border: 1px solid #ccc;
+    body {
+      background-color: #343a40;
+      color: white;
+      font-family: monospace;
+    }
+    .pixel-frame {
+      border: 3px solid black;
+      image-rendering: pixelated;
+    }
+    .arrow-btn {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      color: white;
+    }
+    canvas {
+      background-color: white;
+      border: 2px solid black;
+      image-rendering: pixelated;
     }
   </style>
 </head>
-<body class="container py-5">
+<body class="d-flex flex-column align-items-center justify-content-center vh-100">
 
-  <h1 class="mb-4">Créer votre avatar</h1>
+  <h1 class="mb-4">Créer ton avatar</h1>
 
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <label>Yeux :</label>
-      <select id="eyesSelect" class="form-select">
-        <option value="eyes1.png">Yeux 1</option>
-        <option value="eyes2.png">Yeux 2</option>
-      </select>
+  <!-- Canvas -->
+  <canvas id="avatarCanvas" width="200" height="200" class="mb-4"></canvas>
 
-      <label class="mt-2">Nez :</label>
-      <select id="noseSelect" class="form-select">
-        <option value="nose1.png">Nez 1</option>
-        <option value="nose2.png">Nez 2</option>
-      </select>
-
-      <label class="mt-2">Bouche :</label>
-      <select id="mouthSelect" class="form-select">
-        <option value="mouth1.png">Bouche 1</option>
-        <option value="mouth2.png">Bouche 2</option>
-      </select>
-
-      <button class="btn btn-primary mt-3" onclick="generateAvatar()">Générer Avatar</button>
-      <button class="btn btn-success mt-3 ms-2" onclick="saveAvatar()">Enregistrer Avatar</button>
+  <!-- Contrôles fléchés -->
+  <div class="d-flex flex-column gap-3">
+    <!-- YEUX -->
+    <div class="d-flex align-items-center justify-content-center gap-3">
+      <button class="arrow-btn" onclick="prevPart('eyes')">&lt;</button>
+      <span>Yeux</span>
+      <button class="arrow-btn" onclick="nextPart('eyes')">&gt;</button>
     </div>
 
-    <div class="col-md-6">
-      <canvas id="avatarCanvas" width="200" height="200"></canvas>
+    <!-- NEZ -->
+    <div class="d-flex align-items-center justify-content-center gap-3">
+      <button class="arrow-btn" onclick="prevPart('nose')">&lt;</button>
+      <span>Nez</span>
+      <button class="arrow-btn" onclick="nextPart('nose')">&gt;</button>
+    </div>
+
+    <!-- BOUCHE -->
+    <div class="d-flex align-items-center justify-content-center gap-3">
+      <button class="arrow-btn" onclick="prevPart('mouth')">&lt;</button>
+      <span>Bouche</span>
+      <button class="arrow-btn" onclick="nextPart('mouth')">&gt;</button>
     </div>
   </div>
 
-  <div id="resultMessage"></div>
+  <!-- Bouton enregistrer -->
+  <button class="btn btn-success mt-4" onclick="saveAvatar()">Enregistrer Avatar</button>
+  <div id="resultMessage" class="mt-3"></div>
 
   <script src="avatar-builder.js"></script>
 </body>
