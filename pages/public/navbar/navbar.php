@@ -19,7 +19,7 @@ $userIsVerified = $user['is_verified'];
                 <?= $exclamationOctagonFill ?>
             </span>
             <div>
-                <p class="mb-0">Vous n'êtes pas vérifié!</p>
+                <p class="mb-0">Vous n'êtes pas vérifié !</p>
                 <p class="mb-0">Veuillez vérifier votre boite mail.</p>
             </div>
         </div>
