@@ -8,8 +8,7 @@ include_once 'includes/config/functions.php';
 
 
 
-$stmt = $pdo->query("
-    SELECT c.id_captcha, c.captcha_question, r.reponse FROM captcha c JOIN captcha_reponse r ON c.id_captcha = r.id_captcha ORDER BY RAND() LIMIT 1");
+$stmt = $pdo->query("SELECT c.id_captcha, c.captcha_question, r.reponse FROM captcha c JOIN captcha_reponse r ON c.id_captcha = r.id_captcha ORDER BY RAND() LIMIT 1");
 
 $captcha = $stmt->fetch();
 

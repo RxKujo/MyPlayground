@@ -63,7 +63,7 @@ unset($_SESSION['captcha_expected']);
 
 $sql = "SELECT id FROM utilisateur WHERE pseudo = :pseudo OR email = :email LIMIT 1";
 $stmt = $pdo->prepare($sql);
-$stmt->bindParam(':pseudo', $username);
+$stmt->bindParam(':pseudo', $pseudo);
 $stmt->bindParam(':email', $email);
 $stmt->execute();
 
@@ -73,13 +73,14 @@ if ($stmt->rowCount() !== 0) {
     exit();
 }
 
+
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 $verificationToken = bin2hex(random_bytes(32));
 $isVerified = 0;
 
-// Insertion en base
-$sql = "INSERT INTO utilisateur (pseudo, prenom, nom, date_naissance, email, mdp, tel, poste, role, localisation, niveau, description, email_verification_token, is_verified) 
-VALUES (:pseudo, :prenom, :nom, :naissance, :email, :mdp, :tel, :poste, :role, :localisation, :niveau, :description, :token, :is_verified)";
+
+$sql = "INSERT INTO utilisateur (pseudo, prenom, nom, date_naissance, email, mdp, tel, poste, role, localisation, niveau, description) 
+VALUES (:pseudo, :prenom, :nom, :naissance, :email, :mdp, :tel, :poste, :role, :localisation, :niveau, :description)";
 
 $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':pseudo', $pseudo);
@@ -89,14 +90,12 @@ $stmt->bindParam(':naissance', $naissance);
 $stmt->bindParam(':email', $email);
 $stmt->bindParam(':mdp', $hashedPassword);
 $stmt->bindParam(':tel', $tel);
-$stmt->bindParam(':poste', $poste);
+$stmt->bindParam(':poste', $position);
 $stmt->bindParam(':role', $role);
-$stmt->bindParam(':localisation', $localisation);
+$stmt->bindParam(':localisation', $adresse);
 $stmt->bindParam(':niveau', $niveau);
+$description = ""; 
 $stmt->bindParam(':description', $description);
-$stmt->bindParam(':token', $verificationToken);
-$stmt->bindParam(':is_verified', $isVerified);
-
 
 if ($stmt->execute()) {
     if (sendVerificationEmail($email, $prenom, $verificationToken)) {
