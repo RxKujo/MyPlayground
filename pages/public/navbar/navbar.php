@@ -7,22 +7,36 @@ if (isset($_SESSION) and $_SESSION['user_id']) {
     exit();
 }
 
-$sql = 'SELECT droits FROM utilisateur WHERE id = :id';
+$sql = 'SELECT droits, is_verified FROM utilisateur WHERE id = :id';
 $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':id', $id);
 $stmt->execute();
 
-$userRights = $stmt->fetch(PDO::FETCH_ASSOC);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$userRights = $user['droits'];
+$userIsVerified = $user['is_verified'];
 
 ?>
 
 <nav class="bg-light text-black p-3" style="width: 280px; min-height: 100vh;">
+    <?php if ($userIsVerified == 0): ?>
+        <div class="alert alert-warning">
+            <span>
+                <?= $exclamationOctagonFill ?>
+            </span>
+            <div>
+                <p class="mb-0">Vous n'êtes pas vérifié!</p>
+                <p class="mb-0">Veuillez vérifier votre boite mail.</p>
+            </div>
+        </div>
+    <?php endif; ?>
     <ul id="sidebar-list" class="nav nav-pills flex-column">
         <li class="nav-item"><a class="nav-link text-black" href="home" data-page="home"><?= $houseFill ?> Accueil</a></li>
         <li class="nav-item"><a class="nav-link text-black" href="partners" data-page="partners"><?= $shareFill ?> Trouver des coéquipiers</a></li>
         <li class="nav-item"><a class="nav-link text-black" href="tournaments" data-page="tournaments"><?= $trophyFill ?> Tournois</a></li>
         <li class="nav-item"><a class="nav-link text-black" href="profile" data-page="profile"><?= $personFill ?> Profil</a></li>
-        <?php if ($userRights['droits'] == 1): ?>
+        <?php if ($userRights == 1): ?>
             <li class="nav-item"><a class="nav-link text-black" href="admin/dashboard"><?= $personFillGear ?> Espace Administrateur</a></li>
         <?php endif; ?>
         <li class="nav-item"><a class="nav-link text-black" href="settings" data-page="settings"><?= $gearFill ?> Paramètres</a></li>

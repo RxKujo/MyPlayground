@@ -29,10 +29,15 @@ function listenJoinTournaments(contentElement) {
 }
 
 function listenNav() {
-    const nav_logo = document.querySelector("#nav-logo");
-    if (nav_logo) {
-        nav_logo.addEventListener("click", () => {
+    const navLogo = document.querySelector("#nav-logo");
+    const profileIcon = document.querySelector("#profile-icon");
+    if (navLogo) {
+        navLogo.addEventListener("click", () => {
             setCurrentPage("home");
+        })
+    } else if (profileIcon) {
+        profileIcon.addEventListener("click", () => {
+            setCurrentPage("profile");
         })
     }
 }
@@ -46,11 +51,20 @@ function listenDC(contentElement) {
     }
 }
 
+function listenDL(contentElement) {
+    const dcButton = contentElement.querySelector("#delete-button");
+    if (dcButton) {
+        dcButton.addEventListener("click", () => {
+            setCurrentPage("home");
+        });
+    }
+}
+
 function listenEditProfile(contentElement) {
     const editButton = contentElement.querySelector("#edit-profile");
     if (editButton) {
         editButton.addEventListener("click", () => {
-            setCurrentPage("edit-profile");
+            setCurrentPage("profile");
         });
     }
 }

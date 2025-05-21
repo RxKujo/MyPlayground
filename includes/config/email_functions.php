@@ -1,20 +1,16 @@
 <?php
-require_once '../vendor/autoload.php';  // Assuming you are using Composer for PHPMailer
-
+require_once '../vendor/autoload.php';
 include_once 'variables.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use Dotenv\Dotenv;
 
-// Function to send verification email
 function sendVerificationEmail(string $email, string $prenom, string $verification_token) {
-    // Load environment variables
     global $root;
 
     $dotenv = Dotenv::createImmutable($root);
     $dotenv->load();
 
-    // Create PHPMailer instance
     $mail = new PHPMailer(true);
 
     try {

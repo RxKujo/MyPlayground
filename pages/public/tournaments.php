@@ -91,7 +91,7 @@ include_once $includesPublic . 'header.php';
                 <p class="fs-5">Discover what players are saying about our tournaments</p>
                 <div>
                     <div>
-                        <div class="d-flex" role="img & name container">
+                        <div class="d-flex">
                             <a href="#" class="d-flex align-items-center text-decoration-none text-dark">
                                 <div role="img">
                                     <img class="profile-img-small" src="../../assets/public/img/morad.png" alt="picture">
@@ -135,7 +135,7 @@ include_once $includesPublic . 'header.php';
                 <p class="fs-5">Check out the latest statistics from our tournaments</p>
             </div>
             
-            <div class="d-flex justify-content-evenly pb-5" role="infos">
+            <div class="d-flex justify-content-evenly pb-5">
                 <div class="border rounded p-3" style="width: 400px;">
                     <h1 class="fs-5 text-body-tertiary">Total Participants</h1>
                     <p class="fs-3 fw-bold">1500</p>

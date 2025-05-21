@@ -33,17 +33,17 @@ include_once "navbar/header.php";
 
         <div class="d-flex align-items-center welcome-section">
             <div class="ms-5 px-5">
-                <img class="profile-img" src="../../assets/public/img/morad.png"></img>
+                <img class="profile-img" src="../../assets/public/img/morad.png" alt="Photo de profil"/>
             </div>
 
             <div class="me-auto">
                 <div>
                     <h3 class="text-white mb-0">Welcome, <?= $user["prenom"] ?>!</h3>
-                    <span class="badge bg-dark-subtle my-2">
-                        <p class="text-black my-0">Pick up games near you</p>
+                    <span class="badge bg-dark-subtle my-2 text-black">
+                        Pick up games near you
                     </span>
-                    <span class="badge bg-dark-subtle my-2">
-                        <p class="text-black my-0">NEW Tournaments</p>
+                    <span class="badge bg-dark-subtle my-2 text-black">
+                        NEW Tournaments
                     </span>
                 </div>
             </div>
@@ -99,18 +99,7 @@ include_once "navbar/header.php";
                 </div>
             </div>
             <div class="d-flex gap-4 recommended-profiles">
-                <div class="text-center">
-                    <img src="" alt="John">
-                    <p>John<br><small>Point Guard</small></p>
-                </div>
-                <div class="text-center">
-                    <img src="" alt="Sarah">
-                    <p>Sarah<br><small>Winger</small></p>
-                </div>
-                <div class="text-center">
-                    <img src="" alt="Mike">
-                    <p>Mike<br><small>Pivot</small></p>
-                </div>
+                
             </div>
         </div>
     </div>

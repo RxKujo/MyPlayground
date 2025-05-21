@@ -1,5 +1,5 @@
 <?php
-require '../includes/config/config.php';
+include_once 'includes/config/config.php';
 
 $token = filter_input(INPUT_GET, 'token', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 

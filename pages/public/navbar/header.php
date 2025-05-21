@@ -8,7 +8,7 @@
         <div class="header-icons d-flex align-items-center ms-auto">
             <span class="me-3 text-primary"><?= $chatLeftTextFill ?></span>
             <span class="me-3 text-primary"><?= $bellFill ?></span>
-            <a href="profile" class="text-primary text-decoration-none"><?= $personFill ?></a>
+            <a id="profile-icon" href="profile" class="text-primary text-decoration-none"><?= $personFill ?></a>
         </div>
     </div>
 </header>
