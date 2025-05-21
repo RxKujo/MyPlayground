@@ -79,8 +79,8 @@ $verificationToken = bin2hex(random_bytes(32));
 $isVerified = 0;
 
 
-$sql = "INSERT INTO utilisateur (pseudo, prenom, nom, date_naissance, email, mdp, tel, poste, role, localisation, niveau, description) 
-VALUES (:pseudo, :prenom, :nom, :naissance, :email, :mdp, :tel, :poste, :role, :localisation, :niveau, :description)";
+$sql = "INSERT INTO utilisateur (pseudo, prenom, nom, date_naissance, email, mdp, tel, poste, role, localisation, niveau, description, email_verification_token, is_verified) 
+VALUES (:pseudo, :prenom, :nom, :naissance, :email, :mdp, :tel, :poste, :role, :localisation, :niveau, :description, :token, :is_verified)";
 
 $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':pseudo', $pseudo);
@@ -96,6 +96,9 @@ $stmt->bindParam(':localisation', $adresse);
 $stmt->bindParam(':niveau', $niveau);
 $description = ""; 
 $stmt->bindParam(':description', $description);
+$stmt->bindParam(':token', $verificationToken);
+$stmt->bindParam(':is_verified', $isVerified);
+
 
 if ($stmt->execute()) {
     if (sendVerificationEmail($email, $prenom, $verificationToken)) {
