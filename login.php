@@ -2,17 +2,31 @@
 
 session_start();
 
+include_once 'includes/config/config.php';
 include_once 'includes/config/variables.php';
-include_once $assetsShared . 'icons/icons.php';
-include_once $includesConfig . 'functions.php';
+include_once 'includes/config/functions.php';
+
+
+
+$stmt = $pdo->query("
+    SELECT c.id_captcha, c.captcha_question, r.reponse
+    FROM captcha c
+    JOIN captcha_reponse r ON c.id_captcha = r.id_captcha
+    ORDER BY RAND() LIMIT 1
+");
+$captcha = $stmt->fetch();
+
+$captcha_id = $captcha['id_captcha'];
+$question = $captcha['captcha_question'];
+$reponse = $captcha['reponse'];
+
+
+$_SESSION['captcha_expected'] = $reponse;
+$_SESSION['captcha_id'] = $captcha_id;
 
 $login_error = $_SESSION['login_error'] ?? null;
 $register_success = $_SESSION['register_success'] ?? null;
 $captcha_error = $_SESSION['captcha_error'] ?? null;
-
-$shapes = ['cercle', 'carré', 'triangle', 'rectangle'];
-$random_shape = $shapes[array_rand($shapes)];
-
 ?>
 
 <!DOCTYPE html>
@@ -118,7 +132,7 @@ $random_shape = $shapes[array_rand($shapes)];
 
             <div id="captcha-selection" style="display:none; margin-bottom: 15px;">
                 <div class="captcha-instruction">
-                    Cliquez sur la forme : <strong id="captcha-shape"><?php echo ucfirst($random_shape); ?></strong>
+                    <?= htmlspecialchars($question) ?>
                 </div>
                 <div>
                     <?php
@@ -129,10 +143,9 @@ $random_shape = $shapes[array_rand($shapes)];
                         'rectangle' => '<svg width="50" height="30"><rect x="2" y="5" width="46" height="20" stroke="#555" stroke-width="2" fill="transparent" /></svg>',
                     ];
 
-                    foreach ($shapes as $shape) {
-                        $shapeLower = strtolower($shape);
-                        echo '<div tabindex="0" class="shape-button" data-shape="' . $shapeLower . '" aria-label="Choisir la forme ' . $shape . '">';
-                        echo $svgShapes[$shapeLower];
+                    foreach ($svgShapes as $shape => $svg) {
+                        echo '<div tabindex="0" class="shape-button" data-shape="' . $shape . '" aria-label="Choisir la forme ' . $shape . '">';
+                        echo $svg;
                         echo '</div>';
                     }
                     ?>
@@ -140,7 +153,7 @@ $random_shape = $shapes[array_rand($shapes)];
             </div>
 
             <input type="hidden" id="captcha-input" name="captcha" value="" />
-            <input type="hidden" name="expected_captcha" value="<?php echo htmlspecialchars($random_shape); ?>" />
+            <input type="hidden" name="captcha_id" value="<?= $captcha_id ?>" />
 
             <button type="submit" id="submit-btn" class="btn btn-primary w-100" disabled>Se connecter</button>
         </form>
@@ -154,7 +167,7 @@ $random_shape = $shapes[array_rand($shapes)];
 <script>
     const checkbox = document.getElementById('captcha-checkbox');
     const captchaSelection = document.getElementById('captcha-selection');
-    const captchaShapeText = document.getElementById('captcha-shape').textContent.toLowerCase();
+    const captchaShapeText = "<?= strtolower($reponse) ?>";
     const shapeButtons = document.querySelectorAll('.shape-button');
     const captchaInput = document.getElementById('captcha-input');
     const submitBtn = document.getElementById('submit-btn');

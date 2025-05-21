@@ -1,5 +1,5 @@
 <?php
-// captcha.php
+
 session_start();
 
 $shape = $_GET['shape'] ?? '';
@@ -10,7 +10,7 @@ $height = 80;
 header("Content-Type: image/png");
 $image = imagecreatetruecolor($width, $height);
 
-// Couleurs
+
 $white = imagecolorallocate($image, 255, 255, 255);
 $black = imagecolorallocate($image, 0, 0, 0);
 $blue = imagecolorallocate($image, 50, 50, 255);
@@ -36,9 +36,12 @@ switch ($shape) {
         imagefilledpolygon($image, $points, 3, $blue);
         break;
     default:
-        // image vide
+        
         break;
 }
 
 imagepng($image);
 imagedestroy($image);
+if (!$shape) {
+    imagestring($image, 5, 10, 30, "Erreur", $black);
+}

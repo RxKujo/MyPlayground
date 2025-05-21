@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
@@ -10,7 +11,7 @@ include_once '../includes/config/functions.php';
 include_once '../includes/config/config.php';
 include_once '../includes/config/email_functions.php';
 
-// Récupération et nettoyage des données
+
 $prenom = filter_input(INPUT_POST, "prenom", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $nom = filter_input(INPUT_POST, "nom", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
@@ -26,9 +27,7 @@ $niveau = filter_input(INPUT_POST, "niveau", FILTER_VALIDATE_INT);
 $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $confirm_password = filter_input(INPUT_POST, "confirm_password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $captcha = filter_input(INPUT_POST, "captcha", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-$expected_captcha = filter_input(INPUT_POST, "expected_captcha", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-// Stockage des données pour réaffichage en cas d'erreur (sauf mdp)
 $_SESSION['form_data'] = [
     'prenom' => $prenom,
     'nom' => $nom,
@@ -39,28 +38,29 @@ $_SESSION['form_data'] = [
     'pseudo' => $pseudo
 ];
 
-// Vérification des champs obligatoires
 if (!$prenom || !$nom || !$email || !$tel || !$naissance || !$adresse || !$pseudo || !$password || !$confirm_password) {
     $_SESSION['register_error'] = "Tous les champs sont obligatoires. " . json_encode($_SESSION['form_data']) . $password . $confirm_password;
     header("location: ../register.php");
     exit();
 }
 
-// Vérification confirmation mot de passe
 if ($password !== $confirm_password) {
     $_SESSION['register_error'] = "Les mots de passe ne correspondent pas.";
     header("location: ../register.php");
     exit();
 }
 
-// Vérification captcha
-if (!$captcha || !$expected_captcha || strtolower($captcha) !== strtolower($expected_captcha)) {
+if (
+    !isset($_SESSION['captcha_expected']) ||
+    !$captcha ||
+    strtolower($captcha) !== strtolower($_SESSION['captcha_expected'])
+) {
     $_SESSION['captcha_error'] = "Veuillez valider correctement le captcha.";
     header("location: ../register.php");
     exit();
 }
+unset($_SESSION['captcha_expected']);
 
-// Vérifier si l'utilisateur existe déjà
 $sql = "SELECT id FROM utilisateur WHERE pseudo = :pseudo OR email = :email LIMIT 1";
 $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':pseudo', $username);
@@ -112,4 +112,3 @@ if ($stmt->execute()) {
     header("location: ../register.php");
     exit();
 }
-
