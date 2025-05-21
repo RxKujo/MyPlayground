@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
@@ -9,30 +13,29 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 include_once 'includes/config/functions.php';
 include_once 'includes/config/config.php';
 
-// Récupération et nettoyage des données
 $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $captcha = filter_input(INPUT_POST, "captcha", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-$expected_captcha = filter_input(INPUT_POST, "expected_captcha", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-// Stockage du pseudo en cas d'erreur pour réaffichage
+
 $_SESSION['form_data'] = ['username' => $username];
 
-// Vérification des champs obligatoires
+
 if (!$username || !$password) {
     $_SESSION['login_error'] = 'Tous les champs sont obligatoires.';
     header("Location: login.php");
     exit();
 }
 
-// Vérification captcha obligatoire
-if (!$captcha || !$expected_captcha || strtolower($captcha) !== strtolower($expected_captcha)) {
+
+if (!isset($_SESSION['captcha_expected']) || strtolower($captcha) !== strtolower($_SESSION['captcha_expected'])) {
     $_SESSION['captcha_error'] = "Veuillez valider correctement le captcha.";
     header("Location: login.php");
     exit();
 }
 
-// Vérification utilisateur dans la base
+unset($_SESSION['captcha_expected']);
+
 $sql = "SELECT * FROM utilisateur WHERE pseudo = :pseudo LIMIT 1";
 $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':pseudo', $username);
