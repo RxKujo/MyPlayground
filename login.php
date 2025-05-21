@@ -7,7 +7,7 @@ include_once $assetsShared . 'icons/icons.php';
 include_once $includesConfig . 'functions.php';
 
 $login_error = $_SESSION['login_error'] ?? null;
-$register_success = $_SESSION['register-success'] ?? null;
+$register_success = $_SESSION['register_success'] ?? null;
 $captcha_error = $_SESSION['captcha_error'] ?? null;
 
 $shapes = ['cercle', 'carré', 'triangle', 'rectangle'];

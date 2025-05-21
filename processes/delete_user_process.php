@@ -18,7 +18,11 @@ if ($_POST['id']) {
         exit();
     }
 }
+
+$space = filter_input(INPUT_POST, 'userspace', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
 include_once '../includes/config/config.php';
+include_once '../includes/config/functions.php';
 
 $sql = 'DELETE FROM utilisateur WHERE id = :id';
 $stmt = $pdo->prepare($sql);
@@ -26,7 +30,14 @@ $stmt->bindParam(':id', $id);
 
 if ($stmt->execute()) {
     // Optional: redirect after success
-    header("Location: ../admin/users");
+
+    if ($space === 'admin') {
+        header("Location: ../admin/users");
+    } else if ($space === 'user') {
+        session_destroy();
+        deleteCookie('user');
+        header("location: ../index.php");
+    }
     exit();
 } else {
     // Handle error

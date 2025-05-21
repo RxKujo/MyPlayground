@@ -8,6 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 
 include_once '../includes/config/functions.php';
 include_once '../includes/config/config.php';
+include_once '../includes/config/email_functions.php';
 
 // Récupération et nettoyage des données
 $prenom = filter_input(INPUT_POST, "prenom", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -66,18 +67,19 @@ $stmt->bindParam(':pseudo', $username);
 $stmt->bindParam(':email', $email);
 $stmt->execute();
 
-if ($stmt->fetch()) {
+if ($stmt->rowCount() !== 0) {
     $_SESSION['register_error'] = "Nom d'utilisateur ou email déjà utilisé.";
     header("location: ../register.php");
     exit();
 }
 
-// Hachage du mot de passe
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+$verificationToken = bin2hex(random_bytes(32));
+$isVerified = 0;
 
 // Insertion en base
-$sql = "INSERT INTO utilisateur (pseudo, prenom, nom, date_naissance, email, mdp, tel, poste, role, localisation, niveau, description) 
-VALUES (:pseudo, :prenom, :nom, :naissance, :email, :mdp, :tel, :poste, :role, :localisation, :niveau, :description)";
+$sql = "INSERT INTO utilisateur (pseudo, prenom, nom, date_naissance, email, mdp, tel, poste, role, localisation, niveau, description, email_verification_token, is_verified) 
+VALUES (:pseudo, :prenom, :nom, :naissance, :email, :mdp, :tel, :poste, :role, :localisation, :niveau, :description, :token, :is_verified)";
 
 $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':pseudo', $pseudo);
@@ -92,11 +94,17 @@ $stmt->bindParam(':role', $role);
 $stmt->bindParam(':localisation', $localisation);
 $stmt->bindParam(':niveau', $niveau);
 $stmt->bindParam(':description', $description);
+$stmt->bindParam(':token', $verificationToken);
+$stmt->bindParam(':is_verified', $isVerified);
 
 
 if ($stmt->execute()) {
+    if (sendVerificationEmail($email, $prenom, $verificationToken)) {
+        $_SESSION['register_success'] = "Inscription réussie ! Vous pouvez maintenant vous connecter.";
+    } else {
+        $_SESSION['register_success'] = "Inscription réussie, mais impossible d’envoyer l’email de vérification.";
+    }
     unset($_SESSION['form_data']);
-    $_SESSION['register_success'] = "Inscription réussie ! Vous pouvez maintenant vous connecter.";
     header("location: ../login.php");
     exit();
 } else {

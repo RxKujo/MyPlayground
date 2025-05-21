@@ -6,7 +6,7 @@ $root = $_SERVER['DOCUMENT_ROOT'];
 include_once $root . '/includes/config/functions.php';
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("location: erreur.php?err=1");
+    header("location: pages/errors/500.html");
     exit();
 }
 
