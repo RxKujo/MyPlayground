@@ -13,6 +13,8 @@ include_once $root . "/includes/config/variables.php";
 include_once $includesConfig . "config.php";
 include_once $includesConfig . "functions.php";
 
+$user = getUser($pdo, $_SESSION['user_id']);
+
 include_once $includesPublic . "header.php";
 include_once $assetsShared . 'icons/icons.php';
 

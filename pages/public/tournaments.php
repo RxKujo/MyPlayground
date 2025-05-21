@@ -3,6 +3,10 @@ session_start();
 
 include_once '../../includes/config/variables.php';
 include_once $includesConfig . 'config.php';
+include_once $includesConfig . 'functions.php';
+
+$user = getUser($pdo, $_SESSION['user_id']);
+
 include_once $includesPublic . 'header.php';
 ?>
 

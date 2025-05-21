@@ -7,13 +7,6 @@ if (isset($_SESSION) and $_SESSION['user_id']) {
     exit();
 }
 
-$sql = 'SELECT droits, is_verified FROM utilisateur WHERE id = :id';
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':id', $id);
-$stmt->execute();
-
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
-
 $userRights = $user['droits'];
 $userIsVerified = $user['is_verified'];
 
