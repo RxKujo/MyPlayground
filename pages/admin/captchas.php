@@ -1,9 +1,10 @@
 <?php
+// filepath: c:\xampp\htdocs\MyPlayground\pages\admin\captchas.php
 session_start();
 
-include_once "../../includes/config/config.php";
 include_once "../../includes/config/variables.php";
-include_once "../../includes/config/functions.php";
+include_once $includesConfig . "config.php";
+include_once $includesConfig . "functions.php";
 
 $sql = 'SELECT c.id_captcha, c.captcha_question, r.reponse
         FROM captcha c
@@ -53,3 +54,4 @@ $captchas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </div>
 </body>
 </html>
+
