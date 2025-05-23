@@ -1,5 +1,4 @@
 <?php
-// filepath: c:\xampp\htdocs\MyPlayground\pages\admin\captchas.php
 session_start();
 
 include_once "../../includes/config/variables.php";
@@ -54,4 +53,3 @@ $captchas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </div>
 </body>
 </html>
-
