@@ -28,7 +28,7 @@ function sendVerificationEmail(string $email, string $prenom, string $verificati
         $mail->isHTML(true);
 
         // Create verification link
-        $verification_link = $_ENV['IP'] . '/verify.php?token=' . $verification_token;
+        $verification_link = $_SERVER['HTTP_HOST'] . '/verify.php?token=' . $verification_token;
 
         $mail->Subject = 'Vérifiez votre adresse email';
         $mail->Body    = "Bonjour $prenom,<br><br>Merci de vous être inscrit. Veuillez cliquer sur le lien ci-dessous pour vérifier votre adresse email :<br><br><a href='$verification_link'>$verification_link</a><br><br>Merci !";

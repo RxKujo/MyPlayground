@@ -6,6 +6,11 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+if (!isset($_SESSION['user_info'])) {
+    header("location: ../../index.php");
+    exit();
+}
+
 $root = $_SERVER['DOCUMENT_ROOT'];
 
 include_once $root . "/includes/config/variables.php";
@@ -13,7 +18,7 @@ include_once $root . "/includes/config/variables.php";
 include_once $includesConfig . "config.php";
 include_once $includesConfig . "functions.php";
 
-$user = getUser($pdo, $_SESSION['user_id']);
+$user = $_SESSION['user_info'];
 
 include_once $includesPublic . "header.php";
 include_once $assetsShared . 'icons/icons.php';

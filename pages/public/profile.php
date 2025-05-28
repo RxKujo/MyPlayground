@@ -7,12 +7,17 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+if (!isset($_SESSION['user_info'])) {
+    header("location: ../../index.php");
+    exit();
+}
+
 include_once '../../includes/config/variables.php';
 include_once $includesConfig . 'config.php';
 include_once $includesConfig . 'functions.php';
 
 
-$user = getUser($pdo, $_SESSION['user_id']);
+$user = $_SESSION['user_info'];
 
 switch ($user['poste']) {
     case 0:

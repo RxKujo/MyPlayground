@@ -19,6 +19,8 @@ $captcha = $stmt->fetch();
 
 print_r($captcha);
 
+print($_SERVER['HTTP_HOST']);
+
 ?>
 
 <?php

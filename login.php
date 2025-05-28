@@ -101,7 +101,7 @@ $captcha_error = $_SESSION['captcha_error'] ?? null;
     }
     if (!is_null($register_success)) {
         alertMessage($register_success, 0);
-        $_SESSION['register-success'] = null;
+        $_SESSION['register_success'] = null;
     }
     if (!is_null($captcha_error)) {
         echo '<div class="error-message">' . htmlspecialchars($captcha_error) . '</div>';

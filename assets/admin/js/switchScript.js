@@ -17,12 +17,14 @@ document.addEventListener("DOMContentLoaded", function() {
     let currentPage = getCurrentPage();
             
     setCurrentPage(currentPage);
+    refreshTabs(sidebarTabs, currentPage);
     
     sidebarTabs.forEach((tab) => {
         tab.addEventListener("click", async (e) => {            
             const page = tab.getAttribute("data-page");
             
             setCurrentPage(page);
+            refreshTabs(sidebarTabs, page);
             
             // if (currentPage !== 'settings') {
                 //     await loadContent(page, contentElement);
@@ -30,6 +32,4 @@ document.addEventListener("DOMContentLoaded", function() {
                 
             });
         });
-        
-    refreshTabs(sidebarTabs, currentPage);
 });
