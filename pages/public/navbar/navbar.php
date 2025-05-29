@@ -27,6 +27,7 @@ $userIsVerified = $user['is_verified'];
     <ul id="sidebar-list" class="nav nav-pills flex-column">
         <li class="nav-item"><a class="nav-link text-black" href="home" data-page="home"><?= $houseFill ?> Accueil</a></li>
         <li class="nav-item"><a class="nav-link text-black" href="partners" data-page="partners"><?= $shareFill ?> Trouver des coéquipiers</a></li>
+        <li class="nav-item"><a class="nav-link text-black" href="matches" data-page="matches"><?= $dribbble ?> Matchs</a></li>
         <li class="nav-item"><a class="nav-link text-black" href="tournaments" data-page="tournaments"><?= $trophyFill ?> Tournois</a></li>
         <li class="nav-item"><a class="nav-link text-black" href="profile" data-page="profile"><?= $personFill ?> Profil</a></li>
         <?php if ($userRights == 1): ?>
