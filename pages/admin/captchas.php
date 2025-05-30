@@ -1,10 +1,11 @@
+
 <?php
 session_start();
 
+include_once "../../includes/config/config.php";
 include_once "../../includes/config/variables.php";
-include_once $includesConfig . "config.php";
-include_once $includesConfig . "functions.php";
-include_once "navbar/navbar.php";
+include_once "../../includes/config/functions.php";
+
 $sql = 'SELECT c.id_captcha, c.captcha_question, r.reponse
         FROM captcha c
         JOIN captcha_reponse r ON c.id_captcha = r.id_captcha
@@ -53,3 +54,5 @@ $captchas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </div>
 </body>
 </html>
+
+
