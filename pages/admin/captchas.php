@@ -1,10 +1,8 @@
-
 <?php
-session_start();
 
-include_once "../../includes/config/variables.php";
+include_once '../../includes/global/session.php';
+
 include_once $includesConfig . "config.php";
-include_once $includesConfig . "functions.php";
 
 $sql = 'SELECT c.id_captcha, c.captcha_question, r.reponse
         FROM captcha c

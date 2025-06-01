@@ -1,5 +1,6 @@
 <?php
-session_start();
+
+include_once '../../includes/global/session.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("location: ../../index.php");
@@ -8,9 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $root = $_SERVER['DOCUMENT_ROOT'];
 
-include_once $root . "/includes/config/variables.php";
 include_once $includesConfig . "config.php";
-include_once $includesConfig . "functions.php";
 
 $user = getUser($pdo, $_SESSION['user_id']);
 

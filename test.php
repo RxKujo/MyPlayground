@@ -21,6 +21,15 @@ print_r($captcha);
 
 print($_SERVER['HTTP_HOST']);
 
+var_dump($_SESSION['user_info']);
+
+
+$username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$captcha = filter_input(INPUT_POST, "captcha", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+echo $username, $password, $captcha;
+
 ?>
 
 <?php

@@ -1,10 +1,8 @@
 <?php
-session_start();
 
-include_once '../../includes/config/variables.php';
+include_once '../../includes/global/session.php';
 
 include_once $includesConfig . "config.php";
-include_once $includesConfig . "functions.php";
 
 $user = $_SESSION['user_info'];
 

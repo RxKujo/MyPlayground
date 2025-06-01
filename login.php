@@ -20,9 +20,10 @@ $reponse = $captcha['reponse'];
 $_SESSION['captcha_expected'] = $reponse;
 $_SESSION['captcha_id'] = $captcha_id;
 
-$login_error = $_SESSION['login_error'] ?? null;
-$register_success = $_SESSION['register_success'] ?? null;
-$captcha_error = $_SESSION['captcha_error'] ?? null;
+$login_error = $_SESSION['errors']['login_error'] ?? null;
+$register_success = $_SESSION['errors']['register_success'] ?? null;
+$captcha_error = $_SESSION['errors']['captcha_error'] ?? null;
+
 ?>
 
 <!DOCTYPE html>
@@ -97,28 +98,28 @@ $captcha_error = $_SESSION['captcha_error'] ?? null;
     <?php
     if (!is_null($login_error)) {
         alertMessage($login_error, 1);
-        $_SESSION['login_error'] = null;
+        unset($_SESSION['errors']['login_error']);
     }
     if (!is_null($register_success)) {
         alertMessage($register_success, 0);
-        $_SESSION['register_success'] = null;
+        $_SESSION['errors']['register_success'] = null;
     }
     if (!is_null($captcha_error)) {
-        echo '<div class="error-message">' . htmlspecialchars($captcha_error) . '</div>';
-        $_SESSION['captcha_error'] = null;
+        alertMessage($captcha_error, 1);
+        $_SESSION['errors']['captcha_error'] = null;
     }
     ?>
 
     <div class="form-container">
 
-        <form method="post" action="auth.php" id="login-form">
+        <form method="POST" action="auth.php" id="login-form">
             <div class="mb-3">
                 <label for="username" class="form-label">Nom d'utilisateur</label>
-                <input type="text" class="form-control" id="username" name="username" required autocomplete="username" />
+                <input type="text" class="form-control" id="username" name="username" required />
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Mot de passe</label>
-                <input type="password" class="form-control" id="password" name="password" required autocomplete="current-password" />
+                <input type="password" class="form-control" id="password" name="password" required />
             </div>
 
             <div class="form-check mb-3">

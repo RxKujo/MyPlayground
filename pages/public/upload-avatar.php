@@ -1,13 +1,13 @@
 <?php
-session_start();
+
+include_once '../../includes/global/session.php';
+
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../../index.php');
     exit;
 }
 
-include_once '../../includes/config/variables.php';
 include_once $includesConfig . 'config.php';
-include_once $includesConfig . 'functions.php';
 
 $userId = $_SESSION['user_id'];
 

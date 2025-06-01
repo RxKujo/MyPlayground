@@ -1,15 +1,12 @@
 <?php
-//test
-// $utilisateur['id'] ;
-session_start();
+
+include_once '../../includes/global/session.php';
+
 $error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
 unset($_SESSION['error'], $_SESSION['form_data']);
 
 
-include_once('../../includes/config/variables.php');
-
 include_once($includesConfig . 'config.php');
-include_once($includesConfig . 'functions.php');
 include_once($assetsShared . 'icons/icons.php');
 
 include_once($includesPublic . 'header.php');

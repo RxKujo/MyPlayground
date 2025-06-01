@@ -1,9 +1,9 @@
 <?php 
 
-include_once "../../includes/config/variables.php";
+include_once '../../includes/global/session.php';
 
 include_once $includesConfig . "config.php";
-include_once $includesConfig . "functions.php";
+
 include_once $includesAdmin . "header.php";
 
 $sql = 'SELECT * FROM utilisateur ORDER BY cree_le DESC';
