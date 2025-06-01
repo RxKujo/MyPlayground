@@ -1,4 +1,21 @@
-<?php include_once "../../includes/admin/header.php"; ?>
+<?php 
+
+include_once "../../includes/config/variables.php";
+include_once $includesConfig . "functions.php";
+
+if (!isset($_SESSION['user_info'])) {
+    header("location: ../../index.php");
+    exit();
+}
+
+if (!isAdmin($_SESSION['user_info'])) {
+    http_response_code(401);
+    exit();
+}
+
+include_once $includesAdmin . "header.php"; 
+
+?>
 
 <div class="d-flex">
     <?php

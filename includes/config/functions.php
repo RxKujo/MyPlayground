@@ -137,3 +137,7 @@ function alertMessage(string $alert, int $kind) {
     
     echo $html;
 }
+
+function isAdmin($user) {
+    return $user["droits"] == 1;
+}

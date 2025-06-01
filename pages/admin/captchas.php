@@ -2,9 +2,9 @@
 <?php
 session_start();
 
-include_once "../../includes/config/config.php";
 include_once "../../includes/config/variables.php";
-include_once "../../includes/config/functions.php";
+include_once $includesConfig . "config.php";
+include_once $includesConfig . "functions.php";
 
 $sql = 'SELECT c.id_captcha, c.captcha_question, r.reponse
         FROM captcha c
@@ -13,15 +13,10 @@ $sql = 'SELECT c.id_captcha, c.captcha_question, r.reponse
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $captchas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+include_once $includesAdmin . "header.php";
 ?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Gestion des Captchas</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
-</head>
-<body>
+
 <div class="d-flex">
     <?php include_once "navbar/navbar.php"; ?>
     <div class="container-fluid p-4" style="flex-grow: 1;" id="content">
@@ -52,7 +47,7 @@ $captchas = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </table>
     </div>
 </div>
-</body>
-</html>
+
+<?php include_once $includesGlobal . "footer.php";
 
 

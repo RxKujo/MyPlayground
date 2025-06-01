@@ -52,7 +52,6 @@ if (!$user) {
 $isPasswordCorrect = password_verify($password, $user['mdp']);
 
 if ($isPasswordCorrect) {
-    $_SESSION['user_id'] = $user['id'];
     $_SESSION['user_info'] = $user;
     $_SESSION['success'] = 'Connexion réussie !';
     unset($_SESSION['form_data']);
