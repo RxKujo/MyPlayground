@@ -1,8 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
@@ -19,24 +15,25 @@ $captcha = filter_input(INPUT_POST, "captcha", FILTER_SANITIZE_FULL_SPECIAL_CHAR
 
 
 $_SESSION['form_data'] = ['username' => $username];
+$_SESSION['debug']['data'] = [$username, $password, $captcha];
 
 
 if (!$username || !$password) {
-    $_SESSION['login_error'] = 'Tous les champs sont obligatoires.';
+    $_SESSION['errors']['login_error'] = 'Tous les champs sont obligatoires.';
     header("Location: login.php");
     exit();
 }
 
 
 if (!isset($_SESSION['captcha_expected']) || strtolower($captcha) !== strtolower($_SESSION['captcha_expected'])) {
-    $_SESSION['captcha_error'] = "Veuillez valider correctement le captcha.";
+    $_SESSION['errors']['captcha_error'] = "Veuillez valider correctement le captcha.";
     header("Location: login.php");
     exit();
 }
 
 unset($_SESSION['captcha_expected']);
 
-$sql = "SELECT * FROM utilisateur WHERE pseudo = :pseudo LIMIT 1";
+$sql = "SELECT id, mdp FROM utilisateur WHERE pseudo = :pseudo LIMIT 1";
 $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':pseudo', $username);
 $stmt->execute();
@@ -44,22 +41,31 @@ $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$user) {
-    $_SESSION['login_error'] = "Nom d'utilisateur ou mot de passe incorrect.";
+    $_SESSION['errors']['login_error'] = "Nom d'utilisateur ou mot de passe incorrect.";
     header("Location: login.php");
     exit();
 }
 
 $isPasswordCorrect = password_verify($password, $user['mdp']);
 
+$sql = "SELECT * FROM utilisateur WHERE id = :id LIMIT 1";
+$stmt = $pdo->prepare($sql);
+$stmt->bindParam(':id', $user['id']);
+$stmt->execute();
+
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+
 if ($isPasswordCorrect) {
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['user_info'] = $user;
     $_SESSION['success'] = 'Connexion réussie !';
     unset($_SESSION['form_data']);
-    header("Location: home");
+    header("location: home");
     exit();
 } else {
-    $_SESSION['login_error'] = "Nom d'utilisateur ou mot de passe incorrect.";
+    $_SESSION['errors']['login_error'] = "Nom d'utilisateur ou mot de passe incorrect.";
     header("Location: login.php");
     exit();
 }

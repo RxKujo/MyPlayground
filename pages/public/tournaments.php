@@ -1,9 +1,8 @@
 <?php
-session_start();
 
-include_once '../../includes/config/variables.php';
+include_once '../../includes/global/session.php';
+
 include_once $includesConfig . 'config.php';
-include_once $includesConfig . 'functions.php';
 
 $user = $_SESSION['user_info'];
 
@@ -70,16 +69,16 @@ include_once $includesPublic . 'header.php';
 
 
         <div class="bg-black" style="--bs-bg-opacity: .5;">
-            <h1 class="fs-1 fw-bold text-center text-white py-3">Upcoming Tournaments</h1>
-            <p class="fs-5 text-center text-white">Stay ahead of the game by participating in these exciting tournaments</p>
+            <h1 class="fs-1 fw-bold text-center text-white py-3">Tournois à venir</h1>
+            <p class="fs-5 text-center text-white">Gardez une longueur d’avance en participant à ces tournois passionnants</p>
             
             <div class="input-group mb-3 mx-auto pt-3 pb-4 w-25">
-                <input type="text" class="form-control" id="search-tourney-input" placeholder="Search tournaments">
+                <input type="text" class="form-control" id="search-tourney-input" placeholder="Rechercher un tournoi">
             </div>
 
             <div class="d-flex flex-column align-items-center mx-auto mb-5 pb-5">
                 <button id="tournament-button" class="btn btn-dark btn-lg">
-                    <span class="px-3">View all tournaments</span>
+                    <span class="px-3">Voir tous les tournois</span>
                 </button>
             </div>
 
@@ -91,8 +90,8 @@ include_once $includesPublic . 'header.php';
             </div>
 
             <div class="m-5">
-                <h1 class="fs-1 fw-bold ">Player reviews</h1>
-                <p class="fs-5">Discover what players are saying about our tournaments</p>
+                <h1 class="fs-1 fw-bold ">Revues des joueurs</h1>
+                <p class="fs-5">Découvrer ce que les joueurs disent à propos de vos tournois</p>
                 <div>
                     <div>
                         <div class="d-flex">
@@ -122,34 +121,34 @@ include_once $includesPublic . 'header.php';
 
         <div id="team-join" class="d-flex flex-row">
             <div class="p-5 m-5">
-                <h1 class="fs-1 fw-bold mb-4">Join a team</h1>
-                <p class="fs-5">Looking for teammates? Click here to connect to others</p>
+                <h1 class="fs-1 fw-bold mb-4">Rejoindre une équipe</h1>
+                <p class="fs-5">A la recherches de coéquipier ? Cliquer ici pour trouver des coéquipiers</p>
             </div>
             
             <div class="d-flex align-items-center m-auto ms-5">
                 <a href="partners" id="find-button" class="btn btn-dark btn-lg">
-                    Find teammates
+                    Trouver des coéquipiers
                 </a>
             </div>
         </div>
 
         <div id="tournament-stats">
             <div class="d-flex flex-column align-items-center mx-auto mb-5">
-                <h1 class="fs-1 fw-bold mb-4">Tournament Stats</h1>
-                <p class="fs-5">Check out the latest statistics from our tournaments</p>
+                <h1 class="fs-1 fw-bold mb-4">Statistique de Tournoi</h1>
+                <p class="fs-5">Regarder les dernières statistiques de vos tournois</p>
             </div>
             
             <div class="d-flex justify-content-evenly pb-5">
                 <div class="border rounded p-3" style="width: 400px;">
-                    <h1 class="fs-5 text-body-tertiary">Total Participants</h1>
+                    <h1 class="fs-5 text-body-tertiary">Participants total</h1>
                     <p class="fs-3 fw-bold">1500</p>
                 </div>
                 <div class="border rounded p-3" style="width: 400px;">
-                    <h1 class="fs-5 text-body-tertiary">Prize Pool</h1>
+                    <h1 class="fs-5 text-body-tertiary">Montant à gagner</h1>
                     <p class="fs-3 fw-bold">$50 000</p>
                 </div>
                 <div class="border rounded p-3" style="width: 400px;">
-                    <h1 class="fs-5 text-body-tertiary">Winning Team</h1>
+                    <h1 class="fs-5 text-body-tertiary">Equipe gagnante </h1>
                     <p class="fs-3 fw-bold">LeBron James</p>
                 </div>
             </div>

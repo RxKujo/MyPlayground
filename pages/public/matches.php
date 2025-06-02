@@ -1,5 +1,6 @@
 <?php
-session_start();
+
+include_once '../../includes/global/session.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("location: ../../index.php");
@@ -8,9 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $root = $_SERVER['DOCUMENT_ROOT'];
 
-include_once $root . "/includes/config/variables.php";
 include_once $includesConfig . "config.php";
-include_once $includesConfig . "functions.php";
 
 $user = getUser($pdo, $_SESSION['user_id']);
 
@@ -27,11 +26,11 @@ include_once "navbar/header.php";
         <!-- Hero Section -->
         <section class="text-white py-5" style="background-color: #3a3a3a;">
             <div class="text-center">
-                <h2 class="fw-bold">Create or Join a Match</h2>
-                <p class="mb-4">Connect with others and enjoy a match made for you!</p>
+                <h2 class="fw-bold">Créer ou Rejoindre un Match</h2>
+                <p class="mb-4">Connectez-vous avec d'autres personnes et profitez d’un match fait pour vous !</p>
                 <div class="d-flex justify-content-center gap-3">
-                    <a href="#" class="btn btn-outline-light px-4">Join Match</a>
-                    <a href="#" class="btn btn-light text-dark px-4">Create Match</a>
+                    <a href="#" class="btn btn-outline-light px-4">Rejoindre un Match</a>
+                    <a href="#" class="btn btn-light text-dark px-4">Créer un Match</a>
                 </div>
             </div>
         </section>
@@ -39,20 +38,20 @@ include_once "navbar/header.php";
         <!-- Available Matches Section -->
         <section class="py-5">
             <div class="text-center mb-4">
-                <h3 class="fw-bold">Available Matches to Join</h3>
-                <p>Browse through matches you can join.</p>
-                <button class="btn btn-dark px-4 mt-2">Join Now</button>
+                <h3 class="fw-bold">Matchs Disponibles à Rejoindre</h3>
+                <p>Parcourez les matchs auxquels vous pouvez participer.</p>
+                <button class="btn btn-dark px-4 mt-2">Rejoindre maintenant</button>
             </div>
 
             <div class="d-flex justify-content-center">
                 <div class="card w-75 shadow-sm">
                     <div class="card-body">
-                        <h5 class="card-title fw-bold">Basketball Tournament</h5>
-                        <p class="card-text">Show your skills on the court.<br>
-                            <strong>8 players needed</strong>. Location: Community Gym. Time: Sunday, 11 AM.
+                        <h5 class="card-title fw-bold">Tournoi de Basketball</h5>
+                        <p class="card-text">Montrez vos talents sur le terrain.<br>
+                            <strong>8 joueurs nécessaires</strong>. Lieu : Gymnase Communautaire. Heure : Dimanche, 11h.
                         </p>
                         <span class="badge bg-secondary me-1">Basketball</span>
-                        <span class="badge bg-secondary">Tournament</span>
+                        <span class="badge bg-secondary">Tournoi</span>
                         <div class="mt-3 text-muted"><i class="bi bi-person-circle"></i> Jane Smith</div>
                     </div>
                 </div>
@@ -62,28 +61,18 @@ include_once "navbar/header.php";
         <!-- Your Matches Section -->
         <section class="bg-light py-5">
             <div class="container">
-                <h4 class="fw-bold mb-4">Your Matches</h4>
-                <p>Manage your created and joined matches.</p>
+                <h4 class="fw-bold mb-4">Vos Matchs</h4>
+                <p>Gérez vos matchs</p>
                 <div class="d-flex align-items-center gap-4 mt-3">
                     <img src="https://cdn-icons-png.flaticon.com/512/732/732219.png" alt="Basketball Icon" width="60" height="60">
                     <div>
-                        <h5 class="mb-1">Basketball Tournament</h5>
-                        <p class="mb-1 text-muted">Community Gym, Sunday, 11 AM</p>
-                        <strong>8 players needed</strong>
+                        <h5 class="mb-1">Tournoi de Basketball</h5>
+                        <p class="mb-1 text-muted">Gymnase Communautaire. Heure : Dimanche, 11h</p>
+                        <strong>8 joueurs nécessaires</strong>
                     </div>
                 </div>
             </div>
         </section>
-
-        <!-- Footer -->
-        <footer class="text-center py-4 small text-muted border-top">
-            <div class="d-flex justify-content-center gap-3">
-                <a href="#" class="text-muted text-decoration-none">Terms of Service</a>
-                <a href="#" class="text-muted text-decoration-none">Privacy Policy</a>
-                <a href="#" class="text-muted text-decoration-none">Contact Us</a>
-            </div>
-        </footer>
-
     </div>
 </div>
 

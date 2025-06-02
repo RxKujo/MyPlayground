@@ -1,3 +1,12 @@
+<?php
+
+if (!isAdmin($_SESSION['user_info'])) {
+    http_response_code(401);
+    exit();
+}
+
+?>
+
 <!DOCTYPE html>
 
 <html>

@@ -1,22 +1,12 @@
 <?php
-session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    header("location: ../../index.php");
-    exit();
-}
+include_once '../../includes/global/session.php';
 
 if (!isset($_SESSION['user_info'])) {
     header("location: ../../index.php");
     exit();
 }
-
-$root = $_SERVER['DOCUMENT_ROOT'];
-
-include_once $root . "/includes/config/variables.php";
-
 include_once $includesConfig . "config.php";
-include_once $includesConfig . "functions.php";
 
 $user = $_SESSION['user_info'];
 
@@ -33,11 +23,6 @@ include_once "navbar/header.php";
     ?>    
 
     <div class="container-fluid px-0" id="content">
-        
-        <?php
-            $user = getUser($pdo, $_SESSION['user_id']);
-        ?>
-
         <div class="d-flex align-items-center welcome-section">
             <div class="ms-5 px-5">
                 <img class="profile-img" src="../../assets/public/img/morad.png" alt="Photo de profil"/>

@@ -1,4 +1,10 @@
-<?php include_once "../../includes/admin/header.php"; ?>
+<?php 
+
+include_once '../../includes/global/session.php';
+
+include_once $includesAdmin . "header.php"; 
+
+?>
 
 <div class="d-flex">
     <?php
