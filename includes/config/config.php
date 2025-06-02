@@ -1,6 +1,6 @@
 <?php
 
-    include_once('auths.php');
+    include_once($includesConfig . 'auths.php');
 
     try {
         $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_BASE . ";charset=utf8";
