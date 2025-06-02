@@ -8,15 +8,13 @@ $formData = $_SESSION['form_data'] ?? [];
 unset($_SESSION['error'], $_SESSION['form_data']);
 
 $stmt = $pdo->query("
-    SELECT c.id_captcha, c.captcha_question, r.reponse
-    FROM captcha c
-    JOIN captcha_reponse r ON c.id_captcha = r.id_captcha
+    SELECT id, question, reponse FROM captcha
     ORDER BY RAND() LIMIT 1
 ");
 $captcha = $stmt->fetch();
 
-$captcha_id = $captcha['id_captcha'];
-$question = $captcha['captcha_question'];
+$captcha_id = $captcha['id'];
+$question = $captcha['question'];
 $reponse = $captcha['reponse'];
 
 
@@ -270,7 +268,7 @@ $_SESSION['captcha_id'] = $captcha_id;
             <?php
             $svgShapes = [
               'cercle' => '<svg width="40" height="40"><circle cx="20" cy="20" r="15" stroke="#555" stroke-width="2" fill="transparent" /></svg>',
-              'carré' => '<svg width="40" height="40"><rect x="7" y="7" width="26" height="26" stroke="#555" stroke-width="2" fill="transparent" /></svg>',
+              'carre' => '<svg width="40" height="40"><rect x="7" y="7" width="26" height="26" stroke="#555" stroke-width="2" fill="transparent" /></svg>',
               'triangle' => '<svg width="40" height="40"><polygon points="20,6 34,34 6,34" stroke="#555" stroke-width="2" fill="transparent" /></svg>',
               'rectangle' => '<svg width="50" height="30"><rect x="2" y="5" width="46" height="20" stroke="#555" stroke-width="2" fill="transparent" /></svg>',
             ];
