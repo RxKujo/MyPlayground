@@ -2,10 +2,10 @@
 
 session_start();
 
-include_once 'includes/config/config.php';
-include_once 'includes/config/variables.php';
 include_once 'includes/config/functions.php';
+include_once 'includes/config/variables.php';
 
+include_once 'includes/config/config.php';
 
 
 $stmt = $pdo->query("

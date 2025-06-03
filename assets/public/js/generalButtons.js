@@ -31,6 +31,8 @@ function listenJoinTournaments(contentElement) {
 function listenNav() {
     const navLogo = document.querySelector("#nav-logo");
     const profileIcon = document.querySelector("#profile-icon");
+    const messagesIcon = document.querySelector("#messages-icon");
+
     if (navLogo) {
         navLogo.addEventListener("click", () => {
             setCurrentPage("home");
@@ -38,6 +40,10 @@ function listenNav() {
     } else if (profileIcon) {
         profileIcon.addEventListener("click", () => {
             setCurrentPage("profile");
+        })
+    } else if (messagesIcon) {
+        messagesIcon.addEventListener("click", () => {
+            setCurrentPage("messages");
         })
     }
 }

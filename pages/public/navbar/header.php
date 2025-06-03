@@ -9,7 +9,7 @@
         </a>
 
         <div class="header-icons d-flex align-items-center ms-auto">
-            <span class="me-3 text-primary"><?= $chatLeftTextFill ?></span>
+            <a id="messages-icon" href="messages" class="me-3 text-primary"><?= $chatLeftTextFill ?></a>
             <span class="me-3 text-primary"><?= $bellFill ?></span>
             <a id="profile-icon" href="profile" class="text-primary text-decoration-none"><?= $personFill ?></a>
         </div>
