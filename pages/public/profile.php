@@ -12,33 +12,6 @@ include_once $includesConfig . 'config.php';
 
 $user = getUser($pdo, $_SESSION['user_id']);
 
-<<<<<<< HEAD
-switch ($user['poste']) {
-    case 0:
-        $position = 'Meneur de jeu';
-        break;
-        case 1:
-            $position = 'Arrière';
-            break;
-            case 2:
-                $position = 'Ailier';
-                break;
-                case 3:
-                    $position = 'Ailier fort';
-                    break;
-                    case 4:
-                        $position = 'Pivot';
-                        break;
-                    }
-                    
-                    include_once $includesPublic . "header.php";
-                    include_once $assetsShared . 'icons/icons.php';
-                    include_once "navbar/header.php";
-                    
-                    ?>
-
-<div class="d-flex">
-=======
 $position = getUserPosition($user);
 $niveau = getUserLevel($user);
 
@@ -48,7 +21,6 @@ include_once "navbar/header.php";
 
 ?>
     <div class="d-flex">
->>>>>>> 97137820cd591502e40686dbae274f4761167abe
         <?php
             if (isset($_SESSION)) {
                 $_SESSION['current_page'] = 'profile';

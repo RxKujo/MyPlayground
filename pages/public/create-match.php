@@ -1,12 +1,15 @@
 <?php
-
-include_once '../../includes/global/session.php';
-
+//test
+// $utilisateur['id'] ;
+session_start();
 $error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
 unset($_SESSION['error'], $_SESSION['form_data']);
 
 
+include_once('../../includes/config/variables.php');
+
 include_once($includesConfig . 'config.php');
+include_once($includesConfig . 'functions.php');
 include_once($assetsShared . 'icons/icons.php');
 
 include_once($includesPublic . 'header.php');
@@ -24,7 +27,6 @@ $poste = getUserPosition($user);
 $role = getUserRole($user);
 
 ?>
-<?php include_once __DIR__ . '/../../includes/config/theme.php'; ?>
 <div class="d-flex">
     <?php
         include_once "navbar/navbar.php";
@@ -32,7 +34,7 @@ $role = getUserRole($user);
 
 	<div class="container">	
 		<div class="header-title">
-			<h1>Modifier votre profil</h1>
+			<h1>Créer un match</h1>
 		</div>
 		<div class="form-container">
 
