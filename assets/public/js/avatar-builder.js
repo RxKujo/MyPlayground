@@ -1,6 +1,6 @@
 const parts = {
   eyes: ["eyes1.png", "eyes2.png"],
-  nose: ["nose1.png", "nose2.png"],
+  nose: ["nose1.png"],
   mouth: ["mouth1.png", "mouth2.png"]
 };
 
@@ -14,7 +14,8 @@ function loadImage(src) {
   return new Promise((resolve) => {
     const img = new Image();
     img.onload = () => resolve(img);
-    img.src = 'assets/' + src;
+    img.src = 'assets/public/img/' + src;
+    
   });
 }
 
@@ -33,10 +34,20 @@ async function drawAvatar() {
     loadImage(mouth)
   ]);
 
-  ctx.drawImage(eyesImg, 0, 0);
-  ctx.drawImage(noseImg, 0, 0);
-  ctx.drawImage(mouthImg, 0, 0);
+  // Redimensionnement centré
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+
+  // Paramètres fixes pour chaque partie
+  const size = 80; // Taille standard pour chaque élément
+  const half = size / 2;
+
+  // Positions personnalisées
+  ctx.drawImage(eyesImg, centerX - half, centerY - 60, size, size);  // yeux plus haut
+  ctx.drawImage(noseImg, centerX - half, centerY - 20, size, size);  // nez au centre
+  ctx.drawImage(mouthImg, centerX - half, centerY + 20, size, size); // bouche plus bas
 }
+
 
 function prevPart(part) {
   currentIndex[part] = (currentIndex[part] - 1 + parts[part].length) % parts[part].length;
