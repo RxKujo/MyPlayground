@@ -141,3 +141,36 @@ function alertMessage(string $alert, int $kind) {
 function isAdmin($user) {
     return $user["droits"] == 1;
 }
+
+function userPdf($user) {
+    $pdf = new FPDF();
+    $pdf->AddPage();
+
+    // Document Title
+    $pdf->SetFont('Arial', 'B', 20);
+    $pdf->SetTextColor(40, 40, 40);
+    $pdf->Cell(0, 15, 'User Profile', 0, 1, 'C');
+    $pdf->Ln(10); // Line break
+
+    // Section Header
+    $pdf->SetFont('Arial', 'B', 14);
+    $pdf->SetTextColor(0, 102, 204);
+    $pdf->Cell(0, 10, 'User Details', 0, 1);
+    $pdf->Ln(3);
+
+    // User Data Fields
+    foreach ($user as $key => $value) {
+        $label = ucfirst(str_replace('_', ' ', $key));
+
+        // Label
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->Cell(50, 8, "$label:", 0, 0);
+
+        // Value
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->MultiCell(0, 8, $value);
+    }
+
+    return $pdf;
+}

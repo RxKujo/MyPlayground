@@ -10,31 +10,16 @@ include_once '../../includes/global/session.php';
 include_once $includesConfig . 'config.php';
 
 
-    $user = getUser($pdo, $_SESSION['user_id']);
+$user = getUser($pdo, $_SESSION['user_id']);
 
-    switch ($user['poste']) {
-        case 0:
-            $position = 'Meneur de jeu';
-            break;
-        case 1:
-            $position = 'Arrière';
-            break;
-        case 2:
-            $position = 'Ailier';
-            break;
-        case 3:
-            $position = 'Ailier fort';
-            break;
-        case 4:
-            $position = 'Pivot';
-            break;
-    }
+$position = getUserPosition($user);
+$niveau = getUserLevel($user);
 
-    include_once $includesPublic . "header.php";
-    include_once $assetsShared . 'icons/icons.php';
-    include_once "navbar/header.php";
+include_once $includesPublic . "header.php";
+include_once $assetsShared . 'icons/icons.php';
+include_once "navbar/header.php";
 
-    ?>
+?>
 
     <div class="d-flex">
         <?php
@@ -183,6 +168,9 @@ include_once $includesConfig . 'config.php';
                         <h3 class="text-white mb-0"><?= $user["prenom"] ?> <?= $user["nom"] ?></h3>
                         <span class="badge bg-dark-subtle my-2">
                             <p class="text-black my-0"><?= $position ?></p>
+                        </span>
+                        <span class="badge bg-dark-subtle my-2">
+                            <p class="text-black my-0"><?= $niveau ?></p>
                         </span>
                     </div>
                 </div>
