@@ -35,7 +35,6 @@ include_once $includesConfig . 'config.php';
     include_once "navbar/header.php";
 
     ?>
-
     <div class="d-flex">
         <?php
             if (isset($_SESSION)) {

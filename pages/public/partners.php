@@ -13,7 +13,6 @@ include_once $includesPublic . 'header.php';
     include_once $assetsShared . 'icons/icons.php';
     include_once "navbar/header.php";
 ?>
-
 <div class="d-flex">
     <?php
         if (isset($_SESSION)) {

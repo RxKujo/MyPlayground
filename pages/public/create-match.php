@@ -24,6 +24,7 @@ $poste = getUserPosition($user);
 $role = getUserRole($user);
 
 ?>
+<?php include_once __DIR__ . '/../../includes/config/theme.php'; ?>
 <div class="d-flex">
     <?php
         include_once "navbar/navbar.php";
