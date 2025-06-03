@@ -1,4 +1,4 @@
-    <?php
+<?php
 
 include_once '../../includes/global/session.php';
 
@@ -12,6 +12,7 @@ include_once $includesConfig . 'config.php';
 
 $user = getUser($pdo, $_SESSION['user_id']);
 
+<<<<<<< HEAD
 switch ($user['poste']) {
     case 0:
         $position = 'Meneur de jeu';
@@ -37,6 +38,17 @@ switch ($user['poste']) {
                     ?>
 
 <div class="d-flex">
+=======
+$position = getUserPosition($user);
+$niveau = getUserLevel($user);
+
+include_once $includesPublic . "header.php";
+include_once $assetsShared . 'icons/icons.php';
+include_once "navbar/header.php";
+
+?>
+    <div class="d-flex">
+>>>>>>> 97137820cd591502e40686dbae274f4761167abe
         <?php
             if (isset($_SESSION)) {
                 $_SESSION['current_page'] = 'profile';
@@ -174,6 +186,7 @@ switch ($user['poste']) {
 
 
 
+<<<<<<< HEAD
 
 <div class="me-auto">
     <div>
@@ -181,6 +194,18 @@ switch ($user['poste']) {
         <span class="badge bg-dark-subtle my-2">
             <p class="text-black my-0"><?= $position ?></p>
         </span>
+=======
+                
+                <div class="me-auto">
+                    <div>
+                        <h3 class="text-white mb-0"><?= $user["prenom"] ?> <?= $user["nom"] ?></h3>
+                        <span class="badge bg-dark-subtle my-2">
+                            <p class="text-black my-0"><?= $position ?></p>
+                        </span>
+                        <span class="badge bg-dark-subtle my-2">
+                            <p class="text-black my-0"><?= $niveau ?></p>
+                        </span>
+>>>>>>> 97137820cd591502e40686dbae274f4761167abe
                     </div>
                 </div>
                 

@@ -1,7 +1,6 @@
 <?php
 
-session_start();
-
+include_once('../includes/global/session.php');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header("location: ../index.php");
@@ -53,7 +52,10 @@ $stmt->bindParam(':id', $id);
 $stmt->execute();
 $utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
 
+$stmt = $pdo->query('SELECT * FROM utilisateur WHERE id = ' . $id);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+$_SESSION['user_info'] = $user;
 
 $_SESSION['modif_success'] = "Votre compte a été modifié avec succès !";
 header("location: ../profile");

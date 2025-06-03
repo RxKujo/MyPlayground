@@ -17,7 +17,6 @@ include_once $includesPublic . "header.php";
 include_once $assetsShared . 'icons/icons.php';
 include_once "navbar/header.php";
 ?>
-
 <div class="d-flex">
     <?php include_once "navbar/navbar.php"; ?>
 

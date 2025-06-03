@@ -34,8 +34,6 @@ include_once $includesPublic . "header.php";
             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProfile">
                 Clôturer le compte
             </button>
-            
-            <!-- Modal -->
             <div class="modal fade" id="deleteProfile" tabindex="-1" aria-labelledby="deleteProfileLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -57,6 +55,9 @@ include_once $includesPublic . "header.php";
                     </div>
                 </div>
             </div>
+        </span>
+        <span>
+            <a class="btn btn-primary" href="../../processes/pdf_gen.php" target="_blank" rel="noopener noreferrer">Voir mes information (PDF)</a>
         </span>
     </div>
 </div>
