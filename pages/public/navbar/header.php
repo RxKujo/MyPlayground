@@ -1,3 +1,6 @@
+<?php
+ include_once __DIR__ . '/../../../includes/config/theme.php'; ?>
+
 <header class="container-fluid bg-dark py-0 my-0">
     <div class="container ms-0 ps-0 d-flex align-items-center">
         <a class="d-flex align-items-center text-white text-decoration-none" href="index.php" data-page="home" style="gap: 10px;">
