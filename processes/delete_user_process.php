@@ -29,19 +29,17 @@ $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':id', $id);
 
 if ($stmt->execute()) {
-    // Optional: redirect after success
-
     if ($space === 'admin') {
         header("Location: ../admin/users");
+        exit();
     } else if ($space === 'user') {
-        session_destroy();
-        deleteCookie('user');
-        header("location: ../index.php");
+        clearSession();
     }
-    exit();
 } else {
-    // Handle error
     echo "Erreur lors de la suppression de l'utilisateur.";
 }
+
+header("Location: ../admin/users");
+exit();
 
 ?>

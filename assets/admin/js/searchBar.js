@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const searchInput = document.querySelector('input[type="text"]');
+    const searchInput = document.querySelector('#searchUserField');
     const tableRows = document.querySelectorAll("tbody tr");
 
     searchInput.addEventListener("keyup", function () {

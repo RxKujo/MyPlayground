@@ -2,8 +2,9 @@
 
 include_once '../../includes/global/session.php';
 
-include_once "../../includes/admin/header.php";
-
+include_once "../../includes/public/header.php";
+include_once $assetsShared . 'icons/icons.php';
+include_once "navbar/header.php";
 ?>
 
 <div class="d-flex">

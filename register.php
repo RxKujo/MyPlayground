@@ -329,4 +329,5 @@ $_SESSION['captcha_id'] = $captcha_id;
     });
   </script>
 </body>
+
 </html>

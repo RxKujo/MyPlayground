@@ -94,7 +94,7 @@ $role = getUserRole($user);
 				<div class="mb-3">
 					<label class="form-label" for="poste">Poste</label>
 					<select class="form-select" id="poste" name="poste">
-						<option value="<?= $poste ?>" selected=""><?= $poste ?></option>
+						<option value="<?= $user['poste'] ?>" selected=""><?= $poste ?></option>
 						<option value="0">Meneur</option>
 						<option value="1">Arrière</option>
 						<option value="2">Ailier</option>

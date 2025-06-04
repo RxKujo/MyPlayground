@@ -1,6 +1,6 @@
 <?php
 
-function print_error($session) {
+function print_error(array $session) {
     if (isset( $session["error"] ) ) {
         $error = $session["error"];
 
@@ -10,14 +10,7 @@ function print_error($session) {
     }
 }
 
-function deleteCookie($key) {
-    if (isset($_COOKIE[$key])) {
-        unset($_COOKIE[$key]);
-        setcookie($key, '', time() - 3600,'/');
-    }
-}
-
-function isAuthenticated($session) {
+function isAuthenticated(array $session) {
     if (isset($session['user_id'])) {
         if (key_exists('user_id', $session)) {
             return true;
@@ -35,7 +28,12 @@ function getUser(PDO $pdo, int $id) {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-function getUserLevel($user) {
+
+function isAdmin(array $user) {
+    return $user["droits"] == 1;
+}
+
+function getUserLevel(array $user) {
     switch ($user['niveau']) {
     case 0:
         $niveau = 'Débutant';
@@ -57,7 +55,7 @@ function getUserLevel($user) {
     return $niveau;
 }
 
-function getUserPosition($user) {
+function getUserPosition(array $user) {
     switch ($user['poste']) {
         case 0:
             $position = 'Meneur de jeu';
@@ -82,7 +80,7 @@ function getUserPosition($user) {
     return $position;
 }
 
-function getUserRole($user) {
+function getUserRole(array $user) {
     switch ($user['role']) {
         case 0:
             $role = 'Joueur';
@@ -102,6 +100,10 @@ function getUserRole($user) {
     }
 
     return $role;
+}
+
+function getUserRights(array $user) {
+    return isAdmin($user) ? 'Oui' : 'Non'; 
 }
 
 function alertMessage(string $alert, int $kind) {
@@ -138,11 +140,7 @@ function alertMessage(string $alert, int $kind) {
     echo $html;
 }
 
-function isAdmin($user) {
-    return $user["droits"] == 1;
-}
-
-function userPdf($user) {
+function userPdf(array $user) {
     $pdf = new FPDF();
     $pdf->AddPage();
 
@@ -173,4 +171,28 @@ function userPdf($user) {
     }
 
     return $pdf;
+}
+
+function redirectError(string $error, string $errorMessage, string $location) {
+    $_SESSION['errors'][$error] = $errorMessage;
+    header("Location: " . $location);
+    exit();
+}
+
+function clearSession() {
+    $_SESSION = [];
+    session_destroy();
+}
+
+function displayAlert(string $key, int $kind) {
+    if (isset($_SESSION[$key]) && !is_null($_SESSION[$key])) {
+        alertMessage($_SESSION[$key], $kind);
+        $_SESSION[$key] = null;
+    }
+}
+
+function fetchUsers(PDO $pdo, string $filter, string $input) {
+    $sql = "SELECT * FROM utilisateur WHERE $filter = $input";
+    $results = $pdo->query($sql, PDO::FETCH_ASSOC);
+    return $results;    
 }

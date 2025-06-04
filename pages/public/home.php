@@ -30,19 +30,19 @@ include_once "navbar/header.php";
 
             <div class="me-auto">
                 <div>
-                    <h3 class="text-white mb-0">Welcome, <?= $user["prenom"] ?>!</h3>
+                    <h3 class="text-white mb-0">Bienvenue, <?= $user["prenom"] ?>!</h3>
                     <span class="badge bg-dark-subtle my-2 text-black">
-                        Pick up games near you
+                        Jouez près de chez vous
                     </span>
                     <span class="badge bg-dark-subtle my-2 text-black">
-                        NEW Tournaments
+                        NOUVEAUX tournois
                     </span>
                 </div>
             </div>
             
             <div class="d-flex flex-column m-auto">
-                <a href="partners" id="find-button" class="btn btn-outline-light m-2">Find Partners</a>
-                <a href="tournaments" id="tournament-button" class="btn btn-dark m-2">Join Tournament</a>
+                <a href="partners" id="find-button" class="btn btn-outline-light m-2">Trouver des coéquipiers</a>
+                <a href="tournaments" id="tournament-button" class="btn btn-dark m-2">Rejoindre un tournoi</a>
             </div>
         </div>
 
@@ -50,36 +50,77 @@ include_once "navbar/header.php";
         <div class="d-flex mt-4 mx-auto">
             <div class="d-flex align-items-center mx-5 search-partners-section">
                 <div class="d-flex align-items-center flex-column">
-                    <h3 class="fs-2 fw-bold">Search for Partners</h3>
-                    <p>Select player level, position, and type of request</p>
+                    <h3 class="fs-2 fw-bold">Chercher des coéquipiers</h3>
+                    <p>Sélectionnez le niveau et le poste de votre partenaire idéal</p>
                 </div>
             </div>
 
-            <div id="search-filters" class="d-flex flex-column align-items-start mx-5">
+            <form id="search-filters" class="d-flex flex-column align-items-start mx-5" method="GET" action="partners">
                 <div class="my-3 me-5">
-                    <h4>Player level</h4>
-                    <span class="d-inline-flex gap-2">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="beginner">Beginner</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="intermediate">Intermediate</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="advanced">Advanced</button>
-                    </span>
-                </div>
-                <div class="my-3">
-                    <h4>Position</h4>
-                    <div class="d-inline-flex gap-2">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="PG">Point Guard</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="SG">Shooting Guard</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="SF">Small Forward</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="PF">Power Forward</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="C">Center</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="NA">Any</button>
+                    <h4>Niveau</h4>
+                    <div class="d-inline-flex gap-2 flex-wrap">
+                        <div>
+                            <input id="niveau-debutant" name="niveau[]" type="checkbox" class="btn-check" value="0">
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="niveau-debutant">Débutant</label>
+                        </div>
+
+                        <div>
+                            <input id="niveau-intermediaire" name="niveau[]" type="checkbox" class="btn-check" value="1">
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="niveau-intermediaire">Intermédiaire</label>
+                        </div>
+
+                        <div>
+                            <input id="niveau-avance" name="niveau[]" type="checkbox" class="btn-check" value="2">
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="niveau-avance">Avancé</label>
+                        </div>
+
+                        <div>
+                            <input id="niveau-pro" name="niveau[]" type="checkbox" class="btn-check" value="3">
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="niveau-pro">Pro</label>
+                        </div>
                     </div>
                 </div>
-                <div class="d-flex justify-content-evenly mt-5 mx-auto">
-                    <button id="clear-button" class="btn btn-dark me-5 px-xl py-2">Clear</button>
-                    <button id="search-button" class="btn btn-outline-dark ms-5 px-xl py-2">Search</button>
+
+                <div class="my-3">
+                    <h4>Poste</h4>
+                    <div class="d-inline-flex gap-2 flex-wrap">
+                        <div>
+                            <input id="poste-mj" name="poste[]" type="checkbox" class="btn-check" value="0">
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-mj">Meneur de jeu</label>
+                        </div>
+
+                        <div>
+                            <input id="poste-ar" name="poste[]" type="checkbox" class="btn-check" value="1">
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-ar">Arrière</label>
+                        </div>
+
+                        <div>
+                            <input id="poste-ai" name="poste[]" type="checkbox" class="btn-check" value="2">
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-ai">Ailier</label>
+                        </div>
+
+                        <div>
+                            <input id="poste-af" name="poste[]" type="checkbox" class="btn-check" value="3">
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-af">Ailier fort</label>
+                        </div>
+
+                        <div>
+                            <input id="poste-p" name="poste[]" type="checkbox" class="btn-check" value="4">
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-p">Pivot</label>
+                        </div>
+
+                        <div>
+                            <input id="poste-all" name="poste[]" type="checkbox" class="btn-check" value="5">
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-all">Tous</label>
+                        </div>
+                    </div>
                 </div>
-            </div>
+
+                <div class="d-flex justify-content-evenly mt-5 mx-auto">
+                    <button type="reset" id="clear-button" class="btn btn-dark me-5 px-xl py-2">Clear</button>
+                    <button type="submit" id="search-button" class="btn btn-outline-dark ms-5 px-xl py-2">Search</button>
+                </div>
+            </form>
         </div>
 
         <div class="mt-4">

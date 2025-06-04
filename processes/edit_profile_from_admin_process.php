@@ -7,20 +7,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
-if ($_POST['id']) {
-    $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-} else {
-    if (isset($_SESSION) && $_SESSION['user_id']) {
-        $id = $_SESSION['user_id'];
-    } else {
-        header("location: ../index.php");
-        exit();
-    }
-}
-
-
 include_once $includesConfig . 'config.php';
 
+
+$id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_SPECIAL_CHARS);
 $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_SPECIAL_CHARS);
 $pseudo = filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -52,14 +42,8 @@ $stmt->bindParam(':description', $description);
 $stmt->bindParam(':id', $id);
 
 $stmt->execute();
-$utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$stmt = $pdo->query('SELECT * FROM utilisateur WHERE id = ' . $id);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-$_SESSION['user_info'] = $user;
-
-$_SESSION['modif_success'] = "Votre compte a été modifié avec succès !";
-header("location: ../profile");
+$_SESSION['modif_success'] = "Le compte a été modifié avec succès !";
+header("location: ../admin/users");
 
 ?>

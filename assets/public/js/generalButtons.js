@@ -80,10 +80,12 @@ function listenRegistrationPlayer(contentElement) {
         const roleInputs = contentElement.querySelectorAll('input[name="role"]');
         console.log(roleInputs);
         const positionCol = contentElement.querySelector('#position-container').closest('.col');
+        const levelCol = contentElement.querySelector('#level-container').closest('.col');
 
         function togglePositionContainer() {
         const isJoueur = contentElement.querySelector('#joueur').checked;
         positionCol.style.display = isJoueur ? 'block' : 'none';
+        levelCol.style.display = isJoueur ? 'block' : 'none';
         }
 
         // Attach event listeners to all role radio buttons
