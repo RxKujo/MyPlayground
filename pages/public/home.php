@@ -30,19 +30,19 @@ include_once "navbar/header.php";
 
             <div class="me-auto">
                 <div>
-                    <h3 class="text-white mb-0">Welcome, <?= $user["prenom"] ?>!</h3>
+                    <h3 class="text-white mb-0">Bienvenue, <?= $user["prenom"] ?>!</h3>
                     <span class="badge bg-dark-subtle my-2 text-black">
-                        Pick up games near you
+                        Jouez près de chez vous
                     </span>
                     <span class="badge bg-dark-subtle my-2 text-black">
-                        NEW Tournaments
+                        NOUVEAUX tournois
                     </span>
                 </div>
             </div>
             
             <div class="d-flex flex-column m-auto">
-                <a href="partners" id="find-button" class="btn btn-outline-light m-2">Find Partners</a>
-                <a href="tournaments" id="tournament-button" class="btn btn-dark m-2">Join Tournament</a>
+                <a href="partners" id="find-button" class="btn btn-outline-light m-2">Trouver des coéquipiers</a>
+                <a href="tournaments" id="tournament-button" class="btn btn-dark m-2">Rejoindre un tournoi</a>
             </div>
         </div>
 
@@ -50,29 +50,31 @@ include_once "navbar/header.php";
         <div class="d-flex mt-4 mx-auto">
             <div class="d-flex align-items-center mx-5 search-partners-section">
                 <div class="d-flex align-items-center flex-column">
-                    <h3 class="fs-2 fw-bold">Search for Partners</h3>
-                    <p>Select player level, position, and type of request</p>
+                    <h3 class="fs-2 fw-bold">Chercher des coéquipiers</h3>
+                    <p>Sélectionnez le niveau et le poste de votre partenaire idéal</p>
                 </div>
             </div>
 
             <div id="search-filters" class="d-flex flex-column align-items-start mx-5">
                 <div class="my-3 me-5">
-                    <h4>Player level</h4>
+                    <h4>Niveau</h4>
                     <span class="d-inline-flex gap-2">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="beginner">Beginner</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="intermediate">Intermediate</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="advanced">Advanced</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="beginner">Débutant</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="intermediate">Intermédiaire</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="advanced">Avancé</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="pro">Pro</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="tous">Tous</button>
                     </span>
                 </div>
                 <div class="my-3">
-                    <h4>Position</h4>
+                    <h4>Poste</h4>
                     <div class="d-inline-flex gap-2">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="PG">Point Guard</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="SG">Shooting Guard</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="SF">Small Forward</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="PF">Power Forward</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="C">Center</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="NA">Any</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="PG">Meneur de jeu</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="SG">Arrière</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="SF">Ailier</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="PF">Ailier fort</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="C">Pivot</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="NA">Tous</button>
                     </div>
                 </div>
                 <div class="d-flex justify-content-evenly mt-5 mx-auto">

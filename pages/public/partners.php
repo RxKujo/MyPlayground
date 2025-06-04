@@ -4,14 +4,41 @@ include_once '../../includes/global/session.php';
 
 include_once $includesConfig . 'config.php';
 
-$user = $_SESSION['user_info'];
 
 include_once $includesPublic . 'header.php';
-?>
 
-<?php
-    include_once $assetsShared . 'icons/icons.php';
-    include_once "navbar/header.php";
+include_once $assetsShared . 'icons/icons.php';
+include_once "navbar/header.php";
+
+$user = $_SESSION['user_info'];
+
+
+$niveau = filter_input(INPUT_GET, 'niveau', FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
+$poste = filter_input(INPUT_GET, 'poste', FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
+
+
+$sql = "SELECT * FROM utilisateur WHERE id != :id";
+$params = [':id' => $user['id']];
+
+if (count($_GET) > 0) {
+
+    if ($niveau !== null && $niveau >= 0 && $niveau <= 3) {
+        $sql .= " AND niveau = :niveau";
+        $params[':niveau'] = $niveau;
+    }
+
+    if ($poste !== null && $poste >= 0 && $poste <= 4) {
+        $sql .= " AND poste = :poste";
+        $params[':poste'] = $poste;
+    }
+
+}
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
 ?>
 <div class="d-flex">
     <?php
@@ -109,6 +136,36 @@ include_once $includesPublic . 'header.php';
                             </div>
                         </form>
                     </div>
+            </div>
+
+            <div class="container py-4">
+                <h2 class="fw-bold">Coéquipiers</h2>
+                <div class="container row g-4">
+                    <?php
+                        foreach($results as $mate):
+                            $pseudo = $mate['pseudo'];
+                            $prenom = $mate['prenom'];
+                            $nom = $mate['nom'];
+                            $niveau = getUserLevel($mate);
+                            $poste = getUserPosition($mate);
+                            $localisation = $mate['localisation'];
+                    ?>
+                    <div class="col-sm-6 col-md-4 col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title mb-2"><?= htmlspecialchars($prenom . ' ' . $nom) ?></h5>
+                                <h6 class="card-subtitle mb-3 text-muted">@<?= htmlspecialchars($pseudo) ?></h6>
+                                
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><strong>Niveau :</strong> <?= htmlspecialchars($niveau) ?></li>
+                                    <li class="list-group-item"><strong>Poste :</strong> <?= htmlspecialchars($poste) ?></li>
+                                    <li class="list-group-item"><strong>Localisation :</strong> <?= htmlspecialchars($localisation) ?></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </div>
     </div>            

@@ -190,3 +190,9 @@ function displayAlert(string $key, int $kind) {
         $_SESSION[$key] = null;
     }
 }
+
+function fetchUsers(PDO $pdo, string $filter, string $input) {
+    $sql = "SELECT * FROM utilisateur WHERE $filter = $input";
+    $results = $pdo->query($sql, PDO::FETCH_ASSOC);
+    return $results;    
+}
