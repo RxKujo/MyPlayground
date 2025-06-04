@@ -35,6 +35,11 @@ function getUser(PDO $pdo, int $id) {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+
+function isAdmin($user) {
+    return $user["droits"] == 1;
+}
+
 function getUserLevel($user) {
     switch ($user['niveau']) {
     case 0:
@@ -104,6 +109,10 @@ function getUserRole($user) {
     return $role;
 }
 
+function getUserRights($user) {
+    return isAdmin($user) ? 'Oui' : 'Non'; 
+}
+
 function alertMessage(string $alert, int $kind) {
     // 0 = success, 1 = danger, 2 = warning, 3 = info
     global $checkCircleFill, $xCircleFill, $exclamationCircleFill, $infoFill, $gearFill;
@@ -136,10 +145,6 @@ function alertMessage(string $alert, int $kind) {
         </div>';
     
     echo $html;
-}
-
-function isAdmin($user) {
-    return $user["droits"] == 1;
 }
 
 function userPdf($user) {

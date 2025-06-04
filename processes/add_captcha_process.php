@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':reponse', $reponse);
         $stmt->execute();
 
-        header("Location: ../pages/admin/captchas.php");
+        header("Location: ../admin/captchas");
         exit();
     } else {
         $error = "Veuillez remplir tous les champs.";
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="text" name="reponse" class="form-control" required>
         </div>
         <button type="submit" class="btn btn-success">Ajouter</button>
-        <a href="../pages/admin/captchas.php" class="btn btn-secondary">Annuler</a>
+        <a href="../admin/captchas" class="btn btn-secondary">Annuler</a>
     </form>
 </body>
 </html>

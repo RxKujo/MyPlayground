@@ -2,9 +2,10 @@
 
 include_once '../../includes/global/session.php';
 
-include_once $includesConfig . "config.php";
+include_once $includesConfig . 'config.php';
 
-include_once $includesAdmin . "header.php";
+include_once $assetsShared . 'icons/icons.php';
+include_once $includesAdmin . 'header.php';
 
 $sql = 'SELECT * FROM utilisateur ORDER BY cree_le DESC';
 $stmt = $pdo->prepare($sql);
@@ -17,12 +18,13 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <div class="d-flex">
     <?php
-        include_once "navbar/navbar.php";
+        include_once 'navbar/navbar.php';
     ?>
 
     <div class="container-fluid p-4" style="flex-grow: 1;" id="content">
         <h2>Gestion des Utilisateurs</h2>
         <input
+            id="searchUserField"
             type="text"
             class="form-control my-3"
             placeholder="Rechercher un utilisateur..."
@@ -35,6 +37,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th>Prénom</th>
                     <th>Email</th>
                     <th>Rôle</th>
+                    <th>Admin</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -49,6 +52,8 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         $niveau = getUserLevel($user);
                         $position = getUserPosition($user);
                         $role = getUserRole($user);
+
+                        $droitsBool = isAdmin($user);
                 ?>
                     <tr>
                         <td><?= $id ?></td>
@@ -56,6 +61,43 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td><?= $prenom ?></td>
                         <td><?= $email ?></td>
                         <td><?= $role ?></td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input type="checkbox"
+                                    class="form-check-input"
+                                    id="switchUser<?= $id ?>"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#confirmSwitch<?= $id ?>"
+                                    <?= $droitsBool ? "checked" : "" ?>
+                                    onclick="return false;"
+                                >
+                                <label class="form-check-label" for="switchUser<?= $id ?>">
+                                    <?= $droitsBool ? $personFillGear : $personFill ?>
+                                </label>
+                            </div>
+
+                            <div class="modal fade" id="confirmSwitch<?= $id ?>" tabindex="-1" aria-labelledby="confirmSwitchLabel<?= $id ?>" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="confirmSwitchLabel<?= $id ?>">Changer les droits</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                                    </div>
+                                    <form method="POST" action="../../processes/toggle_admin_process.php">
+                                        <div class="modal-body">
+                                            <p>Voulez-vous vraiment <?= $droitsBool ? "retirer les droits administrateur" : "attribuer les droits administrateur" ?> à cet utilisateur ?</p>
+                                            <input type="hidden" name="id" value="<?= $id ?>">
+                                            <input type="hidden" name="new_droits" value="<?= $droitsBool ? 0 : 1 ?>">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                            <button type="submit" class="btn btn-primary">Confirmer</button>
+                                        </div>
+                                    </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                         <td>
                             <span>
                                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProfile<?= $id ?>">
@@ -75,37 +117,37 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <input class="form-control" name="id" type="hidden" value="<?= $id ?>" />
                                                 
                                                 <div class="mb-3">
-                                                    <label class="form-label" for="nom">Nom</label>
-                                                    <input class="form-control" id="<?= $nom ?>" name="nom" type="text" value="<?= $nom ?>"/>
+                                                    <label class="form-label" for="nom<?= $id ?>">Nom</label>
+                                                    <input class="form-control" id="nom<?= $id ?>" name="nom" type="text" value="<?= $nom ?>"/>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label class="form-label" for="prenom">Prenom</label>
-                                                    <input class="form-control" id="<?= $prenom ?>" name="prenom" type="text" value="<?= $prenom ?>"/>
-                                                </div>
-                                                
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="pseudo">Pseudonyme</label>
-                                                    <input class="form-control" id="<?= $pseudo ?>" name="pseudo" type="text" value="<?= $pseudo ?>"/>
+                                                    <label class="form-label" for="prenom<?= $id ?>">Prenom</label>
+                                                    <input class="form-control" id="prenom<?= $id ?>" name="prenom" type="text" value="<?= $prenom ?>"/>
                                                 </div>
                                                 
                                                 <div class="mb-3">
-                                                    <label class="form-label" for="tel">Téléphone</label>
-                                                    <input class="form-control" id="tel" name="tel" type="tel" value="<?= $user['tel'] ?>"/>
+                                                    <label class="form-label" for="pseudo<?= $id ?>">Pseudonyme</label>
+                                                    <input class="form-control" id="pseudo<?= $id ?>" name="pseudo" type="text" value="<?= $pseudo ?>"/>
                                                 </div>
                                                 
                                                 <div class="mb-3">
-                                                    <label class="form-label" for="email">Email</label>
-                                                    <input class="form-control" id="<?= $email ?>" name="email" type="email" value="<?= $email ?>"/>
+                                                    <label class="form-label" for="tel<?= $id ?>">Téléphone</label>
+                                                    <input class="form-control" id="tel<?= $id ?>" name="tel" type="tel" value="<?= $user['tel'] ?>"/>
+                                                </div>
+                                                
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="email<?= $id ?>">Email</label>
+                                                    <input class="form-control" id="email<?= $id ?>" name="email" type="email" value="<?= $email ?>"/>
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <label class="form-label" for="localisation">Adresse</label>
-                                                    <input class="form-control" id="localisation" name="localisation" type="text" value="<?= $user['localisation'] ?>"/>
+                                                    <label class="form-label" for="localisation<?= $id ?>">Adresse</label>
+                                                    <input class="form-control" id="localisation<?= $id ?>" name="localisation" type="text" value="<?= $user['localisation'] ?>"/>
                                                 </div>
                                                 
                                                 <div class="mb-3">
-                                                    <label class="form-label" for="niveau">Niveau</label>
-                                                    <select class="form-select" id="niveau" name="niveau" aria-label="">
+                                                    <label class="form-label" for="niveau<?= $id ?>">Niveau</label>
+                                                    <select class="form-select" id="niveau<?= $id ?>" name="niveau" aria-label="">
                                                         <option value="<?= $niveau ?>" selected><?= $niveau ?></option>
                                                         <option value="0">Débutant</option>
                                                         <option value="1">Intermédiaire</option>
@@ -116,8 +158,8 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 
                                                 
                                                 <div class="mb-3">
-                                                    <label class="form-label" for="role">Role</label>
-                                                    <select class="form-select" id="role" name="role" aria-label="">
+                                                    <label class="form-label" for="role<?= $id ?>">Role</label>
+                                                    <select class="form-select" id="role<?= $id ?>" name="role" aria-label="">
                                                         <option value="<?= $role ?>" selected><?= $role ?></option>
                                                         <option value="0">Joueur</option>
                                                         <option value="1">Arbitre</option>
@@ -127,8 +169,8 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 </div>
                                                 
                                                 <div class="mb-3">
-                                                    <label class="form-label" for="poste">Poste</label>
-                                                    <select class="form-select" id="poste" name="poste">
+                                                    <label class="form-label" for="poste<?= $id ?>">Poste</label>
+                                                    <select class="form-select" id="poste<?= $id ?>" name="poste">
                                                         <option value="<?= $position ?>" selected=""><?= $position ?></option>
                                                         <option value="0">Meneur</option>
                                                         <option value="1">Arrière</option>
@@ -140,9 +182,9 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 </div>
                                                 
                                                 <div class="mb-3">
-                                                    <label for="commentaire">Commentaire</label>
+                                                    <label for="commentaire<?= $id ?>">Commentaire</label>
                                                     <div class="form-floating">
-                                                        <textarea class="form-control" id="commentaire" name="commentaire" style="height: 100px"></textarea>
+                                                        <textarea class="form-control" id="commentaire<?= $id ?>" name="commentaire" style="height: 100px"></textarea>
                                                         <label for="commentaire">Commente ici</label>
                                                     </div>
                                                 </div>
@@ -161,7 +203,6 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     Supprimer
                                 </button>
                                 
-                                <!-- Modal -->
                                 <div class="modal fade" id="deleteProfile<?= $id ?>" tabindex="-1" aria-labelledby="deleteProfileLabel<?= $id ?>" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -191,4 +232,4 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </div>
 
-<?php include_once "../../includes/global/footer.php"; ?>
+<?php include_once $includesGlobal . "footer.php"; ?>
