@@ -19,14 +19,13 @@ if ($_POST['id']) {
 }
 
 
-include_once '../includes/config/config.php';
+include_once $includesConfig . 'config.php';
 
 
 
 $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_SPECIAL_CHARS);
 $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_SPECIAL_CHARS);
 $pseudo = filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_SPECIAL_CHARS);
-$niveau = filter_input(INPUT_POST, 'niveau', FILTER_VALIDATE_INT);
 $poste = filter_input(INPUT_POST, 'poste', FILTER_VALIDATE_INT);
 $tel = filter_input(INPUT_POST, 'tel', FILTER_SANITIZE_SPECIAL_CHARS);
 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
@@ -34,13 +33,18 @@ $role = filter_input(INPUT_POST, 'role', FILTER_VALIDATE_INT);
 $localisation = filter_input(INPUT_POST, 'localisation', FILTER_SANITIZE_SPECIAL_CHARS);
 $description = filter_input(INPUT_POST, 'commentaire', FILTER_SANITIZE_SPECIAL_CHARS);
 
+$niveau = filter_input(INPUT_POST, 'niveau', FILTER_VALIDATE_INT);
+$niveau = ($niveau === false || $niveau === null) ? null : $niveau;
+
+
+
 $sql = 'UPDATE utilisateur SET nom = :nom, prenom = :prenom, pseudo = :pseudo, poste = :poste, niveau = :niveau, tel = :tel, email = :email, role = :_role, localisation = :localisation, description = :description WHERE id = :id';
 $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':nom', $nom);
 $stmt->bindParam(':prenom', $prenom);
 $stmt->bindParam(':pseudo', $pseudo);
 $stmt->bindParam(':poste', $poste);
-$stmt->bindParam(':niveau', $niveau);
+$stmt->bindValue(':niveau', $niveau, is_null($niveau) ? PDO::PARAM_NULL : PDO::PARAM_INT);
 $stmt->bindParam(':tel', $tel);
 $stmt->bindParam(':email', $email);
 $stmt->bindParam(':_role', $role);

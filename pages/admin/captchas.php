@@ -32,86 +32,116 @@ include_once $includesAdmin . "header.php";
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
-                <?php 
-                    foreach ($captchas as $captcha): 
-                        $id = $captcha['id'];
-                        $question = $captcha['question'];
-                        $reponse = $captcha['reponse'];
+            <tbody id="captchasShowing">
+                <?php foreach ($captchas as $captcha): 
+                    $id = $captcha['id'];
+                    $question = $captcha['question'];
+                    $reponse = $captcha['reponse'];
                 ?>
-
-                    <tr>
-                        <td><?= $id ?></td>
-                        <td><?= $question ?></td>
-                        <td><?= $reponse ?></td>
-                        <td>
-                            <span>
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editCaptcha<?= $id ?>">
-                                    Modifier
-                                </button>
-                                
-                                <div class="modal fade" id="editCaptcha<?= $id ?>" tabindex="-1" aria-labelledby="editCaptchaLabel<?= $id ?>" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="editCaptchaLabel<?= $id ?>">Modifier un captcha</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <form method="POST" action="../../processes/edit_captcha_process.php">
-                                                <div class="modal-body">
-                                                        <input class="form-control" name="id" type="hidden" value="<?= $id ?>" />
-                                                        
-                                                        <div class="mb-3">
-                                                            <label class="form-label" for="question<?= $id ?>">Question</label>
-                                                            <input class="form-control" id="question<?= $id ?>" name="question<?= $id ?>" type="text" value="<?= $question ?>"/>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label" for="reponse<?= $id ?>">Réponse</label>
-                                                            <input class="form-control" id="reponse<?= $id ?>" name="reponse<?= $id ?>" type="text" value="<?= $reponse ?>"/>
-                                                        </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                                                        <button type="submit" class="btn btn-primary">Sauvegarder les changements</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </span>
-                            <span>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delCaptcha<?= $id ?>">
-                                    Supprimer
-                                </button>
-                                
-                                <div class="modal fade" id="delCaptcha<?= $id ?>" tabindex="-1" aria-labelledby="delCaptchaLabel<?= $id ?>" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="delCaptchaLabel<?= $id ?>">Supprimer un captcha</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <form method="POST" action="../../processes/delete_captcha_process.php">
-                                                <div class="modal-body">
-                                                        Êtes-vous sûr de vouloir supprimer ce captcha ?
-                                                        <input class="form-control" name="id" type="hidden" value="<?= $id ?>" />
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                                                    <button type="submit" class="btn btn-primary">Supprimer le captcha</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </span>
-                        </td>
-                    </tr>
+                <tr>
+                    <td><?= $id ?></td>
+                    <td><?= $question ?></td>
+                    <td><?= $reponse ?></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm open-edit-modal"
+                                data-id="<?= $id ?>"
+                                data-question="<?= $question ?>"
+                                data-reponse="<?= $reponse ?>"
+                        >
+                        Modifier
+                        </button>
+                        <button class="btn btn-danger btn-sm open-delete-modal"
+                                data-id="<?= $id ?>">
+                            Supprimer
+                        </button>
+                    </td>
+                </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
     </div>
 </div>
+
+<div id="dynamic-modal-container"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('dynamic-modal-container');
+
+    // Modifier
+    document.body.addEventListener('click', (e) => {
+        if (e.target.classList.contains('open-edit-modal')) {
+            const id = e.target.dataset.id;
+            const question = e.target.dataset.question;
+            const reponse = e.target.dataset.reponse;
+
+            container.innerHTML = `
+                <div class="modal fade" id="editCaptchaModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form method="POST" action="../../processes/edit_captcha_process.php">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Modifier un captcha</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" name="id" value="${id}">
+                                    <div class="mb-3">
+                                        <label>Question</label>
+                                        <input class="form-control" name="question${id}" type="text" value="${question}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Réponse</label>
+                                        <input class="form-control" name="reponse${id}" type="text" value="${reponse}">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                    <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const modal = new bootstrap.Modal(document.getElementById('editCaptchaModal'));
+            modal.show();
+        }
+
+        // Supprimer
+        if (e.target.classList.contains('open-delete-modal')) {
+            const id = e.target.dataset.id;
+
+            container.innerHTML = `
+                <div class="modal fade" id="deleteCaptchaModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form method="POST" action="../../processes/delete_captcha_process.php">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Supprimer un captcha</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Êtes-vous sûr de vouloir supprimer ce captcha ?
+                                    <input type="hidden" name="id" value="${id}">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const modal = new bootstrap.Modal(document.getElementById('deleteCaptchaModal'));
+            modal.show();
+        }
+    });
+});
+</script>
 
 <?php include_once $includesGlobal . "footer.php";
 
