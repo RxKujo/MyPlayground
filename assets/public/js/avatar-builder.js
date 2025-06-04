@@ -1,10 +1,14 @@
 const parts = {
+  base: ["base.png"], // silhouette de fond
+  hair: ["hair1.png", "hair2.png"],
   eyes: ["eyes1.png", "eyes2.png"],
   nose: ["nose1.png"],
   mouth: ["mouth1.png", "mouth2.png"]
 };
 
 const currentIndex = {
+  base: 0,
+  hair: 0,
   eyes: 0,
   nose: 0,
   mouth: 0
@@ -15,7 +19,6 @@ function loadImage(src) {
     const img = new Image();
     img.onload = () => resolve(img);
     img.src = 'assets/public/img/' + src;
-    
   });
 }
 
@@ -24,30 +27,34 @@ async function drawAvatar() {
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+  const base = parts.base[currentIndex.base];
+  const hair = parts.hair[currentIndex.hair];
   const eyes = parts.eyes[currentIndex.eyes];
   const nose = parts.nose[currentIndex.nose];
   const mouth = parts.mouth[currentIndex.mouth];
 
-  const [eyesImg, noseImg, mouthImg] = await Promise.all([
+  const [baseImg, hairImg, eyesImg, noseImg, mouthImg] = await Promise.all([
+    loadImage(base),
+    loadImage(hair),
     loadImage(eyes),
     loadImage(nose),
     loadImage(mouth)
   ]);
 
-  // Redimensionnement centré
   const centerX = canvas.width / 2;
   const centerY = canvas.height / 2;
-
-  // Paramètres fixes pour chaque partie
-  const size = 80; // Taille standard pour chaque élément
+  const size = 80;
   const half = size / 2;
 
-  // Positions personnalisées
-  ctx.drawImage(eyesImg, centerX - half, centerY - 60, size, size);  // yeux plus haut
-  ctx.drawImage(noseImg, centerX - half, centerY - 20, size, size);  // nez au centre
-  ctx.drawImage(mouthImg, centerX - half, centerY + 20, size, size); // bouche plus bas
-}
+  // Base
+  ctx.drawImage(baseImg, 0, 0, canvas.width, canvas.height);
 
+  // Superposition des éléments
+  ctx.drawImage(hairImg, centerX - half, centerY - 100, size, size);  // cheveux
+  ctx.drawImage(eyesImg, centerX - half, centerY - 60, size, size);   // yeux
+  ctx.drawImage(noseImg, centerX - half, centerY - 20, size, size);   // nez
+  ctx.drawImage(mouthImg, centerX - half, centerY + 20, size, size);  // bouche
+}
 
 function prevPart(part) {
   currentIndex[part] = (currentIndex[part] - 1 + parts[part].length) % parts[part].length;
@@ -75,5 +82,5 @@ function saveAvatar() {
   xhr.send('image=' + encodeURIComponent(imageData));
 }
 
-// Auto-chargement de l'avatar par défaut
+// Auto-chargement
 drawAvatar();

@@ -65,6 +65,11 @@ include_once "navbar/header.php";
 
                         <div class="d-flex flex-column gap-3">
                             <div class="d-flex align-items-center justify-content-center gap-3">
+                                <button class="arrow-btn" onclick="prevPart('hair')">&lt;</button>
+                                <span>Cheveux</span>
+                                <button class="arrow-btn" onclick="nextPart('hair')">&gt;</button>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center gap-3">
                                 <button class="arrow-btn" onclick="prevPart('eyes')">&lt;</button>
                                 <span>Yeux</span>
                                 <button class="arrow-btn" onclick="nextPart('eyes')">&gt;</button>
@@ -158,15 +163,6 @@ include_once "navbar/header.php";
 
 
 
-<<<<<<< HEAD
-
-<div class="me-auto">
-    <div>
-        <h3 class="text-white mb-0"><?= $user["prenom"] ?> <?= $user["nom"] ?></h3>
-        <span class="badge bg-dark-subtle my-2">
-            <p class="text-black my-0"><?= $position ?></p>
-        </span>
-=======
                 
                 <div class="me-auto">
                     <div>
@@ -177,7 +173,6 @@ include_once "navbar/header.php";
                         <span class="badge bg-dark-subtle my-2">
                             <p class="text-black my-0"><?= $niveau ?></p>
                         </span>
->>>>>>> 97137820cd591502e40686dbae274f4761167abe
                     </div>
                 </div>
                 
