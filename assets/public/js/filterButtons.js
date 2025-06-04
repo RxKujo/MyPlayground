@@ -25,7 +25,7 @@ function attachButtonListeners(contentElement, filter_div) {
 }
 
 function clear(filter_div) {
-    let filter_buttons = filter_div.querySelectorAll("button");
+    let filter_buttons = filter_div.querySelectorAll("label[type='button']");
     filter_buttons.forEach((button) => {
         button.classList.remove("active");
         button["aria-pressed"] = "false";
@@ -33,20 +33,7 @@ function clear(filter_div) {
 }
 
 function search(filter_div) {
-    let filter_buttons = filter_div.querySelectorAll("button");
-    let selected_filters = [];
-    
-    filter_buttons.forEach((button) => {
-        if (button.classList.contains("active")) {
-            selected_filters.push(button.getAttribute("data-filter"));
-        }
-    });
-
-    sessionStorage.setItem("selectedFilters", JSON.stringify(selected_filters));
-
-    console.log("Selected filters:", selected_filters);
-
-    gotoPartners(selected_filters);
+    setCurrentPage("partners");
 }
 
 async function gotoPartners() {

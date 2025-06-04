@@ -55,33 +55,72 @@ include_once "navbar/header.php";
                 </div>
             </div>
 
-            <div id="search-filters" class="d-flex flex-column align-items-start mx-5">
+            <form id="search-filters" class="d-flex flex-column align-items-start mx-5" method="GET" action="partners">
                 <div class="my-3 me-5">
                     <h4>Niveau</h4>
-                    <span class="d-inline-flex gap-2">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="beginner">Débutant</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="intermediate">Intermédiaire</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="advanced">Avancé</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="pro">Pro</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="tous">Tous</button>
-                    </span>
-                </div>
-                <div class="my-3">
-                    <h4>Poste</h4>
-                    <div class="d-inline-flex gap-2">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="PG">Meneur de jeu</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="SG">Arrière</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="SF">Ailier</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="PF">Ailier fort</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="C">Pivot</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="button" data-filter="NA">Tous</button>
+                    <div class="d-inline-flex gap-2 flex-wrap">
+                        <div>
+                            <input id="niveau-debutant" name="niveau[]" type="checkbox" class="btn-check" value="0">
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="niveau-debutant" data-bs-toggle="button">Débutant</label>
+                        </div>
+
+                        <div>
+                            <input id="niveau-intermediaire" name="niveau[]" type="checkbox" class="btn-check" value="1">
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="niveau-intermediaire" data-bs-toggle="button">Intermédiaire</label>
+                        </div>
+
+                        <div>
+                            <input id="niveau-avance" name="niveau[]" type="checkbox" class="btn-check" value="2">
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="niveau-avance" data-bs-toggle="button">Avancé</label>
+                        </div>
+
+                        <div>
+                            <input id="niveau-pro" name="niveau[]" type="checkbox" class="btn-check" value="3">
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="niveau-pro" data-bs-toggle="button">Pro</label>
+                        </div>
                     </div>
                 </div>
-                <div class="d-flex justify-content-evenly mt-5 mx-auto">
-                    <button id="clear-button" class="btn btn-dark me-5 px-xl py-2">Clear</button>
-                    <button id="search-button" class="btn btn-outline-dark ms-5 px-xl py-2">Search</button>
+
+                <div class="my-3">
+                    <h4>Poste</h4>
+                    <div class="d-inline-flex gap-2 flex-wrap">
+                        <div>
+                            <input id="poste-mj" name="poste[]" type="checkbox" class="btn-check" value="0">
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-mj" data-bs-toggle="button">Meneur de jeu</label>
+                        </div>
+
+                        <div>
+                            <input id="poste-ar" name="poste[]" type="checkbox" class="btn-check" value="1">
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-ar" data-bs-toggle="button">Arrière</label>
+                        </div>
+
+                        <div>
+                            <input id="poste-ai" name="poste[]" type="checkbox" class="btn-check" value="2">
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-ai" data-bs-toggle="button">Ailier</label>
+                        </div>
+
+                        <div>
+                            <input id="poste-af" name="poste[]" type="checkbox" class="btn-check" value="3">
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-af" data-bs-toggle="button">Ailier fort</label>
+                        </div>
+
+                        <div>
+                            <input id="poste-p" name="poste[]" type="checkbox" class="btn-check" value="4">
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-p" data-bs-toggle="button">Pivot</label>
+                        </div>
+
+                        <div>
+                            <input id="poste-all" name="poste[]" type="checkbox" class="btn-check" value="5">
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-all" data-bs-toggle="button">Tous</label>
+                        </div>
+                    </div>
                 </div>
-            </div>
+
+                <div class="d-flex justify-content-evenly mt-5 mx-auto">
+                    <button type="reset" id="clear-button" class="btn btn-dark me-5 px-xl py-2">Clear</button>
+                    <button type="submit" id="search-button" class="btn btn-outline-dark ms-5 px-xl py-2">Search</button>
+                </div>
+            </form>
         </div>
 
         <div class="mt-4">
