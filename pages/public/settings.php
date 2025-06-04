@@ -25,12 +25,6 @@ include_once $includesPublic . "header.php";
     
     <div id="content">
         <span>
-            <form method='post' action='../../redirects/dc.php' id='settings-form'>
-                <input type='submit' name='disconnect' class='btn btn-primary mt-3' id='disconnect-button' value='Disconnect'/>
-            </form>
-        </span>
-    
-        <span>
             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProfile">
                 Clôturer le compte
             </button>
