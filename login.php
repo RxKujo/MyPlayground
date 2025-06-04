@@ -115,7 +115,7 @@ $captcha_error = $_SESSION['errors']['captcha_error'] ?? null;
 
     <div class="form-container">
 
-        <form method="POST" action="auth.php" id="login-form">
+        <form method="POST" action="redirects/auth.php" id="login-form">
             <div class="mb-3">
                 <label for="username" class="form-label">Nom d'utilisateur ou adresse e-mail</label>
                 <input type="text" class="form-control" id="username" name="username" required />

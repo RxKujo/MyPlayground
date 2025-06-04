@@ -1,35 +1,29 @@
 <?php
-session_start();
+
+include_once '../includes/global/session.php';
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: login.php");
+    header("Location: " . login);
     exit();
 }
 
-include_once 'includes/config/functions.php';
-include_once 'includes/config/config.php';
+include_once $includesConfig . 'config.php';
+
+const home = '../home';
+const login = '../login.php';
 
 $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
 $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $captcha = filter_input(INPUT_POST, "captcha", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-
 $_SESSION['form_data'] = ['username' => $username];
-$_SESSION['debug']['data'] = [$username, $password, $captcha];
-
 
 if ((!$username && !$email) || !$password) {
-    $_SESSION['errors']['login_error'] = 'Tous les champs sont obligatoires.';
-    header("Location: login.php");
-    exit();
+    redirectError('login_error', 'Tous les champs sont obligatoires', login);
 }
 
-
 if (!isset($_SESSION['captcha_expected']) || strtolower($captcha) !== strtolower($_SESSION['captcha_expected'])) {
-    $_SESSION['errors']['captcha_error'] = "Veuillez valider correctement le captcha.";
-    header("Location: login.php");
-    exit();
+    redirectError('captcha_error', 'Veuillez valider correctement le captcha', login);
 }
 
 unset($_SESSION['captcha_expected']);
@@ -47,9 +41,7 @@ $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$user) {
-    $_SESSION['errors']['login_error'] = "Nom d'utilisateur, e-mail ou mot de passe incorrect.";
-    header("Location: login.php");
-    exit();
+    redirectError('login_error', "Nom d'utilisateur, e-mail ou mot de passe incorrect.", login);
 }
 
 $isPasswordCorrect = password_verify($password, $user['mdp']);
@@ -68,10 +60,8 @@ if ($isPasswordCorrect) {
     $_SESSION['user_info'] = $user;
     $_SESSION['success'] = 'Connexion réussie !';
     unset($_SESSION['form_data']);
-    header("location: home");
+    header("location: " . home);
     exit();
 } else {
-    $_SESSION['errors']['login_error'] = "Nom d'utilisateur ou mot de passe incorrect.";
-    header("Location: login.php");
-    exit();
+    redirectError('login_error', "Nom d'utilisateur, e-mail ou mot de passe incorrect.", login);
 }

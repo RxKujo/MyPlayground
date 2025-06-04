@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <div class="modal fade" id="editProfile${id}" tabindex="-1" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
-              <form method="POST" action="../../processes/edit_profile_process.php">
+              <form method="POST" action="../../processes/edit_profile_from_admin_process.php">
                 <div class="modal-header">
                   <h5 class="modal-title">Modifier un profil</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>

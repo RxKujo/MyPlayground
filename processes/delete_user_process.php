@@ -33,12 +33,10 @@ if ($stmt->execute()) {
 
     if ($space === 'admin') {
         header("Location: ../admin/users");
+        exit();
     } else if ($space === 'user') {
-        session_destroy();
-        deleteCookie('user');
-        header("location: ../index.php");
+        clearSession();
     }
-    exit();
 } else {
     // Handle error
     echo "Erreur lors de la suppression de l'utilisateur.";

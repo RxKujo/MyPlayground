@@ -25,7 +25,7 @@ include_once $includesPublic . "header.php";
     
     <div id="content">
         <span>
-            <form method='post' action='../../deauth.php' id='settings-form'>
+            <form method='post' action='../../redirects/dc.php' id='settings-form'>
                 <input type='submit' name='disconnect' class='btn btn-primary mt-3' id='disconnect-button' value='Disconnect'/>
             </form>
         </span>

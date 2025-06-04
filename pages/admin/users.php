@@ -22,6 +22,9 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     ?>
 
     <div class="container-fluid p-4" style="flex-grow: 1;" id="content">
+        <?php 
+            displayAlert('modif_success', 0);
+        ?>
         <h2>Gestion des Utilisateurs</h2>
         <input
             id="searchUserField"
