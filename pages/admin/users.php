@@ -70,6 +70,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     data-bs-target="#confirmSwitch<?= $id ?>"
                                     <?= $droitsBool ? "checked" : "" ?>
                                     onclick="return false;"
+                                    <?= $id === $_SESSION['user_info']['id'] ? "disabled" : "" ?>
                                 >
                                 <label class="form-check-label" for="switchUser<?= $id ?>">
                                     <?= $droitsBool ? $personFillGear : $personFill ?>

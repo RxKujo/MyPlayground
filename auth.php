@@ -10,6 +10,8 @@ include_once 'includes/config/functions.php';
 include_once 'includes/config/config.php';
 
 $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$email = filter_input(INPUT_POST, "username", FILTER_SANITIZE_EMAIL);
+
 $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $captcha = filter_input(INPUT_POST, "captcha", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
@@ -18,7 +20,7 @@ $_SESSION['form_data'] = ['username' => $username];
 $_SESSION['debug']['data'] = [$username, $password, $captcha];
 
 
-if (!$username || !$password) {
+if ((!$username && !$email) || !$password) {
     $_SESSION['errors']['login_error'] = 'Tous les champs sont obligatoires.';
     header("Location: login.php");
     exit();
@@ -33,15 +35,22 @@ if (!isset($_SESSION['captcha_expected']) || strtolower($captcha) !== strtolower
 
 unset($_SESSION['captcha_expected']);
 
-$sql = "SELECT id, mdp FROM utilisateur WHERE pseudo = :pseudo LIMIT 1";
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':pseudo', $username);
+if (!$email) {
+    $sql = "SELECT id, mdp FROM utilisateur WHERE pseudo = :pseudo OR  LIMIT 1";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':pseudo', $username);
+} else if (!$username) {
+    $sql = "SELECT id, mdp FROM utilisateur WHERE email = :email OR  LIMIT 1";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':email', $email);
+}
+
 $stmt->execute();
 
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$user) {
-    $_SESSION['errors']['login_error'] = "Nom d'utilisateur ou mot de passe incorrect.";
+    $_SESSION['errors']['login_error'] = "Nom d'utilisateur, e-mail ou mot de passe incorrect.";
     header("Location: login.php");
     exit();
 }
