@@ -53,6 +53,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <script>
     const users = <?= json_encode($users) ?>;
+    
     const userIdSession = <?= $_SESSION['user_info']['id'] ?>;
 </script>
 

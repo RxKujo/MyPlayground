@@ -1,3 +1,78 @@
+function getUserRole(role) {
+    role = parseInt(role, 10);
+    
+    switch (role) {
+      case 0:
+          roleString = 'Joueur';
+          break;
+      case 1:
+          roleString = 'Arbitre';
+          break;
+      case 2:
+          roleString = 'Organisateur';
+          break;
+      case 3:
+          roleString = 'Spectateur';
+          break;
+      default:
+          roleString = 'Inconnu';
+          break;
+    }
+
+    return roleString;
+}
+
+function getUserLevel(level) {
+    level = parseInt(level, 10);
+
+    switch (level) {
+      case 0:
+        level = 'Débutant';
+        break;
+      case 1:
+        level = 'Intérmediaire';
+        break;
+      case 2:
+        level = 'Avancé';
+        break;
+      case 3:
+        level = 'Pro';
+        break;
+      default:
+        level = 'Inconnu';
+        break;
+    }
+
+    return level;
+}
+
+function getUserPosition(poste) {
+    poste = parseInt(poste, 10);
+
+    switch (poste) {
+        case 0:
+            poste = 'Meneur de jeu';
+            break;
+        case 1:
+            poste = 'Arrière';
+            break;
+        case 2:
+            poste = 'Ailier';
+            break;
+        case 3:
+            poste = 'Ailier fort';
+            break;
+        case 4:
+            poste = 'Pivot';
+            break;
+        default:
+            poste = 'Inconnu';
+            break;
+    }
+
+    return poste;
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const tbody = document.querySelector('#usersShowing');
 
@@ -6,10 +81,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const nom = user.nom;
         const prenom = user.prenom;
         const email = user.email;
-        const role = user.role; // ou transforme via une fonction JS si nécessaire
+        const role = getUserRole(user.role);
         const isAdmin = user.droits == 1;
 
-        // Crée la ligne principale
+
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${id}</td>
@@ -111,9 +186,14 @@ document.addEventListener('DOMContentLoaded', function () {
                   <div class="mb-3"><label>Téléphone</label><input name="tel" class="form-control" value="${user.tel}" /></div>
                   <div class="mb-3"><label>Email</label><input name="email" class="form-control" value="${user.email}" /></div>
                   <div class="mb-3"><label>Adresse</label><input name="localisation" class="form-control" value="${user.localisation}" /></div>
-                  <div class="mb-3"><label>Niveau</label><input name="niveau" class="form-control" value="${user.niveau}" /></div>
-                  <div class="mb-3"><label>Poste</label><input name="poste" class="form-control" value="${user.poste}" /></div>
-                  <div class="mb-3"><label>role</label><input name="role" class="form-control" value="${user.role}" /></div>
+                  
+                  <div class="mb-3"><input type="hidden" name="niveau" class="form-control" value="${user.niveau}"/></div>
+                  <div class="mb-3"><input type="hidden" name="poste" class="form-control" value="${user.poste}"/></div>
+                  <div class="mb-3"><input type="hidden" name="role" class="form-control" value="${user.role}"/></div>
+
+                  <div class="mb-3"><label>Niveau</label><input class="form-control" value="${getUserLevel(user.niveau)}"/></div>
+                  <div class="mb-3"><label>Poste</label><input class="form-control" value="${getUserPosition(user.poste)}"/></div>
+                  <div class="mb-3"><label>role</label><input class="form-control" value="${getUserRole(user.role)}"/></div>
                   <div class="mb-3"><label>Commentaire</label><textarea name="commentaire" class="form-control" value="${user.description}"></textarea></div>
                 </div>
                 <div class="modal-footer">
