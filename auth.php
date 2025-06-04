@@ -10,7 +10,6 @@ include_once 'includes/config/functions.php';
 include_once 'includes/config/config.php';
 
 $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-// $email = filter_input(INPUT_POST, "username", FILTER_SANITIZE_EMAIL);
 
 $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $captcha = filter_input(INPUT_POST, "captcha", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -35,17 +34,14 @@ if (!isset($_SESSION['captcha_expected']) || strtolower($captcha) !== strtolower
 
 unset($_SESSION['captcha_expected']);
 
-if (true) {
-    $sql = "SELECT id, mdp FROM utilisateur WHERE pseudo = :pseudo LIMIT 1";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':pseudo', $username);
+if (filter_var($username, FILTER_VALIDATE_EMAIL)) {
+    $sql = "SELECT id, mdp FROM utilisateur WHERE email = :input LIMIT 1";
+} else {
+    $sql = "SELECT id, mdp FROM utilisateur WHERE pseudo = :input LIMIT 1";
 }
-// } else if (!$username) {
-//     $sql = "SELECT id, mdp FROM utilisateur WHERE email = :email OR  LIMIT 1";
-//     $stmt = $pdo->prepare($sql);
-//     $stmt->bindParam(':email', $email);
-// }
 
+$stmt = $pdo->prepare($sql);
+$stmt->bindParam(':input', $username);
 $stmt->execute();
 
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
