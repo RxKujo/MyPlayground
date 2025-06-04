@@ -29,8 +29,6 @@ $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':id', $id);
 
 if ($stmt->execute()) {
-    // Optional: redirect after success
-
     if ($space === 'admin') {
         header("Location: ../admin/users");
         exit();
@@ -38,7 +36,6 @@ if ($stmt->execute()) {
         clearSession();
     }
 } else {
-    // Handle error
     echo "Erreur lors de la suppression de l'utilisateur.";
 }
 
