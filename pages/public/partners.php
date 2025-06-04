@@ -62,7 +62,6 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if (isset($_SESSION)) {
             $_SESSION['current_page'] = 'settings';
         }
-        echo $sql;
         include_once "navbar/navbar.php";
     ?>    
 
