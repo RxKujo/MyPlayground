@@ -39,4 +39,7 @@ if ($stmt->execute()) {
     echo "Erreur lors de la suppression de l'utilisateur.";
 }
 
+header("Location: ../admin/users");
+exit();
+
 ?>

@@ -12,26 +12,43 @@ include_once "navbar/header.php";
 
 $user = $_SESSION['user_info'];
 
-
-$niveau = filter_input(INPUT_GET, 'niveau', FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
-$poste = filter_input(INPUT_GET, 'poste', FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
-
+$niveau = isset($_GET['niveau']) && is_array($_GET['niveau']) ? $_GET['niveau'] : [];
+$postes = isset($_GET['poste']) && is_array($_GET['poste']) ? $_GET['poste'] : [];
 
 $sql = "SELECT * FROM utilisateur WHERE id != :id";
 $params = [':id' => $user['id']];
 
-if (count($_GET) > 0) {
+if (!empty($niveau)) {
+    $niveau = array_filter($niveau, function($n) {
+        return in_array($n, ['0', '1', '2', '3'], true);
+    });
 
-    if ($niveau !== null && $niveau >= 0 && $niveau <= 3) {
-        $sql .= " AND niveau = :niveau";
-        $params[':niveau'] = $niveau;
+    if (!empty($niveau)) {
+        $placeholders = [];
+        foreach ($niveau as $index => $val) {
+            $key = ":niveau$index";
+            $placeholders[] = $key;
+            $params[$key] = $val;
+        }
+        $sql .= " AND niveau IN (" . implode(', ', $placeholders) . ")";
     }
+}
 
-    if ($poste !== null && $poste >= 0 && $poste <= 4) {
-        $sql .= " AND poste = :poste";
-        $params[':poste'] = $poste;
+if (!empty($postes)) {
+    // Filtrer uniquement les valeurs valides 0 à 4
+    $postes = array_filter($postes, function($p) {
+        return in_array($p, ['0', '1', '2', '3', '4'], true);
+    });
+
+    if (!empty($postes)) {
+        $placeholders = [];
+        foreach ($postes as $index => $val) {
+            $key = ":poste$index";
+            $placeholders[] = $key;
+            $params[$key] = $val;
+        }
+        $sql .= " AND poste IN (" . implode(', ', $placeholders) . ")";
     }
-
 }
 
 $stmt = $pdo->prepare($sql);
@@ -45,6 +62,7 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if (isset($_SESSION)) {
             $_SESSION['current_page'] = 'settings';
         }
+        echo $sql;
         include_once "navbar/navbar.php";
     ?>    
 

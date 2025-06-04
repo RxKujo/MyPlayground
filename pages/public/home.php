@@ -61,22 +61,22 @@ include_once "navbar/header.php";
                     <div class="d-inline-flex gap-2 flex-wrap">
                         <div>
                             <input id="niveau-debutant" name="niveau[]" type="checkbox" class="btn-check" value="0">
-                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="niveau-debutant" data-bs-toggle="button">Débutant</label>
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="niveau-debutant">Débutant</label>
                         </div>
 
                         <div>
                             <input id="niveau-intermediaire" name="niveau[]" type="checkbox" class="btn-check" value="1">
-                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="niveau-intermediaire" data-bs-toggle="button">Intermédiaire</label>
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="niveau-intermediaire">Intermédiaire</label>
                         </div>
 
                         <div>
                             <input id="niveau-avance" name="niveau[]" type="checkbox" class="btn-check" value="2">
-                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="niveau-avance" data-bs-toggle="button">Avancé</label>
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="niveau-avance">Avancé</label>
                         </div>
 
                         <div>
                             <input id="niveau-pro" name="niveau[]" type="checkbox" class="btn-check" value="3">
-                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="niveau-pro" data-bs-toggle="button">Pro</label>
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="niveau-pro">Pro</label>
                         </div>
                     </div>
                 </div>
@@ -86,32 +86,32 @@ include_once "navbar/header.php";
                     <div class="d-inline-flex gap-2 flex-wrap">
                         <div>
                             <input id="poste-mj" name="poste[]" type="checkbox" class="btn-check" value="0">
-                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-mj" data-bs-toggle="button">Meneur de jeu</label>
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-mj">Meneur de jeu</label>
                         </div>
 
                         <div>
                             <input id="poste-ar" name="poste[]" type="checkbox" class="btn-check" value="1">
-                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-ar" data-bs-toggle="button">Arrière</label>
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-ar">Arrière</label>
                         </div>
 
                         <div>
                             <input id="poste-ai" name="poste[]" type="checkbox" class="btn-check" value="2">
-                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-ai" data-bs-toggle="button">Ailier</label>
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-ai">Ailier</label>
                         </div>
 
                         <div>
                             <input id="poste-af" name="poste[]" type="checkbox" class="btn-check" value="3">
-                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-af" data-bs-toggle="button">Ailier fort</label>
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-af">Ailier fort</label>
                         </div>
 
                         <div>
                             <input id="poste-p" name="poste[]" type="checkbox" class="btn-check" value="4">
-                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-p" data-bs-toggle="button">Pivot</label>
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-p">Pivot</label>
                         </div>
 
                         <div>
                             <input id="poste-all" name="poste[]" type="checkbox" class="btn-check" value="5">
-                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-all" data-bs-toggle="button">Tous</label>
+                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-all">Tous</label>
                         </div>
                     </div>
                 </div>
