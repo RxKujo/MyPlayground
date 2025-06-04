@@ -22,7 +22,7 @@ include_once $includesAdmin . "header.php";
             }
         ?>
         <h2>Gestion des Captchas</h2>
-        <a href="../../processes/add_captcha_process.php" class="btn btn-success mb-3">Ajouter un captcha</a>
+        <button class="btn btn-success mb-3 open-new-modal">Ajouter un captcha</button>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -137,6 +137,40 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
 
             const modal = new bootstrap.Modal(document.getElementById('deleteCaptchaModal'));
+            modal.show();
+        }
+
+        if (e.target.classList.contains('open-new-modal')) {
+            container.innerHTML = `
+                <div class="modal fade" id="newCaptchaModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form method="POST" action="../../processes/add_captcha_process.php">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Ajouter un captcha</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label>Question</label>
+                                        <input class="form-control" name="question" type="text" value="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Réponse</label>
+                                        <input class="form-control" name="reponse" type="text" value="">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                    <button type="submit" class="btn btn-primary">Envoyer</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const modal = new bootstrap.Modal(document.getElementById('newCaptchaModal'));
             modal.show();
         }
     });
