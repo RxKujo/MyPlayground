@@ -47,7 +47,18 @@ include_once "navbar/header.php";
                 <div class="d-flex justify-content-center">
                     <form id="upload-form" action="upload-avatar.php" method="POST" enctype="multipart/form-data">
                         <div id="pfp" class="position-relative profile-img-wrapper" style="cursor: pointer; width: 150px; height: 150px;">
-                            <img src="<?= htmlspecialchars($user['avatar'] ?? '../../assets/public/img/morad.png') ?>" class="w-100 h-100 rounded-circle" style="object-fit: cover;" id="avatar-preview">
+                            <?php
+                            $avatarData = $user['visage_blob'] ?? null;
+
+                            if ($avatarData) {
+                                $base64 = base64_encode($avatarData);
+                                $avatarSrc = "data:image/png;base64," . $base64;
+                            } else {
+                                $avatarSrc = "../../assets/public/img/morad.png";
+                            }
+                            ?>
+                            <img src="<?= $avatarSrc ?>" class="w-100 h-100 rounded-circle" style="object-fit: cover;" id="avatar-preview">
+
                             <div class="overlay-icon d-flex justify-content-center align-items-center">
                                 <?= $pen ?>
                             </div>

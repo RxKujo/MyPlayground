@@ -1,9 +1,9 @@
 const parts = {
   base: ["base.png"], // silhouette de fond
   hair: ["hair1.png", "hair2.png"],
-  eyes: ["eyes1.png", "eyes2.png"],
-  nose: ["nose1.png"],
-  mouth: ["mouth1.png", "mouth2.png"]
+  eyes: ["eyes1.png", "eyes2.png", "eyes3.png", "eyes4.png", "eyes5.png",],
+  nose: ["nose1.png", "nose2.png", "nose3.png" ,"nose4.png" , "nose5.png"],
+  mouth: ["mouth1.png", "mouth2.png", "mouth3.png", "mouth4.png", "mouth5.png"]
 };
 
 const currentIndex = {
@@ -71,7 +71,7 @@ function saveAvatar() {
   const imageData = canvas.toDataURL('image/png');
 
   const xhr = new XMLHttpRequest();
-  xhr.open('POST', 'save-avatar.php', true);
+  xhr.open('POST', 'save-avatar', true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
