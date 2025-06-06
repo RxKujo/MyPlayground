@@ -78,6 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     users.forEach(user => {
         const id = user.id;
+        const username = user.pseudo;
         const nom = user.nom;
         const prenom = user.prenom;
         const email = user.email;
@@ -88,6 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${id}</td>
+            <td>${username}</td>
             <td>${nom}</td>
             <td>${prenom}</td>
             <td>${email}</td>

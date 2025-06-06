@@ -285,4 +285,7 @@ include_once "navbar/header.php";
             </div>
         </div>
     </div>
+
+    <script src="../../assets/public/js/avatar-builder.js"></script>
+    
     <?php include_once $includesGlobal . "footer.php"; ?>

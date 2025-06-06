@@ -36,6 +36,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Nom d'utilisateur</th>
                     <th>Nom</th>
                     <th>Prénom</th>
                     <th>Email</th>
@@ -56,7 +57,5 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     const userIdSession = <?= $_SESSION['user_info']['id'] ?>;
 </script>
-
-<script src="/assets/admin/js/dynamicUserModal.js"></script>
 
 <?php include_once $includesGlobal . "footer.php"; ?>

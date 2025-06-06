@@ -2,12 +2,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.querySelector('#searchUserField');
     const tableRows = document.querySelectorAll("tbody tr");
 
+    console.log(tableRows);
+    
     searchInput.addEventListener("keyup", function () {
         const searchTerm = searchInput.value.trim().toLowerCase();
-
+        
         tableRows.forEach((row) => {
+            console.log("Bonjour");
             const cells = row.querySelectorAll("td");
-
+            
             const nomCell = cells[1];
             const prenomCell = cells[2];
 

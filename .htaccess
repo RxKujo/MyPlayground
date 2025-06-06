@@ -12,7 +12,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 # Rediriger /page vers pages/public/page.php
 RewriteRule ^([a-zA-Z0-9_-]+)$ pages/public/$1.php [L]
 
-# Rediriger /admin vers dashboard
+# Rediriger /admin/ vers dashboard
 RewriteRule ^admin/$ pages/admin/dashboard.php [L]
 
 # Rediriger /admin/page vers pages/admin/page.php
