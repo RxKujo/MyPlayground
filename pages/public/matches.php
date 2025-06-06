@@ -18,8 +18,6 @@ include_once "navbar/header.php";
     <?php include_once "navbar/navbar.php"; ?>
 
     <div class="container-fluid px-0" id="content">
-
-        <!-- Hero Section -->
         <section class="text-white py-5" style="background-color: #3a3a3a;">
             <div class="text-center">
                 <h2 class="fw-bold">Créer ou Rejoindre un Match</h2>
@@ -31,7 +29,6 @@ include_once "navbar/header.php";
             </div>
         </section>
 
-        <!-- Available Matches Section -->
         <section class="py-5">
             <div class="text-center mb-4">
                 <h3 class="fw-bold">Matchs Disponibles à Rejoindre</h3>

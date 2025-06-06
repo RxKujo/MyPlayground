@@ -69,13 +69,12 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="container-fluid px-0" id="content">                
         <div id="partners-page">
-            <div class="bg-black" style="--bs-bg-opacity: .65;" role="partners header">
-                <div class="container py-5">
-                    <h1 class="fs-1 fw-bold text-center text-white mb-4">Filtrez vos coéquipiers</h1>
-                    <p class="fs-6 text-center text-white mb-0">Trouvez des partenaires qui correspondent à vos critères</p>
-
+            <section class="text-white py-5" style="background-color: #3a3a3a;">
+                <div class="text-center">
+                    <h2 class="fs-1 fw-bold text-center text-white mb-4">Filtrez vos coéquipiers</h2>
+                    <p class="fs-6 text-cetner text-white mb-0">Connectez-vous avec d'autres personnes et profitez d’un match fait pour vous !</p>
                 </div>
-            </div>
+            </section>
             
             <div class="container py-4">
                 <h2 class="fs-2 fw-bold">Filtres</h1>

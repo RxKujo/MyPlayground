@@ -46,4 +46,6 @@ $dribbble = '<i class="bi bi-dribbble"></i>';
 
 $chatDotFill = '<i class="bi bi-chat-dots-fill"></i>';
 
+$plusSquareFill = '<i class="bi bi-plus-square-fill"></i>';
+
 ?>
