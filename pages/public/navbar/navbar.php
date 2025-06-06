@@ -1,12 +1,5 @@
 <?php
 
-if (isset($_SESSION['user_id'])) {
-    $id = $_SESSION['user_id'];
-} else {
-    header('location: index.php');
-    exit();
-}
-
 $userRights = $user['droits'];
 $userIsVerified = $user['is_verified'];
 

@@ -2,8 +2,6 @@
 
 include_once '../../assets/shared/icons/icons.php';
 
-
-
 ?>
 
 <nav class="bg-dark text-white p-3" style="width: 280px; min-height: 100vh;">

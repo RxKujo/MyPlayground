@@ -2,16 +2,13 @@
 
 include_once '../../includes/global/session.php';
 
-if (!isset($_SESSION['user_id'])) {
-    header("location: ../../index.php");
-    exit();
-}
+notLogguedSecurity("../../index.php");
 
 $root = $_SERVER['DOCUMENT_ROOT'];
 
 include_once $includesConfig . "config.php";
 
-$user = getUser($pdo, $_SESSION['user_id']);
+$user = $_SESSION['user_info'];
 
 include_once $includesPublic . "header.php";
 include_once $assetsShared . 'icons/icons.php';

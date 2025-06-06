@@ -2,15 +2,13 @@
 
 include_once '../../includes/global/session.php';
 
-if (!isset($_SESSION['user_id'])) {
-    header("location: ../../index.php");
-    exit();
-}
+notLogguedSecurity("../../index.php");
+
 
 include_once $includesConfig . 'config.php';
 
 
-$user = getUser($pdo, $_SESSION['user_id']);
+$user = $_SESSION['user_info'];
 
 $position = getUserPosition($user);
 $niveau = getUserLevel($user);

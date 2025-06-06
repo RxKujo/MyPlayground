@@ -2,10 +2,8 @@
 
 include_once '../../includes/global/session.php';
 
-if (!isset($_SESSION['user_info'])) {
-    header("location: ../../index.php");
-    exit();
-}
+notLogguedSecurity("../../index.php");
+
 include_once $includesConfig . "config.php";
 
 $user = $_SESSION['user_info'];

@@ -2,6 +2,8 @@
 
 include_once '../../includes/global/session.php';
 
+notLogguedSecurity("../../index.php");
+
 include_once "../../includes/admin/header.php";
 
 ?>

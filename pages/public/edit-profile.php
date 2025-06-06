@@ -5,7 +5,7 @@ include_once '../../includes/global/session.php';
 $error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
 unset($_SESSION['error'], $_SESSION['form_data']);
 
-
+notLogguedSecurity("../../index.php");
 
 include_once($includesConfig . 'config.php');
 include_once($assetsShared . 'icons/icons.php');
@@ -13,12 +13,7 @@ include_once($assetsShared . 'icons/icons.php');
 include_once($includesPublic . 'header.php');
 include_once "navbar/header.php";
 
-$user = getUser($pdo, $_SESSION['user_id']);
-
-if (!$user || is_null($user)) {
-	header("location: ../../index.php");
-	exit();
-}
+$user = $_SESSION['user_info'];
 
 $niveau = getUserLevel($user);
 $poste = getUserPosition($user);

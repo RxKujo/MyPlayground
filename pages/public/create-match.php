@@ -15,12 +15,9 @@ include_once($assetsShared . 'icons/icons.php');
 include_once($includesPublic . 'header.php');
 include_once "navbar/header.php";
 
-$user = getUser($pdo, $_SESSION['user_id']);
+notLogguedSecurity("../../index.php");
 
-if (!$user || is_null($user)) {
-	header("location: ../../index.php");
-	exit();
-}
+$user = $_SESSION['user_info'];
 
 $niveau = getUserLevel($user);
 $poste = getUserPosition($user);

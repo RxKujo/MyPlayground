@@ -196,3 +196,10 @@ function fetchUsers(PDO $pdo, string $filter, string $input) {
     $results = $pdo->query($sql, PDO::FETCH_ASSOC);
     return $results;    
 }
+
+function notLogguedSecurity(string $pathToIndex) {
+    if (!isset($_SESSION['user_info'])) {
+        header("location: " . $pathToIndex);
+        exit();
+    }
+}
