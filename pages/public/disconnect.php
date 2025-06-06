@@ -3,6 +3,7 @@
 include_once '../../includes/global/session.php';
 
 notLogguedSecurity("../../index.php");
+$user = $_SESSION['user_info'];
 
 include_once "../../includes/public/header.php";
 include_once $assetsShared . 'icons/icons.php';
