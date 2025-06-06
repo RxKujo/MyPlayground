@@ -10,7 +10,7 @@ $user = $_SESSION['user_info'];
 
 include_once $includesPublic . "header.php";
 include_once $assetsShared . 'icons/icons.php';
-é
+
 
 include_once "navbar/header.php";
 
