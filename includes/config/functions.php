@@ -203,3 +203,14 @@ function notLogguedSecurity(string $pathToIndex) {
         exit();
     }
 }
+
+function getPfp(PDO $pdo, array $user) {
+    $sql = "SELECT pfp from utilisateur WHERE id = :id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        'id'=>$user['id']
+    ]);
+
+    $pfp = $stmt->fetch(PDO::PARAM_LOB);
+    return $pfp;
+}

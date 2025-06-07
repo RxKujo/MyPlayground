@@ -8,7 +8,8 @@ notLogguedSecurity("../../index.php");
 include_once $includesConfig . 'config.php';
 
 
-$user = $_SESSION['user_info'];
+$user = getUser($pdo, $_SESSION['user_id']);
+
 
 $position = getUserPosition($user);
 $niveau = getUserLevel($user);
@@ -46,7 +47,7 @@ include_once "navbar/header.php";
                     <form id="upload-form" action="upload-avatar.php" method="POST" enctype="multipart/form-data">
                         <div id="pfp" class="position-relative profile-img-wrapper" style="cursor: pointer; width: 150px; height: 150px;">
                             <?php
-                            $avatarData = $user['visage_blob'] ?? null;
+                            $avatarData = $user['pfp'] ?? null;
 
                             if ($avatarData) {
                                 $base64 = base64_encode($avatarData);
