@@ -1,123 +1,79 @@
 <?php
-//test
-// $utilisateur['id'] ;
-session_start();
-$error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
-unset($_SESSION['error'], $_SESSION['form_data']);
-
-
-include_once('../../includes/config/variables.php');
-
-include_once($includesConfig . 'config.php');
-include_once($includesConfig . 'functions.php');
-include_once($assetsShared . 'icons/icons.php');
-
-include_once($includesPublic . 'header.php');
-include_once "navbar/header.php";
+include_once '../../includes/global/session.php';
 
 notLogguedSecurity("../../index.php");
 
+include_once($includesConfig . 'config.php');
+include_once($assetsShared . 'icons/icons.php');
+include_once($includesPublic . 'header.php');
+include_once "navbar/header.php";
+
 $user = $_SESSION['user_info'];
 
-$niveau = getUserLevel($user);
-$poste = getUserPosition($user);
-$role = getUserRole($user);
-
+$error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
+unset($_SESSION['error'], $_SESSION['form_data']);
 ?>
-<div class="d-flex">
-    <?php
-        include_once "navbar/navbar.php";
-    ?>
 
-	<div class="container">	
+<div class="d-flex">
+    <?php include_once "navbar/navbar.php"; ?>
+
+	<div class="container">
 		<div class="header-title">
 			<h1>Créer un match</h1>
 		</div>
+
 		<div class="form-container">
+			<form method="POST" action="../../processes/create_match_process.php">
 
-			<form method="POST" action="../../processes/edit_profile_process.php">
-				<input class="form-control" name="id" type="hidden" value="" />
-				
 				<div class="mb-3">
-					<label class="form-label" for="nom">Nom</label>
-					<input class="form-control" id="nom" name="nom" type="text" value="<?= $user['nom'] ?>"/>
-				</div>
-				<div class="mb-3">
-					<label class="form-label" for="prenom">Prenom</label>
-					<input class="form-control" id="prenom" name="prenom" type="text" value="<?= $user['prenom'] ?>"/>
-				</div>
-				
-				<div class="mb-3">
-					<label class="form-label" for="pseudo">Pseudonyme</label>
-					<input class="form-control" id="pseudo" name="pseudo" type="text" value="<?= $user['pseudo'] ?>"/>
-				</div>
-				
-				<div class="mb-3">
-					<label class="form-label" for="tel">Téléphone</label>
-					<input class="form-control" id="tel" name="tel" type="tel" value="<?= $user['tel'] ?>"/>
-				</div>
-				
-				<div class="mb-3">
-					<label class="form-label" for="email">Email</label>
-					<input class="form-control" id="email" name="email" type="email" value="<?= $user['email'] ?>"/>
+					<label class="form-label" for="nom_match">Nom du match</label>
+					<input class="form-control" id="nom_match" name="nom_match" type="text" required />
 				</div>
 
 				<div class="mb-3">
-					<label class="form-label" for="localisation">Adresse</label>
-					<input class="form-control" id="localisation" name="localisation" type="text" value="<?= $user['localisation'] ?>"/>
+					<label class="form-label" for="localisation">Localisation</label>
+					<input class="form-control" id="localisation" name="localisation" type="text" required />
 				</div>
-				
+
 				<div class="mb-3">
-					<label class="form-label" for="niveau">Niveau</label>
-					<select class="form-select" id="niveau" name="niveau" aria-label="">
-						<option value="<?= $user['niveau'] ?>" selected><?= $niveau ?></option>
+					<label class="form-label" for="date_debut">Date et heure de début</label>
+					<input class="form-control" id="date_debut" name="date_debut" type="datetime-local" required />
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" for="date_fin">Date et heure de fin</label>
+					<input class="form-control" id="date_fin" name="date_fin" type="datetime-local" required />
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" for="nb_joueurs">Nombre de joueurs</label>
+					<input class="form-control" id="nb_joueurs" name="nb_joueurs" type="number" min="2" required />
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" for="niveau_min">Niveau minimum requis</label>
+					<select class="form-select" id="niveau_min" name="niveau_min">
 						<option value="0">Débutant</option>
 						<option value="1">Intermédiaire</option>
 						<option value="2">Avancé</option>
 						<option value="3">Pro</option>
 					</select>
 				</div>
-				
-				
+
 				<div class="mb-3">
-					<label class="form-label" for="role">Role</label>
-					<select class="form-select" id="role" name="role" aria-label="">
-						<option value="<?= $user['role'] ?>" selected><?= $role ?></option>
-						<option value="0">Joueur</option>
-						<option value="1">Arbitre</option>
-						<option value="2">Organisateur</option>
-						<option value="3">Spectateur</option>
-					</select>
-				</div>
-				
-				<div class="mb-3">
-					<label class="form-label" for="poste">Poste</label>
-					<select class="form-select" id="poste" name="poste">
-						<option value="<?= $poste ?>" selected=""><?= $poste ?></option>
-						<option value="0">Meneur</option>
-						<option value="1">Arrière</option>
-						<option value="2">Ailier</option>
-						<option value="3">Ailier fort</option>
-						<option value="4">Pivot</option>
-					</select>
-					
-				</div>
-				
-				<div class="mb-3">
-					<label for="commentaire">Commentaire</label>
+					<label for="commentaire">Message ou commentaire</label>
 					<div class="form-floating">
 						<textarea class="form-control" id="commentaire" name="commentaire" style="height: 100px"></textarea>
-						<label for="commentaire">Commente ici</label>
+						<label for="commentaire">Indications supplémentaires</label>
 					</div>
 				</div>
+
 				<div class="mb-3">
-					<button type="submit" class="btn btn-primary w-100">Valider</button>
+					<button type="submit" class="btn btn-primary w-100">Créer le match</button>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
 
-<?php
-include_once('../../includes/global/footer.php');
-?>
+<?php include_once('../../includes/global/footer.php'); ?>
