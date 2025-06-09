@@ -17,7 +17,7 @@ $user = $_SESSION['user_info'];
 $niveau = isset($_GET['niveau']) && is_array($_GET['niveau']) ? $_GET['niveau'] : [];
 $postes = isset($_GET['poste']) && is_array($_GET['poste']) ? $_GET['poste'] : [];
 
-$sql = "SELECT * FROM utilisateur WHERE id != :id";
+$sql = "SELECT id, prenom, nom, pseudo, niveau, poste, localisation, pfp FROM utilisateur WHERE id != :id";
 $params = [':id' => $user['id']];
 
 if (!empty($niveau)) {
