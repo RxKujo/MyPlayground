@@ -46,7 +46,7 @@ unset($_SESSION['error'], $_SESSION['form_data']);
 				</div>
 
 				<div class="mb-3">
-					<label class="form-label" for="nb_joueurs">Nombre de joueurs</label>
+					<label class="form-label" for="nb_joueurs">Catégorie</label>
 					<input class="form-control" id="nb_joueurs" name="nb_joueurs" type="number" min="2" required />
 				</div>
 
