@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit();
 }
 
-clearSession();
+clearSession($pdo, $_SESSION['user_id'] ?? null);
 header('location: ../index.php');
 exit();
 ?>

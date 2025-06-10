@@ -7,7 +7,6 @@ unset($_SESSION['error'], $_SESSION['form_data']);
 
 notLogguedSecurity("../../index.php");
 
-include_once($includesConfig . 'config.php');
 include_once($assetsShared . 'icons/icons.php');
 
 include_once($includesPublic . 'header.php');

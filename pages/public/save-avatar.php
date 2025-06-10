@@ -3,8 +3,6 @@ include_once '../../includes/global/session.php';
 
 notLogguedSecurity("../../index.php");
 
-include_once $includesConfig . 'config.php';
-
 
 $user = $_SESSION['user_info'];
 
