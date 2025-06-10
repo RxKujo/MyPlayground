@@ -6,8 +6,6 @@ notLogguedSecurity("../../index.php");
 
 $root = $_SERVER['DOCUMENT_ROOT'];
 
-include_once $includesConfig . "config.php";
-
 $user = $_SESSION['user_info'];
 
 include_once $includesPublic . "header.php";
@@ -21,7 +19,7 @@ include_once "navbar/header.php";
         <section class="text-white py-5" style="background-color: #3a3a3a;">
             <div class="text-center">
                 <h2 class="fw-bold">Créer ou Rejoindre un Match</h2>
-                <p class="mb-4">Connectez-vous avec d'autres personnes et profitez d’un match fait pour vous !</p>
+                <p class="mb-4">Connectez-vous avec d'autres personnes et profitez d'un match fait pour vous !</p>
                 <div class="d-flex justify-content-center gap-3">
                     <a href="#" class="btn btn-outline-light px-4">Rejoindre un Match</a>
                     <a href="create-match" class="btn btn-light text-dark px-4">Créer un Match</a>

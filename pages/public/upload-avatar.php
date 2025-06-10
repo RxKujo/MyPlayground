@@ -4,8 +4,6 @@ include_once '../../includes/global/session.php';
 
 notLogguedSecurity("../../index.php");
 
-include_once $includesConfig . 'config.php';
-
 $userId = $_SESSION['user_id'];
 
 if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
