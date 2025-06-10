@@ -1,7 +1,7 @@
 
 
 <?php
-
+// Page: pages/public/teams.php
 include_once '../../includes/global/session.php';
 notLogguedSecurity("../../index.php");
 
