@@ -47,7 +47,7 @@ include_once "navbar/header.php";
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Avec:</label>
-                                                    <input class="form-control" name="guests[]" type="text" value="">
+                                                    <input class="form-control" name="guests[]" type="text" placeholder="Tapez pour chercher...">
                                                 </div>
                                             </div>
                                             <div class="modal-footer">

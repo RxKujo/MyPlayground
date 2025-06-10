@@ -191,7 +191,7 @@ function displayAlert(string $key, int $kind) {
     }
 }
 
-function fetchUsers(PDO $pdo, string $filter, string $input) {
+function fetchUsersFilter(PDO $pdo, string $filter, string $input) {
     $sql = "SELECT * FROM utilisateur WHERE $filter = $input";
     $results = $pdo->query($sql, PDO::FETCH_ASSOC);
     return $results;    
@@ -213,4 +213,39 @@ function getPfp(PDO $pdo, array $user) {
 
     $pfp = $stmt->fetch(PDO::PARAM_LOB);
     return $pfp;
+}
+
+function fetchColumns(PDO $pdo, string $table, array $cols) {
+    $sql = "SELECT " . implode(', ', $cols) . " FROM $table";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function displayCard(array $user) {
+    $pseudo = $user['pseudo'];
+    $prenom = $user['prenom'];
+    $nom = $user['nom'];
+    $niveau = getUserLevel($user);
+    $poste = getUserPosition($user);
+    $localisation = $user['localisation'];
+
+    $html = '
+    <div class="col-sm-6 col-md-4 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-2">' . htmlspecialchars($prenom . " " . $nom) . '</h5>
+                <h6 class="card-subtitle mb-3 text-muted">@' . htmlspecialchars($pseudo) . '</h6>
+                
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Niveau :</strong> ' . htmlspecialchars($niveau) . '</li>
+                    <li class="list-group-item"><strong>Poste :</strong> ' . htmlspecialchars($poste) . '</li>
+                    <li class="list-group-item"><strong>Localisation :</strong> ' . htmlspecialchars($localisation) . '</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    ';
+
+    return $html;
 }

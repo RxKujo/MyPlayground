@@ -35,7 +35,7 @@ $captcha_error = $_SESSION['errors']['captcha_error'] ?? null;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Se connecter</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         .form-container {
             max-width: 400px;
@@ -93,7 +93,7 @@ $captcha_error = $_SESSION['errors']['captcha_error'] ?? null;
 </head>
 <body>
 <div class="container">
-    <div class="header-title">
+    <div class="header-title pt-3">
         <img src="assets/public/img/logo.png" alt="Logo" />
         <h1>Se connecter</h1>
     </div>

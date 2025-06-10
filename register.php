@@ -1,5 +1,8 @@
 <?php
 session_start();
+
+include_once 'includes/config/functions.php';
+include_once 'includes/config/variables.php';
 include_once 'includes/config/config.php';
 
 $_SESSION['register_error'] = "Tous les champs doivent être remplis.";
@@ -28,7 +31,7 @@ $_SESSION['captcha_id'] = $captcha_id;
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Créer un compte</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <script type="module" src="assets/public/js/pageScript.js"></script>
   <style>
     .form-container {
@@ -97,7 +100,7 @@ $_SESSION['captcha_id'] = $captcha_id;
 
 <body>
   <div id="content" class="container">
-    <div class="header-title">
+    <div class="header-title pt-3">
       <img src="assets/public/img/logo.png" alt="Logo" />
       <h1>Créer un compte</h1>
     </div>

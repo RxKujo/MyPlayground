@@ -140,29 +140,10 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <h2 class="fw-bold">Coéquipiers</h2>
                 <div class="container row g-4">
                     <?php
-                        foreach($results as $mate):
-                            $pseudo = $mate['pseudo'];
-                            $prenom = $mate['prenom'];
-                            $nom = $mate['nom'];
-                            $niveau = getUserLevel($mate);
-                            $poste = getUserPosition($mate);
-                            $localisation = $mate['localisation'];
+                        foreach($results as $mate) {
+                            echo displayCard($mate);
+                        }
                     ?>
-                    <div class="col-sm-6 col-md-4 col-lg-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title mb-2"><?= htmlspecialchars($prenom . ' ' . $nom) ?></h5>
-                                <h6 class="card-subtitle mb-3 text-muted">@<?= htmlspecialchars($pseudo) ?></h6>
-                                
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item"><strong>Niveau :</strong> <?= htmlspecialchars($niveau) ?></li>
-                                    <li class="list-group-item"><strong>Poste :</strong> <?= htmlspecialchars($poste) ?></li>
-                                    <li class="list-group-item"><strong>Localisation :</strong> <?= htmlspecialchars($localisation) ?></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
