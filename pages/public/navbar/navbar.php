@@ -1,8 +1,14 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-$userRights = $user['droits'];
-$userIsVerified = $user['is_verified'];
+$user = $_SESSION['user_info'] ?? null;
 
+$userRights = $user['droits'] ?? 0;
+$userIsVerified = $user['is_verified'] ?? 0;
+
+include_once '../../assets/shared/icons/icons.php'; // Bien inclure tes icônes
 ?>
 
 <nav class="bg-light text-black p-3" style="width: 280px; min-height: 100vh;">
@@ -24,6 +30,7 @@ $userIsVerified = $user['is_verified'];
         <li class="nav-item"><a class="nav-link text-black" href="tournaments" data-page="tournaments"><?= $trophyFill ?> Tournois</a></li>
         <li class="nav-item"><a class="nav-link text-black" href="messages" data-page="messages"><?= $chatDotFill ?> Messages</a></li>
         <li class="nav-item"><a class="nav-link text-black" href="profile" data-page="profile"><?= $personFill ?> Profil</a></li>
+        <li class="nav-item"><a class="nav-link text-black" href="teams" data-page="teams"><?= $personFill ?> Équipes</a></li>
         <?php if ($userRights == 1): ?>
             <li class="nav-item"><a class="nav-link text-black" href="admin/dashboard"><?= $personFillGear ?> Espace Administrateur</a></li>
         <?php endif; ?>
