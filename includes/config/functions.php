@@ -179,11 +179,6 @@ function redirectError(string $error, string $errorMessage, string $location) {
     exit();
 }
 
-function clearSession() {
-    $_SESSION = [];
-    session_destroy();
-}
-
 function displayAlert(string $key, int $kind) {
     if (isset($_SESSION[$key]) && !is_null($_SESSION[$key])) {
         alertMessage($_SESSION[$key], $kind);
@@ -248,4 +243,50 @@ function displayCard(array $user) {
     ';
 
     return $html;
+}
+
+function isUserOnline(PDO $pdo, int $userId) {
+    $sql = "SELECT is_online FROM utilisateur WHERE id = :id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $result = $stmt->fetchColumn();
+    
+    return $result == 1;
+}
+
+function makeOnline(PDO $pdo, $userId) {
+    if (!isUserOnline($pdo, $userId)) {
+        $sql = "UPDATE utilisateur SET is_online = 1 WHERE id = :id";
+    } else {
+        return false;
+    }
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+
+    $stmt->execute();
+
+    return true;
+}
+
+function makeOffline(PDO $pdo, $userId) {
+    if (isUserOnline($pdo, $userId)) {
+        $sql = "UPDATE utilisateur SET is_online = 0 WHERE id = :id";
+    } else {
+        return false;
+    }
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return true;
+}
+
+function clearSession(PDO $pdo, int $userId) {
+    makeOffline($pdo, $userId);
+    $_SESSION = [];
+    session_destroy();
 }

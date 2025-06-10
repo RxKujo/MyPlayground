@@ -4,10 +4,6 @@ include_once '../../includes/global/session.php';
 
 notLogguedSecurity("../../index.php");
 
-
-include_once $includesConfig . 'config.php';
-
-
 $user = getUser($pdo, $_SESSION['user_id']);
 
 
