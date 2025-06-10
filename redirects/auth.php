@@ -7,8 +7,6 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit();
 }
 
-include_once $includesConfig . 'config.php';
-
 const home = '../home';
 const login = '../login.php';
 
@@ -59,6 +57,11 @@ if ($isPasswordCorrect) {
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['user_info'] = $user;
     $_SESSION['success'] = 'Connexion réussie !';
+
+    if (!makeOnline($pdo, $user['id'])) {
+        redirectError('login_error', "Vous êtes déjà connecté sur un autre appareil", login);
+    }
+    
     unset($_SESSION['form_data']);
     header("location: " . home);
     exit();

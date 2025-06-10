@@ -249,3 +249,37 @@ function displayCard(array $user) {
 
     return $html;
 }
+
+function makeOnline(PDO $pdo, $userId) {
+    $sql = "SELECT is_online FROM utilisateur WHERE id = $userId";
+    $result = $pdo->query($sql);
+
+    if ($result == 0) {
+        $sql = "UPDATE utilisateur SET is_online = 1 WHERE id = :id";
+    } else {
+        return false;
+    }
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ":id" => $userId
+    ]);
+
+    return true;
+}
+
+function makeOffline(PDO $pdo, $userId) {
+    $sql = "SELECT is_online FROM utilisateur WHERE id = $userId";
+    $result = $pdo->query($sql);
+
+    if ($result == 1) {
+        $sql = "UPDATE utilisateur SET is_online = 0 WHERE id = :id";
+    }
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ":id" => $userId
+    ]);
+
+    return true;
+}

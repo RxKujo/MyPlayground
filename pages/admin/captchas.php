@@ -4,8 +4,6 @@ include_once '../../includes/global/session.php';
 
 notLogguedSecurity("../../index.php");
 
-include_once $includesConfig . "config.php";
-
 $sql = 'SELECT id, question, reponse FROM captcha';
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
