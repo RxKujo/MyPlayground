@@ -45,8 +45,15 @@ unset($_SESSION['error'], $_SESSION['form_data']);
 				</div>
 
 				<div class="mb-3">
-					<label class="form-label" for="nb_joueurs">Catégorie</label>
-					<input class="form-control" id="nb_joueurs" name="nb_joueurs" type="number" min="2" required />
+					<label class="form-label" for="categorie">Catégorie</label>
+					<select class="form-select" id="categorie" name="niveau" aria-label="">
+						<option value="" selected></option>
+						<option value="0">1v1</option>
+						<option value="1">2v2</option>
+						<option value="2">3v3</option>
+						<option value="3">4v4</option>
+						<option value="3">5v5</option>
+					</select>
 				</div>
 
 				<div class="mb-3">
@@ -58,6 +65,37 @@ unset($_SESSION['error'], $_SESSION['form_data']);
 						<option value="3">Pro</option>
 					</select>
 				</div>
+
+				<div class="container text-center">
+					<div class="row">
+						<div class="col">
+							<div>
+								<p>Equipe 1</p>
+								<ul>
+
+								</ul>
+							</div>
+							<div class="mb-3">
+								<button type="submit" class="btn btn-primary w-40">Rejoindre</button>
+							</div>
+						</div>
+							
+
+						
+						<div class="col">
+							<div>
+								<p>Equipe 2</p>
+								<ul>
+
+								</ul>
+							</div>
+							<div class="mb-3">
+								<button type="submit" class="btn btn-primary w-40">Rejoindre</button>
+							</div>
+						</div>			
+					</div>
+				</div>
+
 
 				<div class="mb-3">
 					<label for="commentaire">Message ou commentaire</label>
