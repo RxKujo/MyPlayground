@@ -1,86 +1,79 @@
 <?php
-include_once '../../includes/global/session.php';
-include_once '../../includes/config.php';
+session_start(); // S'assurer que la session est active
+
+include_once '../../includes/config/config.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../../index.php");
     exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nom_match = $_POST['nom_match'] ?? '';
-    $localisation = $_POST['localisation'] ?? '';
-    $date_debut = $_POST['date_debut'] ?? '';
-    $date_fin = $_POST['date_fin'] ?? '';
-    $categorie = $_POST['niveau'] ?? '';
-    $niveau_min = $_POST['niveau_min'] ?? 0;
-    $commentaire = $_POST['commentaire'] ?? '';
-    $createur_id = $_SESSION['user_id'];
-
-    $joueurs_par_equipe = match ((int)$categorie) {
-        0 => 1,
-        1 => 2,
-        2 => 3,
-        3 => 4,
-        default => 5
-    };
-
-    if (
-        empty($nom_match) || empty($localisation) || empty($date_debut) ||
-        empty($date_fin) || $categorie === '' || !is_numeric($niveau_min)
-    ) {
-        $_SESSION['error'] = "Tous les champs doivent être remplis.";
-        header("Location: ../profile/create-match.php");
-        exit();
-    }
-
-    try {
-        $pdo->beginTransaction();
-
-        $stmt = $pdo->prepare("INSERT INTO match (nom, createur_id, date_debut, date_fin, nb_joueurs, niveau_minimum, localisation, commentaire)
-            VALUES (:nom, :createur_id, :date_debut, :date_fin, :nb_joueurs, :niveau_minimum, :localisation, :commentaire)");
-
-        $stmt->execute([
-            ':nom' => $nom_match,
-            ':createur_id' => $createur_id,
-            ':date_debut' => $date_debut,
-            ':date_fin' => $date_fin,
-            ':nb_joueurs' => $joueurs_par_equipe * 2,
-            ':niveau_minimum' => $niveau_min,
-            ':localisation' => $localisation,
-            ':commentaire' => $commentaire
-        ]);
-
-        $match_id = $pdo->lastInsertId();
-
-        // Créer deux équipes liées au match
-        $stmtEquipe = $pdo->prepare("INSERT INTO equipe (nom_equipe, match_id, nb_joueurs_max) VALUES (:nom, :match_id, :max)");
-
-        $stmtEquipe->execute([
-            ':nom' => "Equipe 1",
-            ':match_id' => $match_id,
-            ':max' => $joueurs_par_equipe
-        ]);
-
-        $stmtEquipe->execute([
-            ':nom' => "Equipe 2",
-            ':match_id' => $match_id,
-            ':max' => $joueurs_par_equipe
-        ]);
-
-        $pdo->commit();
-
-        header("Location: ../profile/profile.php");
-        exit();
-
-    } catch (PDOException $e) {
-        $pdo->rollBack();
-        $_SESSION['error'] = "Erreur lors de la création du match : " . $e->getMessage();
-        header("Location: ../profile/create-match.php");
-        exit();
-    }
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    $_SESSION['error'] = "Méthode non autorisée.";
+    header("Location: ../create-match");
+    exit();
 }
 
-header("Location: ../profile/create-match.php");
-exit();
-    
+$nom_match    = $_POST['nom_match'] ?? '';
+$localisation = $_POST['localisation'] ?? '';
+$date_debut   = $_POST['date_debut'] ?? '';
+$date_fin     = $_POST['date_fin'] ?? '';
+$categorie    = $_POST['categorie'] ?? '';
+$niveau_min   = $_POST['niveau_min'] ?? 0;
+$commentaire  = $_POST['commentaire'] ?? '';
+$createur_id  = $_SESSION['user_id'] ?? null;
+
+// Calcul des joueurs par équipe selon la catégorie
+$joueurs_par_equipe = match ((int)$categorie) {
+    0 => 1,
+    1 => 2,
+    2 => 3,
+    3 => 4,
+    default => 5
+};
+
+// Vérification des champs obligatoires
+if (
+    empty($nom_match) || empty($localisation) || empty($date_debut) ||
+    empty($date_fin) || $categorie === '' || !is_numeric($niveau_min)
+) {
+    $_SESSION['error'] = "Tous les champs doivent être remplis.";
+    header("Location: ../create-match");
+    exit();
+}
+
+try {
+    $pdo->beginTransaction();
+
+    // Créer deux équipes
+    $stmtEquipe = $pdo->prepare("INSERT INTO equipe (nom, date_creation) VALUES (:nom, CURDATE())");
+
+    $stmtEquipe->execute([':nom' => "Équipe A"]);
+    $idEquipe1 = $pdo->lastInsertId();
+
+    $stmtEquipe->execute([':nom' => "Équipe B"]);
+    $idEquipe2 = $pdo->lastInsertId();
+
+    // Créer le match avec les deux équipes
+    $stmtMatch = $pdo->prepare("
+        INSERT INTO `match` (id_equipe1, id_equipe2, statut, message)
+        VALUES (:id1, :id2, 'en_attente', :message)
+    ");
+    $stmtMatch->execute([
+        ':id1' => $idEquipe1,
+        ':id2' => $idEquipe2,
+        ':message' => $commentaire
+    ]);
+
+    $pdo->commit();
+
+    $_SESSION['success'] = "Match et équipes créés avec succès.";
+    header("Location: ../../pages/public/match");
+    exit();
+
+} catch (PDOException $e) {
+    $pdo->rollBack();
+    $_SESSION['error'] = "Erreur lors de la création : " . $e->getMessage();
+    header("Location: create-match.php");
+    exit();
+}
