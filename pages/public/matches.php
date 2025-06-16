@@ -22,7 +22,7 @@ include_once "navbar/header.php";
                 <p class="mb-4">Connectez-vous avec d'autres personnes et profitez d'un match fait pour vous !</p>
                 <div class="d-flex justify-content-center gap-3">
                     <a href="#" class="btn btn-outline-light px-4">Rejoindre un Match</a>
-                    <a href="create-match" class="btn btn-light text-dark px-4">Créer un Match</a>
+                    <a href="create_match" class="btn btn-light text-dark px-4">Créer un Match</a>
                 </div>
             </div>
         </section>

@@ -1,17 +1,31 @@
 <?php
- include_once __DIR__ . '/../../../includes/config/theme.php'; ?>
+// filepath: c:\xampp\htdocs\MyPlayground\pages\public\navbar\header.php
+include_once __DIR__ . '/../../../includes/config/theme.php';
+?>
 
 <header class="container-fluid bg-dark py-0 my-0">
-    <div class="container ms-0 ps-0 d-flex align-items-center">
-        <a class="d-flex align-items-center text-white text-decoration-none" href="index.php" data-page="home" style="gap: 10px;">
-            <img src="../../assets/public/img/logo.png" alt="Logo" class="logo">
-            <span class="fs-1">My PlayGround</span>
-        </a>
-
-        <div class="header-icons d-flex align-items-center ms-auto">
-            <a id="messages-icon" href="messages" class="me-3 text-primary"><?= $chatLeftTextFill ?></a>
-            <span class="me-3 text-primary"><?= $bellFill ?></span>
-            <a id="profile-icon" href="profile" class="text-primary text-decoration-none"><?= $personFill ?></a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">My PlayGround</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Tournois</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Équipes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Profil</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
+    </nav>
 </header>
