@@ -46,13 +46,13 @@ unset($_SESSION['error'], $_SESSION['form_data']);
 
 				<div class="mb-3">
 					<label class="form-label" for="categorie">Catégorie</label>
-					<select class="form-select" id="categorie" name="niveau" aria-label="">
+					<select class="form-select" id="categorie" name="categorie" aria-label="">
 						<option value="" selected></option>
 						<option value="0">1v1</option>
 						<option value="1">2v2</option>
 						<option value="2">3v3</option>
 						<option value="3">4v4</option>
-						<option value="3">5v5</option>
+						<option value="4">5v5</option>
 					</select>
 				</div>
 
