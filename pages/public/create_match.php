@@ -35,20 +35,24 @@ unset($_SESSION['error'], $_SESSION['form_data']);
 				</div>
 
 				<div class="mb-3">
-					<label class="form-label" for="date_debut">Date et heure de début</label>
-					<input class="form-control" id="date_debut" name="date_debut" type="datetime-local" required />
+					<label class="form-label" for="date">Date</label>
+					<input class="form-control" id="date" name="date" type="date" required />
+				</div>
+
+					<div class="mb-3">
+					<label class="form-label" for="debut">Heure de début</label>
+					<input class="form-control" id="debut" name="debut" type="time" required />
 				</div>
 
 				<div class="mb-3">
-					<label class="form-label" for="date_fin">Date et heure de fin</label>
-					<input class="form-control" id="date_fin" name="date_fin" type="datetime-local" required />
+					<label class="form-label" for="fin">Heure de fin</label>
+					<input class="form-control" id="fin" name="fin" type="time" required />
 				</div>
 
 				<div class="mb-3">
 					<label class="form-label" for="categorie">Catégorie</label>
 					<select class="form-select" id="categorie" name="categorie" aria-label="">
-						<option value="" selected></option>
-						<option value="0">1v1</option>
+						<option value="0" selected>1v1</option>
 						<option value="1">2v2</option>
 						<option value="2">3v3</option>
 						<option value="3">4v4</option>
