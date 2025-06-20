@@ -1,23 +1,15 @@
 <?php
 
-session_start();
+include_once '../includes/global/session.php';
 
+notLogguedSecurity("../index.php");
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("location: ../index.php");
-    exit();
-}
+$user = $_SESSION['user_info'];
 
 if ($_POST['id']) {
     $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-} else {
-    if (isset($_SESSION) && $_SESSION['user_id']) {
-        $id = $_SESSION['user_id'];
-    } else {
-        header("location: ../index.php");
-        exit();
-    }
 }
+
 
 $space = filter_input(INPUT_POST, 'userspace', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
@@ -33,7 +25,7 @@ if ($stmt->execute()) {
         header("Location: ../admin/users");
         exit();
     } else if ($space === 'user') {
-        clearSession();
+        clearSession($pdo, $user['id']);
     }
 } else {
     echo "Erreur lors de la suppression de l'utilisateur.";

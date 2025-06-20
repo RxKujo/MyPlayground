@@ -1,11 +1,8 @@
 <?php
-session_start();
-include_once '../includes/config/config.php';
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../../index.php");
-    exit();
-}
+include_once '../includes/global/session.php';
+
+notLogguedSecurity("../../index.php");
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     $_SESSION['error'] = "Méthode non autorisée.";
@@ -41,8 +38,6 @@ if (
 }
 
 try {
-    $pdo->beginTransaction();
-
     $stmtTerrain = $pdo->prepare("INSERT INTO terrain (nom, localisation, disponibilite) VALUES (:nom, :localisation, 'disponible')");
     $stmtTerrain->execute([
         ':nom' => $nom_match,
@@ -59,17 +54,18 @@ try {
     $idEquipe2 = $pdo->lastInsertId();
 
     $stmtMatch = $pdo->prepare("
-        INSERT INTO `match` (id_equipe1, id_equipe2, statut, message)
-        VALUES (:id1, :id2, 'en_attente', :message)
+        INSERT INTO match (id_equipe1, id_equipe2, statut, message, id_createur)
+        VALUES (:id1, :id2, 'en_attente', :message, :id_createur)
     ");
     $stmtMatch->execute([
         ':id1' => $idEquipe1,
         ':id2' => $idEquipe2,
-        ':message' => $commentaire
+        ':message' => $commentaire,
+        'id_createur' => $createur_id
     ]);
     $idMatch = $pdo->lastInsertId();
 
-    $stmtReservation = $pdo->prepare("INSERT INTO reserver (id_terrain, id_match, date_reservation, heure_debut, heure_fin, statut) VALUES (:id_terrain, :id_match, :date, :debut, :fin, 'en_attente')");
+    $stmtReservation = $pdo->prepare("INSERT INTO reserver (id_terrain, id_match, date_reservation, heure_debut, heure_fin, statut) VALUES (:id_terrain, :id_match, :date, :debut, :fin, 'en attente')");
     $stmtReservation->execute([
         ':id_terrain' => $idTerrain,
         ':id_match' => $idMatch,
@@ -78,14 +74,11 @@ try {
         ':fin' => $heure_fin
     ]);
 
-    $pdo->commit();
-
     $_SESSION['success'] = "Match, équipes, terrain et réservation créés avec succès.";
     header("Location: ../matches");
     exit();
 
 } catch (PDOException $e) {
-    $pdo->rollBack();
     $_SESSION['error'] = "Erreur lors de la création : " . $e->getMessage();
     header("Location: ../create_match");
     exit();

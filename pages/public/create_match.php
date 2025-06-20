@@ -117,4 +117,4 @@ unset($_SESSION['error'], $_SESSION['form_data']);
 	</div>
 </div>
 
-<?php include_once('../../includes/global/footer.php'); ?>
+<?php include_once($includesGlobal . 'footer.php'); ?>

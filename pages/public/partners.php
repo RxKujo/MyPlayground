@@ -139,7 +139,7 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="container row g-4">
                     <?php
                         foreach($results as $mate) {
-                            echo displayCard($mate);
+                            echo displayCardUser($mate);
                         }
                     ?>
                 </div>

@@ -158,6 +158,22 @@ function userPdf(array $user) {
 
     // User Data Fields
     foreach ($user as $key => $value) {
+        if (in_array($key, ['id', 'mdp', 'pfp', 'id_yeux', 'id_nez', 'id_bouche', 'visage_blob', 'email_verification_token', 'is_online', 'derniere_connexion'])) {
+            continue;
+        }
+
+        if ($key == 'poste') {
+            $value = getUserPosition($user);
+        } else if ($key == 'role') {
+            $value = getUserRole($user);
+        } else if ($key == 'droits') {
+            $value = $user['droits'] == 0 ? "Utilisateur ordinaire" : "Administrateur";
+        } else if ($key == 'niveau') {
+            $value = mb_convert_encoding(getUserLevel($user), 'ISO-8859-1', 'UTF-8');
+        } else if ($key == 'is_verified') {
+            $value = ($key == 1 ? "Oui" : "Non");
+        }
+        
         $label = ucfirst(str_replace('_', ' ', $key));
 
         // Label
@@ -217,7 +233,7 @@ function fetchColumns(PDO $pdo, string $table, array $cols) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function displayCard(array $user) {
+function displayCardUser(array $user) {
     $pseudo = $user['pseudo'];
     $prenom = $user['prenom'];
     $nom = $user['nom'];
