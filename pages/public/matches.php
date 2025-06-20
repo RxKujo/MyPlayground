@@ -1,6 +1,5 @@
 <?php
 include_once '../../includes/global/session.php';
-
 notLogguedSecurity("../../index.php");
 
 $root = $_SERVER['DOCUMENT_ROOT'];
@@ -36,11 +35,30 @@ include_once '../../includes/config/config.php';
             <?php
             try {
                 $stmt = $pdo->query("
-                    SELECT m.*, u.pseudo AS createur, e1.nom AS equipe1, e2.nom AS equipe2
+                    SELECT 
+                        m.id_match,
+                        m.message,
+                        m.statut,
+                        u.pseudo AS createur,
+                        e1.nom AS equipe1,
+                        e2.nom AS equipe2,
+                        t.localisation,
+                        r.date_reservation,
+                        r.heure_debut,
+                        r.heure_fin
                     FROM `match` m
-                    LEFT JOIN utilisateur u ON m.id_equipe1 IS NOT NULL OR m.id_equipe2 IS NOT NULL
                     LEFT JOIN equipe e1 ON m.id_equipe1 = e1.id_equipe
                     LEFT JOIN equipe e2 ON m.id_equipe2 = e2.id_equipe
+                    LEFT JOIN utilisateur u ON u.id = " . intval($_SESSION['user_id']) . "
+                    LEFT JOIN reserver r ON r.id_reservation = (
+                        SELECT MAX(r2.id_reservation)
+                        FROM reserver r2
+                        WHERE r2.id_terrain = (
+                            SELECT MAX(t2.id_terrain)
+                            FROM terrain t2
+                        )
+                    )
+                    LEFT JOIN terrain t ON r.id_terrain = t.id_terrain
                     WHERE m.statut = 'en_attente'
                     ORDER BY m.id_match DESC
                 ");
@@ -61,10 +79,10 @@ include_once '../../includes/config/config.php';
                                 <div class="card-body">
                                     <h5 class="card-title fw-bold"><?= htmlspecialchars($match['message'] ?? 'Match sans nom') ?></h5>
                                     <p class="card-text">
-                                        Jouez avec <strong><?= htmlspecialchars($match['nb_joueurs'] ?? '?') ?></strong> joueurs.<br>
-                                        <strong>Lieu :</strong> <?= htmlspecialchars($match['localisation']) ?> <br>
-                                        <strong>Début :</strong> <?= htmlspecialchars($match['date_debut']) ?><br>
-                                        <strong>Fin :</strong> <?= htmlspecialchars($match['date_fin']) ?>
+                                        Jouez avec <strong>?</strong> joueurs.<br>
+                                        <strong>Lieu :</strong> <?= htmlspecialchars($match['localisation'] ?? 'Non défini') ?><br>
+                                        <strong>Début :</strong> <?= htmlspecialchars($match['date_reservation'] ?? '-') ?> à <?= htmlspecialchars($match['heure_debut'] ?? '-') ?><br>
+                                        <strong>Fin :</strong> <?= htmlspecialchars($match['heure_fin'] ?? '-') ?>
                                     </p>
                                     <span class="badge bg-secondary me-1">Statut : <?= htmlspecialchars($match['statut']) ?></span>
                                     <div class="mt-3 text-muted">
