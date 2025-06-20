@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once '../../includes/config/config.php';
+include_once '../includes/config/config.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../../index.php");
@@ -63,7 +63,7 @@ try {
     $pdo->commit();
 
     $_SESSION['success'] = "Match et équipes créés avec succès.";
-    header("Location: ../match");
+    header("Location: ../matches");
     exit();
 
 } catch (PDOException $e) {
