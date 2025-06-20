@@ -261,6 +261,10 @@ function displayCardUser(array $user) {
     return $html;
 }
 
+function displayCardMatch(array $match) {
+    
+}
+
 function isUserOnline(PDO $pdo, int $userId) {
     $sql = "SELECT is_online FROM utilisateur WHERE id = :id";
     $stmt = $pdo->prepare($sql);
