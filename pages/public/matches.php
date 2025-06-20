@@ -42,6 +42,7 @@ include_once '../../includes/config/config.php';
                         u.pseudo AS createur,
                         e1.nom AS equipe1,
                         e2.nom AS equipe2,
+                        t.nom AS nom_terrain,
                         t.localisation,
                         r.date_reservation,
                         r.heure_debut,
@@ -50,14 +51,7 @@ include_once '../../includes/config/config.php';
                     LEFT JOIN equipe e1 ON m.id_equipe1 = e1.id_equipe
                     LEFT JOIN equipe e2 ON m.id_equipe2 = e2.id_equipe
                     LEFT JOIN utilisateur u ON u.id = " . intval($_SESSION['user_id']) . "
-                    LEFT JOIN reserver r ON r.id_reservation = (
-                        SELECT MAX(r2.id_reservation)
-                        FROM reserver r2
-                        WHERE r2.id_terrain = (
-                            SELECT MAX(t2.id_terrain)
-                            FROM terrain t2
-                        )
-                    )
+                    LEFT JOIN reserver r ON r.id_match = m.id_match 
                     LEFT JOIN terrain t ON r.id_terrain = t.id_terrain
                     WHERE m.statut = 'en_attente'
                     ORDER BY m.id_match DESC
@@ -77,7 +71,7 @@ include_once '../../includes/config/config.php';
                         <div class="d-flex justify-content-center mb-4">
                             <div class="card w-75 shadow-sm">
                                 <div class="card-body">
-                                    <h5 class="card-title fw-bold"><?= htmlspecialchars($match['message'] ?? 'Match sans nom') ?></h5>
+                                    <h5 class="card-title fw-bold"><?= htmlspecialchars($match['nom_terrain'] ?? 'Match sans nom') ?></h5>
                                     <p class="card-text">
                                         Jouez avec <strong>?</strong> joueurs.<br>
                                         <strong>Lieu :</strong> <?= htmlspecialchars($match['localisation'] ?? 'Non défini') ?><br>

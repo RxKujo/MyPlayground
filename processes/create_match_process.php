@@ -50,14 +50,6 @@ try {
     ]);
     $idTerrain = $pdo->lastInsertId();
 
-    $stmtReservation = $pdo->prepare("INSERT INTO reserver (id_terrain, date_reservation, heure_debut, heure_fin, statut) VALUES (:id_terrain, :date, :debut, :fin, 'en_attente')");
-    $stmtReservation->execute([
-        ':id_terrain' => $idTerrain,
-        ':date' => $date,
-        ':debut' => $heure_debut,
-        ':fin' => $heure_fin
-    ]);
-
     $stmtEquipe = $pdo->prepare("INSERT INTO equipe (nom, date_creation) VALUES (:nom, CURDATE())");
 
     $stmtEquipe->execute([':nom' => "Équipe A"]);
@@ -74,6 +66,16 @@ try {
         ':id1' => $idEquipe1,
         ':id2' => $idEquipe2,
         ':message' => $commentaire
+    ]);
+    $idMatch = $pdo->lastInsertId();
+
+    $stmtReservation = $pdo->prepare("INSERT INTO reserver (id_terrain, id_match, date_reservation, heure_debut, heure_fin, statut) VALUES (:id_terrain, :id_match, :date, :debut, :fin, 'en_attente')");
+    $stmtReservation->execute([
+        ':id_terrain' => $idTerrain,
+        ':id_match' => $idMatch,
+        ':date' => $date,
+        ':debut' => $heure_debut,
+        ':fin' => $heure_fin
     ]);
 
     $pdo->commit();
