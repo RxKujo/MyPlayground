@@ -18,6 +18,7 @@ $userIsVerified = $user['is_verified'];
         <li class="nav-item"><a class="nav-link text-black" href="tournaments" data-page="tournaments"><?= $trophyFill ?></a></li>
         <li class="nav-item"><a class="nav-link text-black" href="messages" data-page="messages"><?= $chatDotFill ?></a></li>
         <li class="nav-item"><a class="nav-link text-black" href="profile" data-page="profile"><?= $personFill ?></a></li>
+        <li class="nav-item"><a class="nav-link text-black" href="teams" data-page="teams"><?= $personFill ?></a></li>
         <?php if ($userRights == 1): ?>
             <li class="nav-item"><a class="nav-link text-black" href="admin/dashboard"><?= $personFillGear ?></a></li>
         <?php endif; ?>

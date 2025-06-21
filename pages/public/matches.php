@@ -45,13 +45,11 @@ include_once "navbar/header.php";
                         r.date_reservation,
                         r.heure_debut,
                         r.heure_fin,
-
                         e1.id_equipe AS id_equipe1,
                         e2.id_equipe AS id_equipe2,
-                        r.id_equipe AS id_reservation,
+                        r.id_reserveur AS id_reserveur,
                         t.id_terrain AS id_terrain 
-
-                    FROM match m 
+                    FROM `match` m 
                     LEFT JOIN equipe e1 ON m.id_equipe1 = e1.id_equipe
                     LEFT JOIN equipe e2 ON m.id_equipe2 = e2.id_equipe
                     LEFT JOIN reserver r ON r.id_match = m.id_match 
@@ -88,16 +86,16 @@ include_once "navbar/header.php";
                                                         Etes-vous sûr de vouloir supprimer le match '<?= $match['nom_terrain'] ?>' ?
                                                     </div>
                                                     
-                                                    <input type="" name="id_match" class="form-control" value="<?= $match['id_match'] ?>"/>
-                                                    <input type="" name="id_equipe1" class="form-control" value="<?= $match['id_equipe1'] ?>"/>
-                                                    <input type="" name="id_equipe2" class="form-control" value="<?= $match['id_equipe2'] ?>"/>
-                                                    <input type="" name="id_reservation" class="form-control" value="<?= $match['id_reservation'] ?>"/>
-                                                    <input type="" name="id_terrain" class="form-control" value="<?= $match['id_terrain'] ?>"/>
+                                                    <input type="hidden" name="id_match" class="form-control" value="<?= $match['id_match'] ?>"/>
+                                                    <input type="hidden" name="id_equipe1" class="form-control" value="<?= $match['id_equipe1'] ?>"/>
+                                                    <input type="hidden" name="id_equipe2" class="form-control" value="<?= $match['id_equipe2'] ?>"/>
+                                                    <input type="hidden" name="id_reservation" class="form-control" value="<?= $match['id_reserveur'] ?>"/>
+                                                    <input type="hidden" name="id_terrain" class="form-control" value="<?= $match['id_terrain'] ?>"/>
 
                                                     
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                                                        <button type="submit" class="btn btn-primary">Je suis sûr</button>
+                                                        <button type="submit" class="btn btn-danger">Je suis sûr</button>
                                                     </div>
                                                 </form>
                                             </div>
