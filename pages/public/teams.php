@@ -6,98 +6,91 @@ include_once '../../includes/config/config.php'; // $pdo
 include_once '../../includes/public/header.php';
 include_once '../../assets/shared/icons/icons.php';
 include_once 'navbar/header.php';
+
+$_SESSION['current_page'] = 'teams';
 ?>
 
 <div class="d-flex">
-    <?php
-    $_SESSION['current_page'] = 'teams';
-    include_once "navbar/navbar.php";
-    ?>
+    <?php include_once "navbar/navbar.php"; ?>
 
     <div class="container-fluid px-5 py-4" id="content">
         <h1 class="text-center fw-bold mb-4">Toutes les équipes</h1>
         <p class="text-center fs-5 mb-3">Voici la liste des équipes créées avec leurs membres.</p>
 
-        <!-- Alertes de succès ou erreur -->
-        <?php
-        if (isset($_SESSION['success'])) {
-            echo "<div class='alert alert-success text-center'>" . $_SESSION['success'] . "</div>";
-            unset($_SESSION['success']);
-        }
-        if (isset($_SESSION['error'])) {
-            echo "<div class='alert alert-danger text-center'>" . $_SESSION['error'] . "</div>";
-            unset($_SESSION['error']);
-        }
-        ?>
+        <!-- Alertes -->
+        <?php if (isset($_SESSION['success'])): ?>
+            <div class='alert alert-success text-center'><?= $_SESSION['success'] ?></div>
+            <?php unset($_SESSION['success']); ?>
+        <?php endif; ?>
+
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class='alert alert-danger text-center'><?= $_SESSION['error'] ?></div>
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
 
         <!-- Barre de recherche -->
         <form method="GET" action="" class="mb-4">
-            <input type="text" name="search" placeholder="Rechercher une équipe..." class="form-control" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
+            <input type="text" name="search" placeholder="Rechercher une équipe..." class="form-control"
+                   value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
         </form>
 
         <?php
         try {
             $search = $_GET['search'] ?? '';
 
+            $stmt = $search
+                ? $pdo->prepare("SELECT * FROM equipe WHERE nom LIKE ?")
+                : $pdo->query("SELECT * FROM equipe");
+
             if ($search) {
-                $stmt = $pdo->prepare("SELECT * FROM equipe WHERE nom LIKE ?");
                 $stmt->execute(["%$search%"]);
-            } else {
-                $stmt = $pdo->query("SELECT * FROM equipe");
             }
 
             $teams = $stmt->fetchAll();
 
             if (count($teams) === 0) {
                 echo "<p class='text-center'>Aucune équipe trouvée.</p>";
-            }
+            } else {
+                // Charger tous les tournois une seule fois
+                $tournois = $pdo->query("SELECT id_tournoi, nom FROM tournoi")->fetchAll();
 
-            // Récupérer tous les tournois une seule fois
-            $tournois = $pdo->query("SELECT id_tournoi, nom FROM tournoi")->fetchAll();
+                foreach ($teams as $team):
+                    ?>
+                    <div class='card bg-dark text-white mb-4'>
+                        <div class='card-header fw-bold fs-4'><?= htmlspecialchars($team['nom']) ?></div>
+                        <div class='card-body'>
+                            <?php
+                            // Membres
+                            $stmtMembers = $pdo->prepare("SELECT * FROM equipe_membre WHERE id_equipe = ?");
+                            $stmtMembers->execute([$team['id_equipe']]);
+                            $members = $stmtMembers->fetchAll();
 
-            foreach ($teams as $team) {
-                echo "<div class='card bg-dark text-white mb-4'>";
-                echo "<div class='card-header fw-bold fs-4'>" . htmlspecialchars($team['nom']) . "</div>";
-                echo "<div class='card-body'>";
+                            if ($members): ?>
+                                <ul class='list-group list-group-flush'>
+                                    <?php foreach ($members as $member): ?>
+                                        <li class='list-group-item bg-dark text-white'>
+                                            <strong>Pseudo :</strong> <?= htmlspecialchars($member['pseudo']) ?> -
+                                            <strong>Poste :</strong> <?= htmlspecialchars($member['poste']) ?>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            <?php else: ?>
+                                <p>Aucun membre dans cette équipe.</p>
+                            <?php endif; ?>
 
-                // Membres
-                $stmtMembers = $pdo->prepare("SELECT * FROM equipe_membre WHERE id_equipe = ?");
-                $stmtMembers->execute([$team['id_equipe']]);
-                $members = $stmtMembers->fetchAll();
-
-                if ($members) {
-                    echo "<ul class='list-group list-group-flush'>";
-                    foreach ($members as $member) {
-                        echo "<li class='list-group-item bg-dark text-white'>";
-                        echo "<strong>Pseudo :</strong> " . htmlspecialchars($member['pseudo']) . " - ";
-                        echo "<strong>Poste :</strong> " . htmlspecialchars($member['poste']);
-                        echo "</li>";
-                    }
-                    echo "</ul>";
-                } else {
-                    echo "<p>Aucun membre dans cette équipe.</p>";
-                }
-
-                // Bouton Rejoindre
-                echo "<a href='#' class='btn btn-outline-light mt-3'>Rejoindre l’équipe</a>";
-
-                // Formulaire d'inscription à un tournoi
-                echo "<form method='POST' action='register_tournament' class='mt-3'>";
-                echo "<input type='hidden' name='id_equipe' value='" . $team['id_equipe'] . "'>";
-
-                echo "<div class='mb-2'>";
-                echo "<label for='id_tournoi_{$team['id_equipe']}'>Tournoi :</label>";
-                echo "<select name='id_tournoi' id='id_tournoi_{$team['id_equipe']}' class='form-select' required>";
-                foreach ($tournois as $tournoi) {
-                    echo "<option value='" . $tournoi['id_tournoi'] . "'>" . htmlspecialchars($tournoi['nom']) . "</option>";
-                }
-                echo "</select>";
-                echo "</div>";
-
-                echo "<button type='submit' class='btn btn-success'>Inscrire cette équipe à un tournoi</button>";
-                echo "</form>";
-
-                echo "</div></div>";
+                            <!-- Boutons d’action -->
+                            <div class="d-flex flex-wrap gap-2 mt-4">
+                                <a href="/join_team" class="btn btn-primary">Rejoindre une équipe</a>
+                                <?php if (!empty($tournois)): ?>
+                                    <a href="/register_tournament" class="btn btn-success">Inscrire à un tournoi</a>
+                                <?php else: ?>
+                                    <span class="text-muted align-self-center">Aucun tournoi disponible</span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php
+                endforeach;
             }
         } catch (PDOException $e) {
             echo "<div class='alert alert-danger'>Erreur lors de la récupération des équipes : " . $e->getMessage() . "</div>";
@@ -105,5 +98,3 @@ include_once 'navbar/header.php';
         ?>
     </div>
 </div>
-
-<?php include_once '../../includes/global/footer.php'; ?>
