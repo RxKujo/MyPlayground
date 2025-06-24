@@ -45,7 +45,7 @@ include_once $includesAdmin . "header.php";
                     <td><?= $id ?></td>
                     <td><?= htmlspecialchars($nom) ?></td>
                     <td><?= $privee ? "Oui" : "Non" ?></td>
-                    <td><?= htmlspecialchars($code) ?></td>
+                    <td><?= htmlspecialchars($code ?? "Pas de code") ?></td>
                     <td>
                         <button class="btn btn-primary btn-sm open-edit-modal"
                                 data-id="<?= $id ?>"
