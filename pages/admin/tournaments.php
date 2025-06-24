@@ -2,9 +2,9 @@
 // filepath: c:\xampp\htdocs\MyPlayground\pages\admin\tournaments.php
 
 include_once '../../includes/global/session.php';
+include_once '../../includes/config/config.php';
 notLogguedSecurity("../../index.php");
 
-// Récupérer les tournois
 $sql = 'SELECT id_tournoi, nom, date_tournoi FROM tournoi';
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
@@ -38,7 +38,16 @@ include_once $includesAdmin . "header.php";
                 <tr>
                     <td><?= $t['id_tournoi'] ?></td>
                     <td><?= htmlspecialchars($t['nom']) ?></td>
-                    <td><?= htmlspecialchars($t['date_tournoi']) ?></td>
+                    <td>
+                        <?php
+                        if (!empty($t['date_tournoi'])) {
+                            $date = date('d/m/Y H:i', strtotime($t['date_tournoi']));
+                            echo htmlspecialchars($date);
+                        } else {
+                            echo '-';
+                        }
+                        ?>
+                    </td>
                     <td>
                         <button class="btn btn-primary btn-sm open-edit-modal"
                                 data-id="<?= $t['id_tournoi'] ?>"
@@ -65,12 +74,16 @@ include_once $includesAdmin . "header.php";
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('dynamic-modal-container');
 
-    // Modifier
     document.body.addEventListener('click', (e) => {
         if (e.target.classList.contains('open-edit-modal')) {
             const id = e.target.dataset.id;
             const nom = e.target.dataset.nom;
-            const date_tournoi = e.target.dataset.date_tournoi;
+            let date_tournoi = e.target.dataset.date_tournoi;
+
+            let dateValue = '';
+            if (date_tournoi && date_tournoi !== 'null') {
+                dateValue = date_tournoi.replace(' ', 'T').slice(0, 16);
+            }
 
             container.innerHTML = `
                 <div class="modal fade" id="editTournamentModal" tabindex="-1" aria-hidden="true">
@@ -89,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     </div>
                                     <div class="mb-3">
                                         <label>Date</label>
-                                        <input class="form-control" name="date_tournoi" type="datetime-local" value="${date_tournoi.replace(' ', 'T')}">
+                                        <input class="form-control" name="date_tournoi" type="datetime-local" value="${dateValue}">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -137,7 +150,6 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.show();
         }
 
-        // Ajouter
         if (e.target.classList.contains('open-new-modal')) {
             container.innerHTML = `
                 <div class="modal fade" id="newTournamentModal" tabindex="-1" aria-hidden="true">
