@@ -344,3 +344,8 @@ function showPfp(PDO $pdo, array $user) {
 
     return $avatarSrc;
 }
+
+function getAllUsers(PDO $pdo) {
+    $r = $pdo->query("SELECT id, nom, prenom, pseudo, localisation, email, tel, poste, droits, role, niveau, is_online FROM utilisateur");
+    return $r->fetchAll(PDO::FETCH_ASSOC);
+}

@@ -73,10 +73,16 @@ function getUserPosition(poste) {
     return poste;
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
+    const response = await fetch("/api/users/");
+
     const tbody = document.querySelector('#usersShowing');
 
-    users.forEach(user => {
+    const data = await response.json();
+    const users = data.users;
+    const userIdSession = data.waiter;
+
+    for (const user of users) {
         const id = user.id;
         const username = user.pseudo;
         const nom = user.nom;
@@ -118,9 +124,13 @@ document.addEventListener('DOMContentLoaded', function () {
             </td>
         `;
         tbody.appendChild(tr);
-    });
+    };
 
+
+<<<<<<< HEAD
    
+=======
+>>>>>>> 63f15ff (juste avant de pull)
     function generateSwitchModal(id, isAdmin) {
         return `
         <div class="modal fade" id="confirmSwitch${id}" tabindex="-1" aria-hidden="true">
