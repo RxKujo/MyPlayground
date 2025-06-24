@@ -127,10 +127,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     };
 
 
-<<<<<<< HEAD
    
-=======
->>>>>>> 63f15ff (juste avant de pull)
     function generateSwitchModal(id, isAdmin) {
         return `
         <div class="modal fade" id="confirmSwitch${id}" tabindex="-1" aria-hidden="true">
