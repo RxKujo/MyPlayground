@@ -3,6 +3,7 @@ include_once '../../includes/global/session.php';
 notLogguedSecurity("../../index.php");
 
 $user = $_SESSION['user_info'];
+$pfpSrc = showPfp($pdo, $user);
 
 include_once $includesPublic . "header.php";
 include_once $assetsShared . 'icons/icons.php';
@@ -25,7 +26,7 @@ include_once "navbar/header.php";
 
                 <div class="list-group">
                     <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
-                        <img src="/assets/public/img/morad.png" class="rounded-circle" width="48" height="48" alt="">
+                        <img src="<?= $pfpSrc ?>" class="rounded-circle" width="48" height="48" alt="">
                         <div class="d-flex flex-column">
                             <strong>Morad</strong>
                             <small class="text-muted">Dernier message...</small>
@@ -39,7 +40,7 @@ include_once "navbar/header.php";
             <div class="col-lg-9 d-flex flex-column bg-light" style="height: 100vh;">
                 <div class="d-flex align-items-center justify-content-between p-3 border-bottom bg-white">
                     <div class="d-flex align-items-center gap-3">
-                        <img src="/assets/public/img/morad.png" class="rounded-circle" width="48" height="48" alt="">
+                        <img src="<?= $pfpSrc ?>" class="rounded-circle" width="48" height="48" alt="">
                         <div>
                             <strong>Morad</strong>
                             <div class="text-muted small">En ligne</div>

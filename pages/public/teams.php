@@ -2,9 +2,8 @@
 include_once '../../includes/global/session.php';
 notLogguedSecurity("../../index.php");
 
-include_once '../../includes/config/config.php'; // $pdo
-include_once '../../includes/public/header.php';
-include_once '../../assets/shared/icons/icons.php';
+include_once $includesPublic . 'header.php';
+include_once $includesShared . 'icons/icons.php';
 include_once 'navbar/header.php';
 
 $_SESSION['current_page'] = 'teams';

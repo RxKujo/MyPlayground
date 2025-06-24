@@ -222,8 +222,8 @@ function getPfp(PDO $pdo, array $user) {
         'id'=>$user['id']
     ]);
 
-    $pfp = $stmt->fetch(PDO::PARAM_LOB);
-    return $pfp;
+    $res = $stmt->fetch(PDO::PARAM_LOB);
+    return $res[0];
 }
 
 function fetchColumns(PDO $pdo, string $table, array $cols) {
@@ -330,4 +330,17 @@ function logAction(PDO $pdo, $user_id = null) {
     $stmt->bindValue(':server_protocol', $_SERVER['SERVER_PROTOCOL'] ?? null);
     $stmt->bindValue(':http_user_agent', $_SERVER['HTTP_USER_AGENT'] ?? null);
     $stmt->execute();
+}
+
+function showPfp(PDO $pdo, array $user) {
+    $avatarData = getPfp($pdo, $user) ?? null;
+
+    if ($avatarData) {
+        $base64 = base64_encode($avatarData);
+        $avatarSrc = "data:image/png;base64," . $base64;
+    } else {
+        $avatarSrc = "../../assets/public/img/morad.png";
+    }
+
+    return $avatarSrc;
 }
