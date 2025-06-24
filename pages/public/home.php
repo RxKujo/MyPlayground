@@ -5,6 +5,7 @@ include_once '../../includes/global/session.php';
 notLogguedSecurity("../../index.php");
 
 $user = $_SESSION['user_info'];
+$pfpSrc = showPfp($pdo, $user);
 
 include_once $includesPublic . "header.php";
 include_once $assetsShared . 'icons/icons.php';
@@ -21,7 +22,7 @@ include_once "navbar/header.php";
     <div class="container-fluid px-0" id="content">
         <div class="d-flex align-items-center welcome-section">
             <div class="ms-5 px-5">
-                <img class="profile-img" src="../../assets/public/img/morad.png" alt="Photo de profil"/>
+                <img class="profile-img" src="<?= $pfpSrc ?>" alt="Photo de profil"/>
             </div>
 
             <div class="me-auto">

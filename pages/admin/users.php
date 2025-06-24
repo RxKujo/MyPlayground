@@ -7,11 +7,6 @@ notLogguedSecurity("../../index.php");
 include_once $assetsShared . 'icons/icons.php';
 include_once $includesAdmin . 'header.php';
 
-$sql = 'SELECT * FROM utilisateur ORDER BY cree_le DESC';
-$stmt = $pdo->prepare($sql);
-$stmt->execute();
-$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 ?>
 
 
@@ -51,11 +46,5 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </table>
     </div>
 </div>
-
-<script>
-    const users = <?= json_encode($users) ?>;
-    
-    const userIdSession = <?= $_SESSION['user_info']['id'] ?>;
-</script>
 
 <?php include_once $includesGlobal . "footer.php"; ?>

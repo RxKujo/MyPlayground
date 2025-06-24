@@ -1,7 +1,12 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const tbody = document.querySelector('#captchasShowing');
+document.addEventListener('DOMContentLoaded', async function () {
+    const response = await fetch("/api/captchas/");
 
-    captchas.forEach(captcha => {
+    const tbody = document.querySelector('#usersShowing');
+
+    const data = await response.json();
+    const captchas = data.captchas;
+
+    for (const captcha of captchas) {
         const { id, question, reponse } = captcha;
 
         const tr = document.createElement('tr');
@@ -21,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
             </td>
         `;
         tbody.appendChild(tr);
-    });
+    };
 
     function generateEditModal(id, question, reponse) {
         return `

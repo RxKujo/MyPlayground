@@ -8,7 +8,7 @@ include_once $includesPublic . 'header.php';
 include_once $assetsShared . 'icons/icons.php';
 include_once 'navbar/header.php';
 
-include_once '../../includes/config/config.php'; // ta connexion $pdo
+include_once '../../includes/config/config.php'; 
 ?>
 
 <div class="d-flex">

@@ -112,6 +112,7 @@ include_once "navbar/header.php";
                                     <span class="badge bg-secondary me-1">Statut : <?= htmlspecialchars($match['statut']) ?></span>
                                     <div class="mt-3 text-muted">
                                         <i class="bi bi-person-circle"></i> Créateur : @<?= getUser($pdo, $match['createur'])['pseudo'] ?? 'Inconnu' ?>
+                                        <button class="btn btn-success " >Rejoindre</button>
                                     </div>
                                 </div>
                             </div>

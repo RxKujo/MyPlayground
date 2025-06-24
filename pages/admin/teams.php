@@ -1,10 +1,10 @@
 <?php
-// filepath: c:\xampp\htdocs\MyPlayground\pages\admin\teams.php
+
 
 include_once '../../includes/global/session.php';
 notLogguedSecurity("../../index.php");
 
-// Récupérer les équipes
+
 $sql = 'SELECT id_equipe, nom, privee, code FROM equipe';
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
@@ -45,7 +45,7 @@ include_once $includesAdmin . "header.php";
                     <td><?= $id ?></td>
                     <td><?= htmlspecialchars($nom) ?></td>
                     <td><?= $privee ? "Oui" : "Non" ?></td>
-                    <td><?= htmlspecialchars($code) ?></td>
+                    <td><?= htmlspecialchars($code ?? "Pas de code") ?></td>
                     <td>
                         <button class="btn btn-primary btn-sm open-edit-modal"
                                 data-id="<?= $id ?>"
@@ -73,7 +73,6 @@ include_once $includesAdmin . "header.php";
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('dynamic-modal-container');
 
-    // Modifier
     document.body.addEventListener('click', (e) => {
         if (e.target.classList.contains('open-edit-modal')) {
             const id = e.target.dataset.id;
@@ -122,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.show();
         }
 
-        // Supprimer
+   
         if (e.target.classList.contains('open-delete-modal')) {
             const id = e.target.dataset.id;
 
@@ -153,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.show();
         }
 
-        // Ajouter
+  
         if (e.target.classList.contains('open-new-modal')) {
             container.innerHTML = `
                 <div class="modal fade" id="newTeamModal" tabindex="-1" aria-hidden="true">

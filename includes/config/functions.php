@@ -107,7 +107,7 @@ function getUserRights(array $user) {
 }
 
 function alertMessage(string $alert, int $kind) {
-    // 0 = success, 1 = danger, 2 = warning, 3 = info
+  
     global $checkCircleFill, $xCircleFill, $exclamationCircleFill, $infoFill, $gearFill;
 
     switch ($kind) {
@@ -144,19 +144,19 @@ function userPdf(array $user) {
     $pdf = new FPDF();
     $pdf->AddPage();
 
-    // Document Title
+    
     $pdf->SetFont('Arial', 'B', 20);
     $pdf->SetTextColor(40, 40, 40);
     $pdf->Cell(0, 15, 'User Profile', 0, 1, 'C');
-    $pdf->Ln(10); // Line break
+    $pdf->Ln(10);
 
-    // Section Header
+  
     $pdf->SetFont('Arial', 'B', 14);
     $pdf->SetTextColor(0, 102, 204);
     $pdf->Cell(0, 10, 'User Details', 0, 1);
     $pdf->Ln(3);
 
-    // User Data Fields
+  
     foreach ($user as $key => $value) {
         if (in_array($key, ['id', 'mdp', 'pfp', 'id_yeux', 'id_nez', 'id_bouche', 'visage_blob', 'email_verification_token', 'is_online', 'derniere_connexion'])) {
             continue;
@@ -176,12 +176,12 @@ function userPdf(array $user) {
         
         $label = ucfirst(str_replace('_', ' ', $key));
 
-        // Label
+      
         $pdf->SetFont('Arial', 'B', 12);
         $pdf->SetTextColor(0, 0, 0);
         $pdf->Cell(50, 8, "$label:", 0, 0);
 
-        // Value
+       
         $pdf->SetFont('Arial', '', 12);
         $pdf->MultiCell(0, 8, $value);
     }
@@ -222,8 +222,8 @@ function getPfp(PDO $pdo, array $user) {
         'id'=>$user['id']
     ]);
 
-    $pfp = $stmt->fetch(PDO::PARAM_LOB);
-    return $pfp;
+    $res = $stmt->fetch(PDO::PARAM_LOB);
+    return $res[0];
 }
 
 function fetchColumns(PDO $pdo, string $table, array $cols) {
@@ -251,7 +251,7 @@ function displayCardUser(array $user) {
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><strong>Niveau :</strong> ' . htmlspecialchars($niveau) . '</li>
                     <li class="list-group-item"><strong>Poste :</strong> ' . htmlspecialchars($poste) . '</li>
-                    <li class="list-group-item"><strong>Localisation :</strong> ' . htmlspecialchars($localisation) . '</li>
+                    <li class="list-group-item"><strong>Localisation :</strong> ' . htmlspecialchars($localisation ?? "Inconnu") . '</li>
                 </ul>
             </div>
         </div>
@@ -263,6 +263,39 @@ function displayCardUser(array $user) {
 
 function displayCardMatch(array $match) {
     
+}
+
+function displayCardMessage(int $user_id) {
+    $html = '
+        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3 mb-3">
+            <img src="<?= $pfpSrc ?>" class="rounded-circle" width="48" height="48" alt="">
+            <div class="d-flex flex-column">
+                <strong>Morad</strong>
+                <small class="text-muted">Dernier message...</small>
+            </div>
+        </a>';
+}
+
+function getAllDiscussionsNames(PDO $pdo, int $user_id) {
+    $r = $pdo->query(
+        "SELECT pgroupe.id_groupe, groupe.nom, groupe.id_dernier_message FROM 
+            participation_groupe AS pgroupe 
+            INNER JOIN 
+            groupe_discussion AS groupe 
+            ON pgroupe.id_groupe = groupe.id
+            WHERE pgroupe.id_utilisateur = $user_id");
+    
+    $names = $r->fetchAll(PDO::FETCH_ASSOC);
+    return $names;
+}
+
+function getMessage(PDO $pdo, int | null $messageId) {
+    if (is_null($messageId)) {
+        return null;
+    }
+    $r = $pdo->query("SELECT * FROM echanger WHERE id_message = $messageId");
+    $message = $r->fetchAll(PDO::FETCH_ASSOC);
+    return $message;
 }
 
 function isUserOnline(PDO $pdo, int $userId) {
@@ -330,4 +363,27 @@ function logAction(PDO $pdo, $user_id = null) {
     $stmt->bindValue(':server_protocol', $_SERVER['SERVER_PROTOCOL'] ?? null);
     $stmt->bindValue(':http_user_agent', $_SERVER['HTTP_USER_AGENT'] ?? null);
     $stmt->execute();
+}
+
+function showPfp(PDO $pdo, array $user) {
+    $avatarData = getPfp($pdo, $user) ?? null;
+
+    if ($avatarData) {
+        $base64 = base64_encode($avatarData);
+        $avatarSrc = "data:image/png;base64," . $base64;
+    } else {
+        $avatarSrc = "../../assets/public/img/morad.png";
+    }
+
+    return $avatarSrc;
+}
+
+function getAllUsers(PDO $pdo) {
+    $r = $pdo->query("SELECT id, nom, prenom, pseudo, localisation, email, tel, poste, droits, role, niveau, is_online, is_verified FROM utilisateur");
+    return $r->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getAllCaptchas(PDO $pdo) {
+    $r = $pdo->query("SELECT id, question, reponse FROM captchas");
+    return $r->fetchAll(PDO::FETCH_ASSOC);
 }

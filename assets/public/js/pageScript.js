@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     let currentPage = getCurrentPage();
 
     refreshTabs(sidebarTabs, currentPage);
-    // await loadContent(currentPage, contentElement);
+   
     
     
     listenPTButtons(contentElement);
@@ -25,9 +25,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
             setCurrentPage(page);
 
-            // if (currentPage !== 'settings') {
-            //     await loadContent(page, contentElement);
-            // }
+           
     
         });
     });

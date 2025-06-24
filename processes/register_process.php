@@ -1,14 +1,9 @@
 <?php
 
-session_start();
+include_once '../includes/global/session.php';
 
-if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("location: register.php");
-    exit();
-}
+notLogguedSecurity("../index.php");
 
-include_once '../includes/config/functions.php';
-include_once '../includes/config/config.php';
 include_once '../includes/config/email_functions.php';
 
 

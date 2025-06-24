@@ -1,5 +1,5 @@
 const parts = {
-  base: ["base.png"], // silhouette de fond
+  base: ["base.png"],
   hair: ["hair1.png", "hair2.png"],
   eyes: ["eyes1.png", "eyes2.png", "eyes3.png", "eyes4.png", "eyes5.png",],
   nose: ["nose1.png", "nose2.png", "nose3.png" ,"nose4.png" , "nose5.png"],
@@ -46,14 +46,14 @@ async function drawAvatar() {
   const size = 80;
   const half = size / 2;
 
-  // Base
+
   ctx.drawImage(baseImg, 0, 0, canvas.width, canvas.height);
 
-  // Superposition des éléments
-  ctx.drawImage(hairImg, centerX - half, centerY - 100, size, size);  // cheveux
-  ctx.drawImage(eyesImg, centerX - half, centerY - 60, size, size);   // yeux
-  ctx.drawImage(noseImg, centerX - half, centerY - 20, size, size);   // nez
-  ctx.drawImage(mouthImg, centerX - half, centerY + 20, size, size);  // bouche
+
+  ctx.drawImage(hairImg, centerX - half, centerY - 100, size, size);
+  ctx.drawImage(eyesImg, centerX - half, centerY - 60, size, size); 
+  ctx.drawImage(noseImg, centerX - half, centerY - 20, size, size); 
+  ctx.drawImage(mouthImg, centerX - half, centerY + 20, size, size); 
 }
 
 function prevPart(part) {
@@ -82,5 +82,5 @@ function saveAvatar() {
   xhr.send('image=' + encodeURIComponent(imageData));
 }
 
-// Auto-chargement
+
 drawAvatar();

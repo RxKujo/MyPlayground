@@ -4,8 +4,7 @@ include_once '../../includes/global/session.php';
 
 notLogguedSecurity("../../index.php");
 
-$user = getUser($pdo, $_SESSION['user_id']);
-
+$user = $_SESSION['user_info'];
 
 $position = getUserPosition($user);
 $niveau = getUserLevel($user);
@@ -38,21 +37,10 @@ include_once "navbar/header.php";
                 }
             ?>
             <div class="d-flex align-items-center welcome-section mb-3">
-                <!-- Avatar cliquable centré -->
                 <div class="d-flex justify-content-center">
                     <form id="upload-form" action="upload-avatar.php" method="POST" enctype="multipart/form-data">
                         <div id="pfp" class="position-relative profile-img-wrapper" style="cursor: pointer; width: 150px; height: 150px;">
-                            <?php
-                            $avatarData = $user['pfp'] ?? null;
-
-                            if ($avatarData) {
-                                $base64 = base64_encode($avatarData);
-                                $avatarSrc = "data:image/png;base64," . $base64;
-                            } else {
-                                $avatarSrc = "../../assets/public/img/morad.png";
-                            }
-                            ?>
-                            <img src="<?= $avatarSrc ?>" class="w-100 h-100 rounded-circle" style="object-fit: cover;" id="avatar-preview">
+                            <img src="<?= showPfp($pdo, $user) ?>" class="w-100 h-100 rounded-circle" style="object-fit: cover;" id="avatar-preview">
 
                             <div class="overlay-icon d-flex justify-content-center align-items-center">
                                 <?= $pen ?>
@@ -62,7 +50,6 @@ include_once "navbar/header.php";
                     </form>
                 </div>
 
-                <!-- Overlay de création d'avatar (masqué par défaut) -->
                 <div id="avatar-builder-overlay" class="overlay-fullscreen" style="display: none;">
                     <div class="back builder-box text-center">
                         <h1 class="mb-4">Créer ton avatar</h1>
@@ -100,7 +87,7 @@ include_once "navbar/header.php";
                     </div>
                 </div>
 
-                <!-- Styles CSS -->
+      
                 <style>
                     .overlay-fullscreen {
                         position: fixed;
@@ -108,7 +95,7 @@ include_once "navbar/header.php";
                         left: 0;
                         width: 100vw;
                         height: 100vh;
-                        background-color: rgba(33, 37, 41, 0.95); /* fond sombre */
+                        background-color: rgba(33, 37, 41, 0.95);
                         z-index: 9999;
                         display: flex;
                         justify-content: center;
@@ -156,7 +143,7 @@ include_once "navbar/header.php";
                 
                 </style>
 
-                <!-- JS -->
+              
                 <script>
                     document.getElementById('pfp').addEventListener('click', function () {
                         document.getElementById('avatar-builder-overlay').style.display = 'flex';

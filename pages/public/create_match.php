@@ -11,12 +11,20 @@ $user = $_SESSION['user_info'];
 
 $error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
 unset($_SESSION['error'], $_SESSION['form_data']);
+
+$creation_error = isset($_SESSION['match_creation_error']) ? $_SESSION['match_creation_error'] : null;
 ?>
 
 <div class="d-flex">
     <?php include_once "navbar/navbar.php"; ?>
 
 	<div class="container">
+			<?php 
+                if (!is_null($creation_error)) {
+                    alertMessage($creation_error, 1);
+                    $_SESSION['match_creation_error'] = null;
+                }
+            ?>
 		<div class="header-title">
 			<h1>Créer un match</h1>
 		</div>

@@ -3,6 +3,8 @@ session_start();
 require_once __DIR__ . '/../../includes/config/config.php';
 require_once __DIR__ . '/../../includes/config/functions.php';
 
+include_once '../../includes/global/session.php';
+
 $stmt = $pdo->query("
     SELECT logs.*, utilisateur.pseudo
     FROM logs

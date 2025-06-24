@@ -26,9 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
             setCurrentPage(page);
             refreshTabs(sidebarTabs, page);
             
-            // if (currentPage !== 'settings') {
-                //     await loadContent(page, contentElement);
-                // }
+           
                 
             });
         });

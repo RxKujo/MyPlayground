@@ -35,7 +35,7 @@ if (!empty($niveau)) {
 }
 
 if (!empty($postes)) {
-    // Filtrer uniquement les valeurs valides 0 à 4
+   
     $postes = array_filter($postes, function($p) {
         return in_array($p, ['0', '1', '2', '3', '4'], true);
     });
@@ -79,7 +79,7 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="accordion" id="accordion-filter1">
                     <form class="d-flex flex-row gap-4 align-items-start" method="GET" action="partners">
 
-                        <!-- Niveau -->
+                      
                         <div style="width: 180px;">
                             <h5>Niveau</h5>
                             <fieldset>
@@ -100,7 +100,7 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </fieldset>
                         </div>
 
-                        <!-- Position -->
+                   
                         <div style="width: 180px;">
                             <h5>Poste</h5>
                             <fieldset>
