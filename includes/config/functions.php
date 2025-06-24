@@ -251,7 +251,7 @@ function displayCardUser(array $user) {
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><strong>Niveau :</strong> ' . htmlspecialchars($niveau) . '</li>
                     <li class="list-group-item"><strong>Poste :</strong> ' . htmlspecialchars($poste) . '</li>
-                    <li class="list-group-item"><strong>Localisation :</strong> ' . htmlspecialchars($localisation) . '</li>
+                    <li class="list-group-item"><strong>Localisation :</strong> ' . htmlspecialchars($localisation ?? "Inconnu") . '</li>
                 </ul>
             </div>
         </div>
@@ -347,5 +347,10 @@ function showPfp(PDO $pdo, array $user) {
 
 function getAllUsers(PDO $pdo) {
     $r = $pdo->query("SELECT id, nom, prenom, pseudo, localisation, email, tel, poste, droits, role, niveau, is_online FROM utilisateur");
+    return $r->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getAllCaptchas(PDO $pdo) {
+    $r = $pdo->query("SELECT id, question, reponse FROM captchas");
     return $r->fetchAll(PDO::FETCH_ASSOC);
 }
