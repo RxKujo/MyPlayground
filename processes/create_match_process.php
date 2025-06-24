@@ -45,7 +45,7 @@ try {
     ]);
     $idTerrain = $pdo->lastInsertId();
 
-    $stmtEquipe = $pdo->prepare("INSERT INTO equipe (nom, date_creation) VALUES (:nom, CURDATE())");
+    $stmtEquipe = $pdo->prepare("INSERT INTO equipe (nom, date_creation, privee, code) VALUES (:nom, CURDATE(), 0, NULL)");
 
     $stmtEquipe->execute([':nom' => "Équipe A"]);
     $idEquipe1 = $pdo->lastInsertId();
@@ -54,7 +54,7 @@ try {
     $idEquipe2 = $pdo->lastInsertId();
 
     $stmtMatch = $pdo->prepare("
-        INSERT INTO match (id_equipe1, id_equipe2, statut, message, id_createur)
+        INSERT INTO `match` (id_equipe1, id_equipe2, statut, message, id_createur)
         VALUES (:id1, :id2, 'en_attente', :message, :id_createur)
     ");
     $stmtMatch->execute([
@@ -79,7 +79,7 @@ try {
     exit();
 
 } catch (PDOException $e) {
-    $_SESSION['error'] = "Erreur lors de la création : " . $e->getMessage();
+    $_SESSION['match_creation_error'] = "Erreur lors de la création : " . $e->getMessage();
     header("Location: ../create_match");
     exit();
 }
