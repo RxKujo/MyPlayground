@@ -18,7 +18,7 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 
     exit();
 }
 
-// Update last activity time stamp
+
 $_SESSION['last_activity'] = time();
 
 ?>
