@@ -1,5 +1,5 @@
 <?php
-// filepath: c:\xampp\htdocs\MyPlayground\pages\public\register_tournament.php
+
 include_once '../../includes/global/session.php';
 include_once '../../includes/config/config.php';
 notLogguedSecurity("../../index.php");
@@ -7,7 +7,6 @@ notLogguedSecurity("../../index.php");
 include_once $includesPublic . 'header.php';
 include_once 'navbar/header.php';
 
-// Messages flash
 $message = "";
 if (isset($_SESSION['success'])) {
     $message = "<div class='alert alert-success'>" . $_SESSION['success'] . "</div>";
@@ -18,22 +17,21 @@ if (isset($_SESSION['error'])) {
     unset($_SESSION['error']);
 }
 
-// Récupérer les équipes
 $stmt = $pdo->prepare("SELECT id_equipe, nom FROM equipe");
 $stmt->execute();
 $equipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Récupérer les tournois
+
 $stmt = $pdo->prepare("SELECT id_tournoi, nom FROM tournoi");
 $stmt->execute();
 $tournois = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <div class="d-flex">
-    <!-- Navigation latérale -->
+   
     <?php include_once 'navbar/navbar.php'; ?>
 
-    <!-- Contenu principal -->
+  
     <div class="container mt-4">
         <h2 class="mb-4">Inscrire une équipe à un tournoi</h2>
 

@@ -16,7 +16,7 @@ $_SESSION['current_page'] = 'teams';
         <h1 class="text-center fw-bold mb-4">Toutes les équipes</h1>
         <p class="text-center fs-5 mb-3">Voici la liste des équipes créées avec leurs membres.</p>
 
-        <!-- Alertes -->
+
         <?php if (isset($_SESSION['success'])): ?>
             <div class='alert alert-success text-center'><?= $_SESSION['success'] ?></div>
             <?php unset($_SESSION['success']); ?>
@@ -27,7 +27,7 @@ $_SESSION['current_page'] = 'teams';
             <?php unset($_SESSION['error']); ?>
         <?php endif; ?>
 
-        <!-- Barre de recherche -->
+   
         <form method="GET" action="" class="mb-4">
             <input type="text" name="search" placeholder="Rechercher une équipe..." class="form-control"
                    value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
@@ -50,7 +50,7 @@ $_SESSION['current_page'] = 'teams';
             if (count($teams) === 0) {
                 echo "<p class='text-center'>Aucune équipe trouvée.</p>";
             } else {
-                // Charger tous les tournois une seule fois
+           
                 $tournois = $pdo->query("SELECT id_tournoi, nom FROM tournoi")->fetchAll();
 
                 foreach ($teams as $team):
@@ -59,7 +59,7 @@ $_SESSION['current_page'] = 'teams';
                         <div class='card-header fw-bold fs-4'><?= htmlspecialchars($team['nom']) ?></div>
                         <div class='card-body'>
                             <?php
-                            // Membres
+                       
                             $stmtMembers = $pdo->prepare("SELECT * FROM equipe_membre WHERE id_equipe = ?");
                             $stmtMembers->execute([$team['id_equipe']]);
                             $members = $stmtMembers->fetchAll();
@@ -77,7 +77,7 @@ $_SESSION['current_page'] = 'teams';
                                 <p>Aucun membre dans cette équipe.</p>
                             <?php endif; ?>
 
-                            <!-- Boutons d’action -->
+                          
                             <div class="d-flex flex-wrap gap-2 mt-4">
                                 <a href="/join_team" class="btn btn-primary">Rejoindre une équipe</a>
                                 <?php if (!empty($tournois)): ?>

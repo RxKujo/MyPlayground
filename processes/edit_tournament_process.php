@@ -1,5 +1,5 @@
 <?php
-// filepath: c:\xampp\htdocs\MyPlayground\processes\edit_tournament_process.php
+
 session_start();
 require_once '../includes/config/config.php';
 

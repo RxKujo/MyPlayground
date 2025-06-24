@@ -107,7 +107,7 @@ function getUserRights(array $user) {
 }
 
 function alertMessage(string $alert, int $kind) {
-    // 0 = success, 1 = danger, 2 = warning, 3 = info
+  
     global $checkCircleFill, $xCircleFill, $exclamationCircleFill, $infoFill, $gearFill;
 
     switch ($kind) {
@@ -144,19 +144,19 @@ function userPdf(array $user) {
     $pdf = new FPDF();
     $pdf->AddPage();
 
-    // Document Title
+    
     $pdf->SetFont('Arial', 'B', 20);
     $pdf->SetTextColor(40, 40, 40);
     $pdf->Cell(0, 15, 'User Profile', 0, 1, 'C');
-    $pdf->Ln(10); // Line break
+    $pdf->Ln(10);
 
-    // Section Header
+  
     $pdf->SetFont('Arial', 'B', 14);
     $pdf->SetTextColor(0, 102, 204);
     $pdf->Cell(0, 10, 'User Details', 0, 1);
     $pdf->Ln(3);
 
-    // User Data Fields
+  
     foreach ($user as $key => $value) {
         if (in_array($key, ['id', 'mdp', 'pfp', 'id_yeux', 'id_nez', 'id_bouche', 'visage_blob', 'email_verification_token', 'is_online', 'derniere_connexion'])) {
             continue;
@@ -176,12 +176,12 @@ function userPdf(array $user) {
         
         $label = ucfirst(str_replace('_', ' ', $key));
 
-        // Label
+      
         $pdf->SetFont('Arial', 'B', 12);
         $pdf->SetTextColor(0, 0, 0);
         $pdf->Cell(50, 8, "$label:", 0, 0);
 
-        // Value
+       
         $pdf->SetFont('Arial', '', 12);
         $pdf->MultiCell(0, 8, $value);
     }

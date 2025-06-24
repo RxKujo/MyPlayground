@@ -50,7 +50,6 @@ include_once "navbar/header.php";
                     </form>
                 </div>
 
-                <!-- Overlay de création d'avatar (masqué par défaut) -->
                 <div id="avatar-builder-overlay" class="overlay-fullscreen" style="display: none;">
                     <div class="back builder-box text-center">
                         <h1 class="mb-4">Créer ton avatar</h1>
@@ -88,7 +87,7 @@ include_once "navbar/header.php";
                     </div>
                 </div>
 
-                <!-- Styles CSS -->
+      
                 <style>
                     .overlay-fullscreen {
                         position: fixed;
@@ -96,7 +95,7 @@ include_once "navbar/header.php";
                         left: 0;
                         width: 100vw;
                         height: 100vh;
-                        background-color: rgba(33, 37, 41, 0.95); /* fond sombre */
+                        background-color: rgba(33, 37, 41, 0.95);
                         z-index: 9999;
                         display: flex;
                         justify-content: center;
@@ -144,7 +143,7 @@ include_once "navbar/header.php";
                 
                 </style>
 
-                <!-- JS -->
+              
                 <script>
                     document.getElementById('pfp').addEventListener('click', function () {
                         document.getElementById('avatar-builder-overlay').style.display = 'flex';

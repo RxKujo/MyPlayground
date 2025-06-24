@@ -1,5 +1,5 @@
 <?php
-// filepath: c:\xampp\htdocs\MyPlayground\pages\public\navbar\header.php
+
 include_once __DIR__ . '/../../../includes/config/theme.php';
 ?>
 

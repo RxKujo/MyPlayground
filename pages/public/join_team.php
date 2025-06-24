@@ -8,11 +8,11 @@ include_once 'navbar/header.php';
 
 $message = "";
 
-// Récupération des équipes
+
 $stmt = $pdo->query("SELECT * FROM equipe");
 $equipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Traitement du formulaire
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_equipe = $_POST['id_equipe'] ?? null;
     $email_form = trim($_POST['email'] ?? '');

@@ -1,5 +1,5 @@
 <?php
-// filepath: c:\xampp\htdocs\MyPlayground\processes\register_tournament_process.php
+
 
 session_start();
 include_once __DIR__ . '/../includes/global/session.php';

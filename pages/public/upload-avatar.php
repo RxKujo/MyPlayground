@@ -17,9 +17,9 @@ if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
     $filePath = $uploadDir . $fileName;
 
     if (move_uploaded_file($_FILES['avatar']['tmp_name'], $filePath)) {
-        $relativePath = $filePath; // Pour simplifier
+        $relativePath = $filePath;
 
-        // Enregistrer en base de données
+        
         $stmt = $pdo->prepare("UPDATE users SET avatar = :avatar WHERE id = :id");
         $stmt->execute([
             'avatar' => $relativePath,

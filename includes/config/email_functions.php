@@ -27,7 +27,7 @@ function sendVerificationEmail(string $email, string $prenom, string $verificati
 
         $mail->isHTML(true);
 
-        // Create verification link
+       
         $verification_link = $_SERVER['HTTP_HOST'] . '/verify.php?token=' . $verification_token;
 
         $mail->Subject = htmlspecialchars('Vérifiez') . 'votre adresse email';
@@ -36,6 +36,6 @@ function sendVerificationEmail(string $email, string $prenom, string $verificati
         $mail->send();
         return true;
     } catch (Exception $e) {
-        return false;  // Return false if sending fails
+        return false; 
     }
 }

@@ -1,11 +1,11 @@
 <?php
-// filepath: c:\xampp\htdocs\MyPlayground\pages\admin\logs.php
+
 
 session_start();
 require_once __DIR__ . '/../../includes/config/config.php';
 require_once __DIR__ . '/../../includes/config/functions.php';
 
-// Récupération des logs avec jointure pour afficher le pseudo utilisateur
+
 $stmt = $pdo->query("
     SELECT logs.*, utilisateur.pseudo
     FROM logs
@@ -14,7 +14,7 @@ $stmt = $pdo->query("
 ");
 $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Header admin (si tu en as un)
+
 include_once '../../includes/admin/header.php';
 ?>
 

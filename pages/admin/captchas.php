@@ -68,7 +68,7 @@ include_once $includesAdmin . "header.php";
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('dynamic-modal-container');
 
-    // Modifier
+   
     document.body.addEventListener('click', (e) => {
         if (e.target.classList.contains('open-edit-modal')) {
             const id = e.target.dataset.id;
@@ -109,7 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.show();
         }
 
-        // Supprimer
         if (e.target.classList.contains('open-delete-modal')) {
             const id = e.target.dataset.id;
 

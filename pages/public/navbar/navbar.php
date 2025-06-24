@@ -8,7 +8,7 @@ $user = $_SESSION['user_info'] ?? null;
 $userRights = $user['droits'] ?? 0;
 $userIsVerified = $user['is_verified'] ?? 0;
 
-include_once '../../assets/shared/icons/icons.php'; // Bien inclure tes icônes
+include_once '../../assets/shared/icons/icons.php';
 ?>
 
 <nav class="bg-light text-black p-3" style="width: 280px; min-height: 100vh;">

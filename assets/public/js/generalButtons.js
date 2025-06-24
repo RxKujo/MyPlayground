@@ -88,7 +88,7 @@ function listenRegistrationPlayer(contentElement) {
         levelCol.style.display = isJoueur ? 'block' : 'none';
         }
 
-        // Attach event listeners to all role radio buttons
+      
         roleInputs.forEach(input => {
         input.addEventListener('change', togglePositionContainer);
         console.log("changed");

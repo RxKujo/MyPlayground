@@ -127,10 +127,10 @@ include_once $includesPublic . 'header.php';
 
 <script src="../../assets/public/js/carouselLoader.js"></script>
 
-<!-- ✅ Redirection JS vers la liste des tournois -->
+
 <script>
     document.getElementById('tournament-button').addEventListener('click', function () {
-        window.location.href = 'tournaments_list'; // tu peux changer ce nom si besoin
+        window.location.href = 'tournaments_list'; 
     });
 </script>
 

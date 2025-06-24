@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
         tbody.appendChild(tr);
     });
 
-    // Fonctions pour générer les modals
+   
     function generateSwitchModal(id, isAdmin) {
         return `
         <div class="modal fade" id="confirmSwitch${id}" tabindex="-1" aria-hidden="true">
