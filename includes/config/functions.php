@@ -310,3 +310,24 @@ function clearSession(PDO $pdo, int $userId) {
     $_SESSION = [];
     session_destroy();
 }
+
+
+function logAction(PDO $pdo, $user_id = null) {
+    $stmt = $pdo->prepare("
+        INSERT INTO logs (
+            user_id, script_name, ip, status, http_referer, request_uri, request_method, server_protocol, http_user_agent
+        ) VALUES (
+            :user_id, :script_name, :ip, :status, :http_referer, :request_uri, :request_method, :server_protocol, :http_user_agent
+        )
+    ");
+    $stmt->bindValue(':user_id', $user_id, is_null($user_id) ? PDO::PARAM_NULL : PDO::PARAM_INT);
+    $stmt->bindValue(':script_name', $_SERVER['SCRIPT_NAME'] ?? null);
+    $stmt->bindValue(':ip', $_SERVER['REMOTE_ADDR'] ?? null);
+    $stmt->bindValue(':status', $_SERVER['REDIRECT_STATUS'] ?? null);
+    $stmt->bindValue(':http_referer', $_SERVER['HTTP_REFERER'] ?? null);
+    $stmt->bindValue(':request_uri', $_SERVER['REQUEST_URI'] ?? null);
+    $stmt->bindValue(':request_method', $_SERVER['REQUEST_METHOD'] ?? null);
+    $stmt->bindValue(':server_protocol', $_SERVER['SERVER_PROTOCOL'] ?? null);
+    $stmt->bindValue(':http_user_agent', $_SERVER['HTTP_USER_AGENT'] ?? null);
+    $stmt->execute();
+}
