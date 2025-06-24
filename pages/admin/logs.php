@@ -1,10 +1,6 @@
 <?php
 
-
-session_start();
-require_once __DIR__ . '/../../includes/config/config.php';
-require_once __DIR__ . '/../../includes/config/functions.php';
-
+include_once '../../includes/global/session.php';
 
 $stmt = $pdo->query("
     SELECT logs.*, utilisateur.pseudo
@@ -44,7 +40,7 @@ include_once '../../includes/admin/header.php';
                     <td><?= htmlspecialchars($log['pseudo'] ?? 'Anonyme') ?></td>
                     <td><?= htmlspecialchars($log['script_name']) ?></td>
                     <td><?= htmlspecialchars($log['ip']) ?></td>
-                    <td><?= htmlspecialchars($log['status']) ?></td>
+                    <td><?= htmlspecialchars($log['status'] ?? "Non enregistré") ?></td>
                     <td><?= htmlspecialchars($log['http_referer']) ?></td>
                     <td><?= htmlspecialchars($log['request_uri']) ?></td>
                     <td><?= htmlspecialchars($log['request_method']) ?></td>
