@@ -265,6 +265,39 @@ function displayCardMatch(array $match) {
     
 }
 
+function displayCardMessage(int $user_id) {
+    $html = '
+        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3 mb-3">
+            <img src="<?= $pfpSrc ?>" class="rounded-circle" width="48" height="48" alt="">
+            <div class="d-flex flex-column">
+                <strong>Morad</strong>
+                <small class="text-muted">Dernier message...</small>
+            </div>
+        </a>';
+}
+
+function getAllDiscussionsNames(PDO $pdo, int $user_id) {
+    $r = $pdo->query(
+        "SELECT pgroupe.id_groupe, groupe.nom, groupe.id_dernier_message FROM 
+            participation_groupe AS pgroupe 
+            INNER JOIN 
+            groupe_discussion AS groupe 
+            ON pgroupe.id_groupe = groupe.id
+            WHERE pgroupe.id_utilisateur = $user_id");
+    
+    $names = $r->fetchAll(PDO::FETCH_ASSOC);
+    return $names;
+}
+
+function getMessage(PDO $pdo, int | null $messageId) {
+    if (is_null($messageId)) {
+        return null;
+    }
+    $r = $pdo->query("SELECT * FROM echanger WHERE id_message = $messageId");
+    $message = $r->fetchAll(PDO::FETCH_ASSOC);
+    return $message;
+}
+
 function isUserOnline(PDO $pdo, int $userId) {
     $sql = "SELECT is_online FROM utilisateur WHERE id = :id";
     $stmt = $pdo->prepare($sql);

@@ -8,6 +8,9 @@ $pfpSrc = showPfp($pdo, $user);
 include_once $includesPublic . "header.php";
 include_once $assetsShared . 'icons/icons.php';
 include_once "navbar/header.php";
+
+$discussions = getAllDiscussionsNames($pdo, $user['id']);
+
 ?>
 
 <div class="d-flex">
@@ -29,13 +32,15 @@ include_once "navbar/header.php";
 
 
                 <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
-                        <img src="<?= $pfpSrc ?>" class="rounded-circle" width="48" height="48" alt="">
-                        <div class="d-flex flex-column">
-                            <strong>Morad</strong>
-                            <small class="text-muted">Dernier message...</small>
-                        </div>
-                    </a> 
+                    <?php foreach ($discussions as $discussion): ?>
+                        <a id="d<?= $discussion['id_groupe'] ?>" href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3 mb-3">
+                            <img src="<?= $pfpSrc ?>" class="rounded-circle" width="48" height="48" alt="">
+                            <div class="d-flex flex-column">
+                                <strong><?= $discussion['nom'] ?></strong>
+                                <small class="text-muted"><?= getMessage($pdo, $discussion["id_dernier_message"]) ?? "Envoyez votre premier message !"?></small>
+                            </div>
+                        </a>
+                    <?php endforeach; ?>
                 </div>
             </div>           
             <div class="col-lg-9 d-flex flex-column bg-light" style="height: 100vh;">
@@ -116,7 +121,7 @@ include_once "navbar/header.php";
                 .then(res => res.json())
                 .then(data => {
                     console.log("Résultats AJAX :", data); // 🧪
-
+                })
                 .then(data => {
                     resultsContainer.innerHTML = "";
                     if (data.length === 0) {
@@ -152,6 +157,7 @@ include_once "navbar/header.php";
                 resultsContainer.innerHTML = "";
             }
         });
+        
     });
 </script>
 
