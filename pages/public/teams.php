@@ -3,7 +3,7 @@ include_once '../../includes/global/session.php';
 notLogguedSecurity("../../index.php");
 
 include_once $includesPublic . 'header.php';
-include_once $includesShared . 'icons/icons.php';
+include_once $assetsShared . 'icons/icons.php';
 include_once 'navbar/header.php';
 
 $_SESSION['current_page'] = 'teams';
