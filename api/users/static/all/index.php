@@ -1,6 +1,6 @@
 <?php
 
-include_once '../../../includes/global/session.php';
+include_once '../../../../includes/global/session.php';
 
 
 

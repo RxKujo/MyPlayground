@@ -74,7 +74,9 @@ function getUserPosition(poste) {
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
-    const response = await fetch("/api/users/static/all");
+    const response = await fetch("/api/users/static/all", {
+            method: 'GET'
+    });
 
     const tbody = document.querySelector('#usersShowing');
 

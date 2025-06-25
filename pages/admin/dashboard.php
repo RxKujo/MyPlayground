@@ -95,7 +95,7 @@ include_once $includesAdmin . "header.php";
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
-            const response = await fetch('/api/users/');
+            const response = await fetch('/api/users/static/all');
             const data = await response.json();
             const users = data.users || data;
 
