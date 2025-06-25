@@ -1,6 +1,5 @@
 <?php
-session_start();
-include_once '../includes/config/config.php';
+include_once '../includes/global/session.php';
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../index.php');

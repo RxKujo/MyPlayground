@@ -10,7 +10,7 @@ include_once $assetsShared . 'icons/icons.php';
 include_once "navbar/header.php";
 
 $discussions = getAllDiscussionsNames($pdo, $user['id']);
-
+$pfpDiscu = showPfp($pdo, getAllDiscussionsNames($pdo, $user['id']));
 ?>
 
 <div class="d-flex">
@@ -34,7 +34,7 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
                 <div class="list-group">
                     <?php foreach ($discussions as $discussion): ?>
                         <a id="d<?= $discussion['id_groupe'] ?>" href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3 mb-3">
-                            <img src="<?= $pfpSrc ?>" class="rounded-circle" width="48" height="48" alt="">
+                            <img src="<?= $pfpDiscu ?>" class="rounded-circle" width="48" height="48" alt="">
                             <div class="d-flex flex-column">
                                 <strong><?= $discussion['nom'] ?></strong>
                                 <small class="text-muted"><?= getMessage($pdo, $discussion["id_dernier_message"]) ?? "Envoyez votre premier message !"?></small>
