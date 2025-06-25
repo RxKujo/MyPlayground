@@ -10,7 +10,7 @@
 	    <title>My PlayGround</title>
 
         <script type="module" src="../../assets/public/js/pageScript.js"></script>
-
+        <script src="../../assets/public/js/messageHandler.js"></script>
     </head>
 
     <body>

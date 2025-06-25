@@ -10,7 +10,10 @@ include_once $assetsShared . 'icons/icons.php';
 include_once "navbar/header.php";
 
 $discussions = getAllDiscussionsNames($pdo, $user['id']);
+
 ?>
+
+<script>const user_id = <?= $user['id'] ?>;</script>
 
 <div class="d-flex">
     <?php include_once "navbar/reducted_navbar.php"; ?>
@@ -30,9 +33,15 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
                 </div>
 
                 <div class="list-group">
-                    <?php foreach ($discussions as $discussion): ?>
+                    <?php 
+                        foreach ($discussions as $discussion):
+                            $interlocutor = getFirstUserInDiscussion($pdo, $discussion['id_groupe'], $user['id']);
+                            if (!$interlocutor) {
+                                continue;
+                            }
+                    ?>
                         <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3 mb-3 discussion-link" data-id="<?= $discussion['id_groupe'] ?>">
-                            <img src="<?= $pfpSrc ?>" class="rounded-circle" width="48" height="48" alt="">
+                            <img src="<?= showPfpOffline($interlocutor) ?>" class="rounded-circle" width="48" height="48" alt="">
                             <div class="d-flex flex-column">
                                 <strong><?= $discussion['nom'] ?></strong>
                                 <small class="text-muted"><?= getMessage($pdo, $discussion["id_dernier_message"]) ?? "Envoyez votre premier message !"?></small>
@@ -45,10 +54,10 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
             <div class="col-lg-9 d-flex flex-column bg-light" style="height: 100vh;">
                 <div class="d-flex align-items-center justify-content-between p-3 border-bottom bg-white">
                     <div class="d-flex align-items-center gap-3">
-                        <img src="<?= $pfpSrc ?>" class="rounded-circle" width="48" height="48" alt="">
+                        <img id="interlocutor-pfp" src="" class="rounded-circle" width="48" height="48" alt="">
                         <div>
-                            <strong><?= $user['pseudo'] ?></strong>
-                            <div class="text-muted small">En ligne</div>
+                            <strong id="interlocutor-name"></strong>
+                            <div id="interlocutor-status" class="text-muted small"></div>
                         </div>
                     </div>
                     <button class="btn btn-outline-secondary btn-sm">...</button>
@@ -57,13 +66,11 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
                     <div class="d-flex flex-column gap-3"></div>
                 </div>
                 <div class="border-top p-3 bg-white">
-                    <form method="POST" action="../../processes/send_message_process.php">
-                        <input type="hidden" name="id_groupe" value="<?= $_GET['id_groupe'] ?? '' ?>">
-                        <div class="input-group">
-                            <input type="text" name="message" class="form-control" placeholder="Écrire un message..." required>
-                            <button class="btn btn-primary" type="submit">Envoyer</button>
-                        </div>
-                    </form>
+                    <input type="hidden" name="id_groupe" value="<?= $_GET['id_groupe'] ?? '' ?>">
+                    <div class="input-group">
+                        <input type="text" name="message" class="form-control" placeholder="Écrire un message..." required>
+                        <button class="btn btn-primary" type="submit">Envoyer</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -73,107 +80,28 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
 <div class="modal fade" id="newGroup" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content text-dark">
-            <form method="POST" action="../../processes/create_group.php">
-                <div class="modal-header">
-                    <h5 class="modal-title">Créer une conversation</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <div class="modal-header">
+                <h5 class="modal-title">Créer une conversation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label>Nom du groupe</label>
+                    <input class="form-control" name="nom" type="text">
                 </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label>Nom du groupe</label>
-                        <input class="form-control" name="nom" type="text">
-                    </div>
-                    <div class="mb-3">
-                        <label>Avec :</label>
-                        <div id="guests-container"></div>
-                        <input class="form-control" type="text" name="guests[]" id="hiddenGuests">
-                    </div>
+                <div class="mb-3">
+                    <label>Avec :</label>
+                    <div id="guests-container"></div>
+                    <input class="form-control" type="text" name="guests[]" id="hiddenGuests">
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Fermer</button>
-                    <button class="btn btn-primary" type="submit">Créer</button>
-                </div>
-            </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Fermer</button>
+                <button class="btn btn-primary" type="submit">Créer</button>
+            </div>
         </div>
     </div>
 </div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const searchInput = document.getElementById("searchUser");
-        const resultsContainer = document.getElementById("searchResults");
-        searchInput.addEventListener("input", () => {
-            const query = searchInput.value.trim();
-            if (query.length < 2) {
-                resultsContainer.innerHTML = "";
-                return;
-            }
-            fetch("../../processes/search_user.php?q=" + encodeURIComponent(query))
-                .then(res => res.json())
-                .then(data => {
-                    resultsContainer.innerHTML = "";
-                    if (data.length === 0) {
-                        resultsContainer.innerHTML = "<div class='list-group-item text-muted'>Aucun utilisateur trouvé</div>";
-                    } else {
-                        data.forEach(user => {
-                            const item = document.createElement("a");
-                            item.className = "list-group-item list-group-item-action";
-                            item.textContent = user.pseudo;
-                            item.addEventListener("click", () => {
-                                const container = document.getElementById("guests-container");
-                                const input = document.createElement("input");
-                                input.type = "hidden";
-                                input.name = "guests[]";
-                                input.value = user.pseudo;
-
-                                const label = document.createElement("div");
-                                label.className = "badge bg-primary text-white me-2";
-                                label.textContent = user.pseudo;
-
-                                container.appendChild(label);
-                                container.appendChild(input);
-                                resultsContainer.innerHTML = "";
-                                searchInput.value = "";
-                            });
-                            resultsContainer.appendChild(item);
-                        });
-                    }
-                });
-        });
-
-        document.querySelectorAll('.discussion-link').forEach(link => {
-            link.addEventListener('click', function (e) {
-                e.preventDefault();
-                const id = this.dataset.id;
-                fetch('../../processes/get_messages.php?groupe_id=' + id)
-                    .then(res => res.json())
-                    .then(data => {
-                        const container = document.getElementById('message-container');
-                        container.innerHTML = '<div class="d-flex flex-column gap-3"></div>';
-                        const list = container.querySelector('.d-flex');
-                        data.forEach(msg => {
-                            const div = document.createElement('div');
-                            div.className = 'px-3 py-2 rounded shadow-sm';
-                            div.style.maxWidth = '75%';
-                            div.classList.add(msg.pseudo === "<?= $user['pseudo'] ?>" ? 'align-self-end bg-primary text-white' : 'align-self-start bg-white');
-                            div.textContent = msg.message;
-                            list.appendChild(div);
-                        });
-
-                        document.querySelectorAll('.discussion-link').forEach(a => a.classList.remove('active'));
-                        this.classList.add('active');
-
-                        document.getElementById('groupe-id-input').value = id;
-                    });
-            });
-        });
-
-        document.addEventListener("click", (e) => {
-            if (!searchInput.contains(e.target) && !resultsContainer.contains(e.target)) {
-                resultsContainer.innerHTML = "";
-            }
-        });
-    });
-</script>
 
 <?php include_once $includesGlobal . 'footer.php'; ?>

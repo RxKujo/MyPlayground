@@ -289,6 +289,54 @@ function getAllDiscussionsNames(PDO $pdo, int $user_id) {
     return $names;
 }
 
+function getFirstUserInDiscussion(PDO $pdo, int $groupe_id, int $userId) {
+    $r = $pdo->query(
+        "SELECT u.id, u.pfp, u.nom FROM 
+        utilisateur AS u 
+        INNER JOIN 
+        participation_groupe 
+        ON participation_groupe.id_utilisateur = u.id 
+        WHERE participation_groupe.id_groupe = $groupe_id AND u.id != $userId" 
+    );
+    $users = $r->fetch(PDO::FETCH_ASSOC);
+    return $users;
+}
+
+function getAllUsersInDiscussion(PDO $pdo, int $groupe_id, int $userId) {
+    $r = $pdo->query(
+        "SELECT u.id, u.pfp, u.pseudo FROM 
+        utilisateur AS u 
+        INNER JOIN 
+        participation_groupe 
+        ON participation_groupe.id_utilisateur = u.id 
+        WHERE participation_groupe.id_groupe = $groupe_id AND u.id != $userId" 
+    );
+    $users = $r->fetchAll(PDO::FETCH_ASSOC);
+    return $users;
+}
+
+function getReceivers(PDO $pdo, int $id_groupe) {
+    $r = $pdo->query(
+        "SELECT "
+    );
+}
+
+function getMessagesByGroup(PDO $pdo, int $groupe_id) {
+    $r = $pdo->query(
+        "SELECT e.id_message, e.id_envoyeur, e.id_groupe, e.message, e.date_envoi FROM
+        echanger AS e
+        INNER JOIN
+        participation_groupe
+        ON participation_groupe.id_groupe = e.id_groupe
+        WHERE participation_groupe.id_groupe = $groupe_id
+        ORDER BY date_envoi ASC"
+    );
+
+    $messages = $r->fetchAll(PDO::FETCH_ASSOC);
+
+    return $messages;
+}
+
 function getMessage(PDO $pdo, int | null $messageId) {
     if (is_null($messageId)) {
         return null;
@@ -377,6 +425,20 @@ function showPfp(PDO $pdo, array $user) {
 
     return $avatarSrc;
 }
+
+function showPfpOffline(array $user) {
+    $avatarData = $user['pfp'];
+
+    if ($avatarData) {
+        $base64 = base64_encode($avatarData);
+        $avatarSrc = "data:image/png;base64," . $base64;
+    } else {
+        $avatarSrc = "../../assets/public/img/morad.png";
+    }
+
+    return $avatarSrc;
+}
+
 
 function getAllUsers(PDO $pdo) {
     $r = $pdo->query("SELECT id, nom, prenom, pseudo, localisation, email, tel, poste, droits, role, niveau, is_online, is_verified FROM utilisateur");
