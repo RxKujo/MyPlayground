@@ -149,4 +149,4 @@ include_once $includesAdmin . "header.php";
         </script>
 </div>
 
-<?php include_once "../../includes/global/footer.php"; ?>
+<?php include_once $includesGlobal . "footer.php"; ?>

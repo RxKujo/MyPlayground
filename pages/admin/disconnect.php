@@ -4,7 +4,7 @@ include_once '../../includes/global/session.php';
 
 notLogguedSecurity("../../index.php");
 
-include_once "../../includes/admin/header.php";
+include_once $includesAdmin . "header.php";
 
 ?>
 
@@ -24,4 +24,4 @@ include_once "../../includes/admin/header.php";
     </div>
 </div>
 
-<?php include_once "../../includes/global/footer.php"; ?>
+<?php include_once $includesGlobal . "footer.php"; ?>

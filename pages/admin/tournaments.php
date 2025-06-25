@@ -1,8 +1,6 @@
 <?php
-// filepath: c:\xampp\htdocs\MyPlayground\pages\admin\tournaments.php
 
 include_once '../../includes/global/session.php';
-include_once '../../includes/config/config.php';
 notLogguedSecurity("../../index.php");
 
 $sql = 'SELECT id_tournoi, nom, date_tournoi FROM tournoi';

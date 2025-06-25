@@ -1,7 +1,4 @@
 <?php
-session_start();
-require_once __DIR__ . '/../../includes/config/config.php';
-require_once __DIR__ . '/../../includes/config/functions.php';
 
 include_once '../../includes/global/session.php';
 
@@ -13,14 +10,14 @@ $stmt = $pdo->query("
 ");
 $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-include_once '../../includes/admin/header.php';
+include_once $includesAdmin . 'header.php';
 ?>
 
 
 <link rel="stylesheet" href="/assets/admin/css/style.css">
 
 <div class="d-flex flex-column flex-md-row">
-    <?php include_once(__DIR__ . '/navbar/navbar.php'); ?>
+    <?php include_once 'navbar/navbar.php'; ?>
     <div class="container-fluid p-4" style="flex-grow: 1;" id="content">
         <h2 class="mb-4 text-center">Historique des connexions et actions</h2>
 
@@ -62,4 +59,4 @@ include_once '../../includes/admin/header.php';
     </div>
 </div>
 
-<?php include_once '../../includes/global/footer.php'; ?>
+<?php include_once $includesGlobal . 'footer.php'; ?>
