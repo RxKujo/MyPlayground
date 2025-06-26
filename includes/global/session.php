@@ -20,10 +20,15 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 
     exit();
 }
 
-if (time() - $_SESSION['last_refresh'] > $bdd_refresh && isset($_SESSION['user_id'])) {
-    $_SESSION['user_info'] = getUser($pdo, $_SESSION['user_id']);
+if (isset($_SESSION['last_refresh'])) {
+    if (time() - $_SESSION['last_refresh'] > $bdd_refresh && isset($_SESSION['user_id'])) {
+        $_SESSION['user_info'] = getUser($pdo, $_SESSION['user_id']);
+        $_SESSION['last_refresh'] = time();
+    }
+} else {
     $_SESSION['last_refresh'] = time();
 }
+
 
 $_SESSION['last_activity'] = time();
 
