@@ -449,3 +449,81 @@ function getAllCaptchas(PDO $pdo) {
     $r = $pdo->query("SELECT id, question, reponse FROM captchas");
     return $r->fetchAll(PDO::FETCH_ASSOC);
 }
+
+
+function createUser(
+    PDO $pdo,
+
+    string $prenom,
+    string $nom,
+    string $email,
+    string $tel,
+    string $naissance,
+    string $adresse,
+    string $pseudo,
+    
+    int $role,
+    int $position,
+    int $niveau,
+
+    int $password,
+    int $confirm_password,
+
+    string $captcha,
+    string $captcha_expected
+) {
+    if (!$prenom || !$nom || !$email || !$tel || !$naissance || !$adresse || !$pseudo || !$password || !$confirm_password) {
+        return ['success' => false, 'message' => "Tous les champs sont obligatoires."];
+    } else if ($password !== $confirm_password) {
+        return ['success' => false, 'message' => "Les mots de passe ne correspondent pas."];
+    } else if (!isset($captcha_expected) || !$captcha || strtolower($captcha) !== strtolower($captcha_expected)) {
+        return ['success' => false, 'message' => "Veuillez valider correctement le captcha."];
+    }
+
+    $sql = "SELECT id FROM utilisateur WHERE pseudo = :pseudo OR email = :email LIMIT 1";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':pseudo', $pseudo);
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+
+    if ($stmt->rowCount() !== 0) {
+        return ['success' => false, 'message' => "Nom d'utilisateur ou email déjà utilisé."];
+    }
+
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $verificationToken = bin2hex(random_bytes(32));
+    $isVerified = 0;
+
+    $sql = 
+    "INSERT INTO utilisateur 
+    (pseudo, prenom, nom, date_naissance, email, mdp, tel, poste, role, localisation, niveau, description, email_verification_token, is_verified) 
+    VALUES 
+    (:pseudo, :prenom, :nom, :naissance, :email, :mdp, :tel, :poste, :role, :localisation, :niveau, :description, :token, :is_verified)";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':pseudo', $pseudo);
+    $stmt->bindParam(':prenom', $prenom);
+    $stmt->bindParam(':nom', $nom);
+    $stmt->bindParam(':naissance', $naissance);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':mdp', $hashedPassword);
+    $stmt->bindParam(':tel', $tel);
+    $stmt->bindParam(':poste', $position);
+    $stmt->bindParam(':role', $role);
+    $stmt->bindParam(':localisation', $adresse);
+    $stmt->bindParam(':niveau', $niveau);
+    $description = ""; 
+    $stmt->bindParam(':description', $description);
+    $stmt->bindParam(':token', $verificationToken);
+    $stmt->bindParam(':is_verified', $isVerified);
+
+    if ($stmt->execute()) {
+        if (sendVerificationEmail($email, $prenom, $verificationToken)) {
+            return ['success' => false, 'message' => "Inscription réussie ! Vous pouvez maintenant vous connecter."];
+        } else {
+            return ['success' => false, 'message' => "Inscription réussie, mais impossible d’envoyer l’email de vérification."];
+        }
+    } else {
+        return ['success' => false, 'message' => "Une erreur est survenue lors de l'inscription. Veuillez réessayer."];
+    }
+}

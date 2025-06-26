@@ -14,7 +14,7 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 
     makeOffline($pdo, $_SESSION['user_id']);
     session_unset();
     session_destroy();
-    header("Location: ../../login.php");
+    header("Location: /login.php");
     exit();
 }
 
