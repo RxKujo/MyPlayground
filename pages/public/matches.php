@@ -8,6 +8,11 @@ include_once $includesPublic . 'header.php';
 include_once $assetsShared . 'icons/icons.php';
 include_once "navbar/header.php";
 ?>
+<?php if (isset($_GET['success'])): ?>
+    <div class="alert alert-success text-center">Match supprimé avec succès.</div>
+<?php elseif (isset($_GET['error'])): ?>
+    <div class="alert alert-danger text-center"><?= htmlspecialchars($_GET['error']) ?></div>
+<?php endif; ?>
 
 <div class="d-flex">
     <?php include_once "navbar/navbar.php"; ?>
@@ -47,7 +52,7 @@ include_once "navbar/header.php";
                         r.heure_fin,
                         e1.id_equipe AS id_equipe1,
                         e2.id_equipe AS id_equipe2,
-                        r.id_reserveur AS id_reserveur,
+                        r.id_reservation AS id_reservation,
                         t.id_terrain AS id_terrain 
                     FROM `match` m 
                     LEFT JOIN equipe e1 ON m.id_equipe1 = e1.id_equipe
@@ -69,38 +74,39 @@ include_once "navbar/header.php";
                     <div class="text-center text-muted">Aucun match disponible pour le moment.</div>
                 <?php else: ?>
                     <?php foreach ($matchs as $match): ?>
-                        <div class="d-flex justify-content-center mb-4">
+                        <div class="d-flex justify-content-center mb-4" id="match-<?= $match['id_match'] ?>">
                             <div class="card w-75 shadow-sm">
                                 <div class="card-body">
-
-                                    <button type="button" class="btn-close" aria-label="Close" data-bs-toggle="modal" data-bs-target="#<?= $match['id_match'] ?>Modal"></button>
-                                    <div class="modal fade" id="<?= $match['id_match'] ?>Modal" tabindex="-1" aria-labelledby="<?= $match['id_match'] ?>ModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <form action="../../processes/delete_match_process.php" method="POST">
+                                    <?php if ($match['createur'] == $user['id']): ?>
+                                        <button type="button" class="btn btn-danger btn-sm float-end" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $match['id_match'] ?>">
+                                            <i class="bi bi-trash"></i> Supprimer
+                                        </button>
+                                        
+                                        <div class="modal fade" id="deleteModal<?= $match['id_match'] ?>" tabindex="-1" aria-labelledby="deleteModalLabel<?= $match['id_match'] ?>" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="<?= $match['id_match'] ?>ModalLabel">Supprimer le match</h1>
+                                                        <h1 class="modal-title fs-5" id="deleteModalLabel<?= $match['id_match'] ?>">Supprimer le match</h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        Etes-vous sûr de vouloir supprimer le match '<?= $match['nom_terrain'] ?>' ?
+                                                        Êtes-vous sûr de vouloir supprimer le match '<?= htmlspecialchars($match['nom_terrain'] ?? 'Sans nom') ?>' ?
                                                     </div>
-                                                    
-                                                    <input type="hidden" name="id_match" class="form-control" value="<?= $match['id_match'] ?>"/>
-                                                    <input type="hidden" name="id_equipe1" class="form-control" value="<?= $match['id_equipe1'] ?>"/>
-                                                    <input type="hidden" name="id_equipe2" class="form-control" value="<?= $match['id_equipe2'] ?>"/>
-                                                    <input type="hidden" name="id_reservation" class="form-control" value="<?= $match['id_reserveur'] ?>"/>
-                                                    <input type="hidden" name="id_terrain" class="form-control" value="<?= $match['id_terrain'] ?>"/>
-
-                                                    
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                                                        <button type="submit" class="btn btn-danger">Je suis sûr</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                            <?php if ($match['createur'] == $user['id']): ?>
+                                                                <form action="../../processes/delete_match_process.php" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce match ?');">
+                                                                    <input type="hidden" name="id_match" value="<?= $match['id_match'] ?>">
+                                                                    <button type="submit" class="btn btn-danger btn-sm float-end">
+                                                                        <i class="bi bi-trash"></i> Supprimer
+                                                                    </button>
+                                                                </form>
+                                                            <?php endif; ?>
                                                     </div>
-                                                </form>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    <?php endif; ?>
                                     
                                     <h5 class="card-title fw-bold"><?= htmlspecialchars($match['nom_terrain'] ?? 'Match sans nom') ?></h5>
                                     <p class="card-text">
@@ -112,7 +118,9 @@ include_once "navbar/header.php";
                                     <span class="badge bg-secondary me-1">Statut : <?= htmlspecialchars($match['statut']) ?></span>
                                     <div class="mt-3 text-muted">
                                         <i class="bi bi-person-circle"></i> Créateur : @<?= getUser($pdo, $match['createur'])['pseudo'] ?? 'Inconnu' ?>
-                                        <button class="btn btn-success " >Rejoindre</button>
+                                        <?php if ($match['createur'] != $user['id']): ?>
+                                            <button class="btn btn-success">Rejoindre</button>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -123,5 +131,30 @@ include_once "navbar/header.php";
         </section>
     </div>
 </div>
+
+<script>
+function deleteMatch(idMatch) {
+    if (!confirm("Confirmer la suppression de ce match ?")) return;
+
+    const formData = new FormData();
+    formData.append('id_match', idMatch);
+
+    fetch('../../processes/delete_match_process.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            const el = document.getElementById('match-' + idMatch);
+            if (el) el.remove();
+            alert("Match supprimé !");
+        } else {
+            alert("Erreur : " + data.message);
+        }
+    });
+}
+</script>
+
 
 <?php include_once $includesGlobal . "footer.php"; ?>
