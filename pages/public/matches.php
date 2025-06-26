@@ -37,31 +37,7 @@ include_once "navbar/header.php";
 
             <?php
             try {
-                $stmt = $pdo->query("
-                    SELECT 
-                        m.id_match,
-                        m.message,
-                        m.statut,
-                        m.id_createur AS createur,
-                        e1.nom AS equipe1,
-                        e2.nom AS equipe2,
-                        t.nom AS nom_terrain,
-                        t.localisation,
-                        r.date_reservation,
-                        r.heure_debut,
-                        r.heure_fin,
-                        e1.id_equipe AS id_equipe1,
-                        e2.id_equipe AS id_equipe2,
-                        r.id_reservation AS id_reservation,
-                        t.id_terrain AS id_terrain 
-                    FROM `match` m 
-                    LEFT JOIN equipe e1 ON m.id_equipe1 = e1.id_equipe
-                    LEFT JOIN equipe e2 ON m.id_equipe2 = e2.id_equipe
-                    LEFT JOIN reserver r ON r.id_match = m.id_match 
-                    LEFT JOIN terrain t ON r.id_terrain = t.id_terrain
-                    WHERE m.statut = 'en_attente'
-                    ORDER BY m.id_match DESC
-                ");
+                $stmt = $pdo->query("SELECT m.id_match, m.message, m.statut, m.id_createur AS createur, e1.nom AS equipe1, e2.nom AS equipe2, t.nom AS nom_terrain, t.localisation, r.date_reservation, r.heure_debut, r.heure_fin, e1.id_equipe AS id_equipe1, e2.id_equipe AS id_equipe2, r.id_reservation AS id_reservation, t.id_terrain AS id_terrain FROM `match` m LEFT JOIN equipe e1 ON m.id_equipe1 = e1.id_equipe LEFT JOIN equipe e2 ON m.id_equipe2 = e2.id_equipe LEFT JOIN reserver r ON r.id_match = m.id_match LEFT JOIN terrain t ON r.id_terrain = t.id_terrain WHERE m.statut = 'en_attente' ORDER BY m.id_match DESC");
                 $matchs = $stmt->fetchAll(PDO::FETCH_ASSOC);
             } catch (PDOException $e) {
                 echo "<div class='alert alert-danger'>Erreur lors du chargement des matchs : " . $e->getMessage() . "</div>";
@@ -81,7 +57,6 @@ include_once "navbar/header.php";
                                         <button type="button" class="btn btn-danger btn-sm float-end" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $match['id_match'] ?>">
                                             <i class="bi bi-trash"></i> Supprimer
                                         </button>
-                                        
                                         <div class="modal fade" id="deleteModal<?= $match['id_match'] ?>" tabindex="-1" aria-labelledby="deleteModalLabel<?= $match['id_match'] ?>" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
@@ -94,20 +69,16 @@ include_once "navbar/header.php";
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                                                            <?php if ($match['createur'] == $user['id']): ?>
-                                                                <form action="../../processes/delete_match_process.php" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce match ?');">
-                                                                    <input type="hidden" name="id_match" value="<?= $match['id_match'] ?>">
-                                                                    <button type="submit" class="btn btn-danger btn-sm float-end">
-                                                                        <i class="bi bi-trash"></i> Supprimer
-                                                                    </button>
-                                                                </form>
-                                                            <?php endif; ?>
+                                                        <form action="../../processes/delete_match_process.php" method="POST">
+                                                            <input type="hidden" name="id_match" value="<?= $match['id_match'] ?>">
+                                                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     <?php endif; ?>
-                                    
+
                                     <h5 class="card-title fw-bold"><?= htmlspecialchars($match['nom_terrain'] ?? 'Match sans nom') ?></h5>
                                     <p class="card-text">
                                         Jouez avec <strong>?</strong> joueurs.<br>
@@ -118,8 +89,42 @@ include_once "navbar/header.php";
                                     <span class="badge bg-secondary me-1">Statut : <?= htmlspecialchars($match['statut']) ?></span>
                                     <div class="mt-3 text-muted">
                                         <i class="bi bi-person-circle"></i> Créateur : @<?= getUser($pdo, $match['createur'])['pseudo'] ?? 'Inconnu' ?>
-                                        <?php if ($match['createur'] != $user['id']): ?>
-                                            <button class="btn btn-success">Rejoindre</button>
+
+                                        <?php
+                                        $stmt2 = $pdo->prepare("SELECT id_equipe FROM appartenir WHERE id = ? AND id_equipe IN (?, ?)");
+                                        $stmt2->execute([$user['id'], $match['id_equipe1'], $match['id_equipe2']]);
+                                        $joinedTeam = $stmt2->fetchColumn();
+
+                                        if (!$joinedTeam): ?>
+                                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#joinModal<?= $match['id_match'] ?>">Rejoindre</button>
+
+                                            <div class="modal fade" id="joinModal<?= $match['id_match'] ?>" tabindex="-1" aria-labelledby="joinModalLabel<?= $match['id_match'] ?>" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content text-dark">
+                                                        <form method="POST" action="../../processes/join_match_process.php">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Rejoindre un match</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Choisis l’équipe que tu veux rejoindre :</p>
+                                                                <input type="hidden" name="id_match" value="<?= $match['id_match'] ?>">
+                                                                <button name="equipe" value="<?= $match['id_equipe1'] ?>" class="btn btn-outline-primary w-100 mb-2">
+                                                                    Équipe 1 : <?= htmlspecialchars($match['equipe1'] ?? 'Nom inconnu') ?>
+                                                                </button>
+                                                                <button name="equipe" value="<?= $match['id_equipe2'] ?>" class="btn btn-outline-primary w-100">
+                                                                    Équipe 2 : <?= htmlspecialchars($match['equipe2'] ?? 'Nom inconnu') ?>
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php else: ?>
+                                            <form method="POST" action="../../processes/leave_match_process.php" class="d-inline">
+                                                <input type="hidden" name="id_equipe" value="<?= $joinedTeam ?>">
+                                                <button type="submit" class="btn btn-warning">Quitter l'équipe</button>
+                                            </form>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -131,30 +136,5 @@ include_once "navbar/header.php";
         </section>
     </div>
 </div>
-
-<script>
-function deleteMatch(idMatch) {
-    if (!confirm("Confirmer la suppression de ce match ?")) return;
-
-    const formData = new FormData();
-    formData.append('id_match', idMatch);
-
-    fetch('../../processes/delete_match_process.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(r => r.json())
-    .then(data => {
-        if (data.success) {
-            const el = document.getElementById('match-' + idMatch);
-            if (el) el.remove();
-            alert("Match supprimé !");
-        } else {
-            alert("Erreur : " + data.message);
-        }
-    });
-}
-</script>
-
 
 <?php include_once $includesGlobal . "footer.php"; ?>
