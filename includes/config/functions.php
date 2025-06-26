@@ -522,3 +522,27 @@ function createUser(
     }
     return ['success' => false, 'message' => "Une erreur est survenue lors de l'inscription. Veuillez réessayer."];
 }
+
+function e(PDO $pdo) {
+    $stmt = $pdo->query(
+        "SELECT m.id_match, m.message, m.statut, m.id_createur AS createur, 
+                e1.nom AS equipe1, e2.nom AS equipe2, t.nom AS nom_terrain, 
+                t.localisation, r.date_reservation, r.heure_debut, r.heure_fin, 
+                e1.id_equipe AS id_equipe1, e2.id_equipe AS id_equipe2, 
+                r.id_reservation AS id_reservation, t.id_terrain AS id_terrain 
+        FROM 
+            `match` m 
+        LEFT JOIN 
+            equipe e1 ON m.id_equipe1 = e1.id_equipe 
+        LEFT JOIN 
+            equipe e2 ON m.id_equipe2 = e2.id_equipe 
+        LEFT JOIN 
+            reserver r ON r.id_match = m.id_match 
+        LEFT JOIN 
+            terrain t ON r.id_terrain = t.id_terrain 
+        WHERE 
+            m.statut = 'en_attente' 
+        ORDER BY m.id_match DESC
+    ");
+
+}
