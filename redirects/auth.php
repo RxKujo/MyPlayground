@@ -44,12 +44,8 @@ if (!$user) {
 
 $isPasswordCorrect = password_verify($password, $user['mdp']);
 
-$sql = "SELECT * FROM utilisateur WHERE id = :id LIMIT 1";
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':id', $user['id']);
-$stmt->execute();
 
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
+$user = getUser($pdo, $user['id']);
 
 
 

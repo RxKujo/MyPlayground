@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 if (data.noms) {
+                    document.getElementById("interlocutor-pfp").removeAttribute("hidden");
                     document.getElementById("interlocutor-pfp").src = data.pfps[data.noms[0]];
                     document.getElementById("interlocutor-name").textContent = data.noms.join(', ');
                     document.getElementById("interlocutor-status").textContent = data.status ?? '';

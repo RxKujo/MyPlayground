@@ -1,12 +1,10 @@
 <?php
-session_start();
 
-include_once 'includes/config/functions.php';
-include_once 'includes/config/variables.php';
-include_once 'includes/config/config.php';
+include_once 'includes/global/session.php';
 
-$_SESSION['register_error'] = "Tous les champs doivent être remplis.";
 $error = $_SESSION['register_error'] ?? null;
+$success = $_SESSION['register_success'] ?? null;
+
 $formData = $_SESSION['form_data'] ?? [];
 unset($_SESSION['error'], $_SESSION['form_data']);
 
@@ -95,6 +93,13 @@ $_SESSION['captcha_id'] = $captcha_id;
       margin-bottom: 15px;
       text-align: center;
     }
+
+    .success-message {
+      color: green;
+      font-weight: 600;
+      margin-bottom: 15px;
+      text-align: center;
+    }
   </style>
 </head>
 
@@ -107,6 +112,9 @@ $_SESSION['captcha_id'] = $captcha_id;
 
     <?php if ($error): ?>
       <div class="error-message"><?= htmlspecialchars($error) ?></div>
+    <?php endif; ?>
+    <?php if ($success): ?>
+      <div class="error-message"><?= htmlspecialchars($success) ?></div>
     <?php endif; ?>
 
     <div class="form-container">

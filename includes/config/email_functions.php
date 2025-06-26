@@ -1,6 +1,6 @@
 <?php
-require_once '../vendor/autoload.php';
-include_once 'variables.php';
+
+include_once $root . 'vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use Dotenv\Dotenv;
@@ -33,7 +33,12 @@ function sendVerificationEmail(string $email, string $prenom, string $verificati
         $mail->Subject = htmlspecialchars('Vérifiez') . 'votre adresse email';
         $mail->Body    = htmlspecialchars("Bonjour $prenom,<br><br>Merci de vous être inscrit. Veuillez cliquer sur le lien ci-dessous pour vérifier votre adresse email :") . "<br><br><a href='$verification_link'>$verification_link</a><br><br>Merci !";
 
-        $mail->send();
+        try {
+            $mail->send();
+        } catch (Exception $e) {
+            return false;
+        }
+
         return true;
     } catch (Exception $e) {
         return false; 

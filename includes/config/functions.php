@@ -466,8 +466,8 @@ function createUser(
     int $position,
     int $niveau,
 
-    int $password,
-    int $confirm_password,
+    string $password,
+    string $confirm_password,
 
     string $captcha,
     string $captcha_expected
@@ -476,7 +476,7 @@ function createUser(
         return ['success' => false, 'message' => "Tous les champs sont obligatoires."];
     } else if ($password !== $confirm_password) {
         return ['success' => false, 'message' => "Les mots de passe ne correspondent pas."];
-    } else if (!isset($captcha_expected) || !$captcha || strtolower($captcha) !== strtolower($captcha_expected)) {
+    } else if (!$captcha_expected || !$captcha || strtolower($captcha) !== strtolower($captcha_expected)) {
         return ['success' => false, 'message' => "Veuillez valider correctement le captcha."];
     }
 
@@ -486,7 +486,7 @@ function createUser(
     $stmt->bindParam(':email', $email);
     $stmt->execute();
 
-    if ($stmt->rowCount() !== 0) {
+    if ($stmt->fetch(PDO::FETCH_ASSOC)) {
         return ['success' => false, 'message' => "Nom d'utilisateur ou email déjà utilisé."];
     }
 
@@ -518,12 +518,7 @@ function createUser(
     $stmt->bindParam(':is_verified', $isVerified);
 
     if ($stmt->execute()) {
-        if (sendVerificationEmail($email, $prenom, $verificationToken)) {
-            return ['success' => false, 'message' => "Inscription réussie ! Vous pouvez maintenant vous connecter."];
-        } else {
-            return ['success' => false, 'message' => "Inscription réussie, mais impossible d’envoyer l’email de vérification."];
-        }
-    } else {
-        return ['success' => false, 'message' => "Une erreur est survenue lors de l'inscription. Veuillez réessayer."];
+        return ['success' => true, 'message' => "", 'token' => $verificationToken];
     }
+    return ['success' => false, 'message' => "Une erreur est survenue lors de l'inscription. Veuillez réessayer."];
 }

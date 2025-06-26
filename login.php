@@ -1,11 +1,6 @@
 <?php
 
-session_start();
-
-include_once 'includes/config/functions.php';
-include_once 'includes/config/variables.php';
-
-include_once 'includes/config/config.php';
+include_once 'includes/global/session.php';
 
 
 $stmt = $pdo->query("
@@ -24,7 +19,7 @@ $_SESSION['captcha_expected'] = $reponse;
 $_SESSION['captcha_id'] = $captcha_id;
 
 $login_error = $_SESSION['errors']['login_error'] ?? null;
-$register_success = $_SESSION['errors']['register_success'] ?? null;
+$register_success = $_SESSION['register_success'] ?? null;
 $captcha_error = $_SESSION['errors']['captcha_error'] ?? null;
 
 ?>
@@ -105,7 +100,7 @@ $captcha_error = $_SESSION['errors']['captcha_error'] ?? null;
     }
     if (!is_null($register_success)) {
         alertMessage($register_success, 0);
-        $_SESSION['errors']['register_success'] = null;
+        $_SESSION['register_success'] = null;
     }
     if (!is_null($captcha_error)) {
         alertMessage($captcha_error, 1);

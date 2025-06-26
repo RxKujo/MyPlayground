@@ -54,7 +54,7 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
             <div class="col-lg-9 d-flex flex-column bg-light" style="height: 100vh;">
                 <div class="d-flex align-items-center justify-content-between p-3 border-bottom bg-white">
                     <div class="d-flex align-items-center gap-3">
-                        <img id="interlocutor-pfp" src="" class="rounded-circle" width="48" height="48" alt="">
+                        <img hidden="" id="interlocutor-pfp" src="" class="rounded-circle" width="48" height="48" alt="interlocutor-pfp">
                         <div>
                             <strong id="interlocutor-name"></strong>
                             <div id="interlocutor-status" class="text-muted small"></div>

@@ -2,8 +2,6 @@
 
 include_once '../includes/global/session.php';
 
-notLogguedSecurity("../index.php");
-
 include_once '../includes/config/email_functions.php';
 
 
@@ -59,17 +57,23 @@ $result = createUser(
     $captcha_expected
 );
 
-if ($result) {
-    $ok = $result['success'];
-    $message = $result['message'];
+$ok = $result['success'];
+$message = $result['message'];
+$verificationToken = $result['token'];
 
-    if ($ok) {
-        $_SESSION['register_success'] = $message;
-        header("location: ../login.php");
-        exit();
+if ($ok) {
+    if (sendVerificationEmail($email, $prenom, $verificationToken)) {
+        $_SESSION['register_success'] = "Inscription réussie ! Vous pouvez maintenant vous connecter.";
+    } else {
+        $_SESSION['register_success'] = "Inscription réussie, mais impossible d’envoyer l’email de vérification.";
     }
+    
+    unset($_SESSION['form_data']);
 
-    $_SESSION['register_error'] = $message;
-    header("location: ../register.php");
+    header("location: ../login.php");
     exit();
 }
+
+$_SESSION['register_error'] = $message;
+header("location: ../register.php");
+exit();
