@@ -66,7 +66,7 @@ if ($result) {
     if ($ok) {
         $_SESSION['register_success'] = $message;
         header("location: ../login.php");
-        exit()
+        exit();
     }
 
     $_SESSION['register_error'] = $message;
