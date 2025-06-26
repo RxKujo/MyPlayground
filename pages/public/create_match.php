@@ -77,38 +77,6 @@ $creation_error = isset($_SESSION['match_creation_error']) ? $_SESSION['match_cr
 						<option value="3">Pro</option>
 					</select>
 				</div>
-
-				<div class="container text-center">
-					<div class="row">
-						<div class="col">
-							<div>
-								<p>Equipe 1</p>
-								<ul>
-
-								</ul>
-							</div>
-							<div class="mb-3">
-								<button type="submit" class="btn btn-primary w-40">Rejoindre</button>
-							</div>
-						</div>
-							
-
-						
-						<div class="col">
-							<div>
-								<p>Equipe 2</p>
-								<ul>
-
-								</ul>
-							</div>
-							<div class="mb-3">
-								<button type="submit" class="btn btn-primary w-40">Rejoindre</button>
-							</div>
-						</div>			
-					</div>
-				</div>
-
-
 				<div class="mb-3">
 					<label for="commentaire">Message ou commentaire</label>
 					<div class="form-floating">
