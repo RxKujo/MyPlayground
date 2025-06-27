@@ -12,18 +12,7 @@ include_once __DIR__ . '/../../../includes/config/theme.php';
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Accueil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Tournois</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Équipes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Profil</a>
-                    </li>
+                 
                 </ul>
             </div>
         </div>
