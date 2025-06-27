@@ -91,12 +91,8 @@ include_once "navbar/header.php";
                                         <i class="bi bi-person-circle"></i> Créateur : @<?= getUser($pdo, $match['createur'])['pseudo'] ?? 'Inconnu' ?>
 
                                         <?php
-                                        $stmt2 = $pdo->prepare("SELECT id_equipe FROM appartenir WHERE id_joueur = :id_joueur AND id_equipe IN (:id_match1, :id_match2)");
-                                        $stmt2->execute([
-                                            ":id_joueur" => $user['id'], 
-                                            ":id_match1" => $match['id_equipe1'], 
-                                            ":id_match2" => $match['id_equipe2']
-                                        ]);
+                                        $stmt2 = $pdo->prepare("SELECT id_equipe FROM appartenir WHERE id = ? AND id_equipe IN (?, ?)");
+                                        $stmt2->execute([$user['id'], $match['id_equipe1'], $match['id_equipe2']]);
                                         $joinedTeam = $stmt2->fetchColumn();
 
                                         if (!$joinedTeam): ?>

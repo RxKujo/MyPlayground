@@ -17,7 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        // Vérifie si l'utilisateur est déjà dans l'équipe
         $check = $pdo->prepare("SELECT COUNT(*) FROM appartenir WHERE id = ? AND id_equipe = ?");
         $check->execute([$id_user, $id_equipe]);
         if ($check->fetchColumn() > 0) {
@@ -25,11 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         }
 
-        // Ajoute l'utilisateur à l'équipe
         $insert = $pdo->prepare("INSERT INTO appartenir (id, id_equipe) VALUES (?, ?)");
         $insert->execute([$id_user, $id_equipe]);
 
-        // Redirige
         header("Location: ../matches");
         exit();
     } catch (PDOException $e) {
