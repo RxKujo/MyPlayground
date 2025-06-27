@@ -63,9 +63,8 @@ document.addEventListener("DOMContentLoaded", function () {
     discussionLinks.forEach(link => {
         link.addEventListener("click", function (e) {
             e.preventDefault();
-            const idGroupe = this.dataset.id;
+            const idGroupe = parseInt(this.dataset.id);
             currentGroupId = idGroupe;
-            groupIdInput.value = idGroupe;
             loadInterlocutorInfo(idGroupe);
             loadMessages(idGroupe);
         });
@@ -74,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Envoi du message
     sendButton.addEventListener("click", function () {
         const contenu = messageInput.value.trim();
-        const id_groupe = groupIdInput.value;
+        const id_groupe = currentGroupId;
 
         if (!contenu || !id_groupe) return;
 
