@@ -9,11 +9,12 @@ RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# Rediriger /page vers pages/public/page.php
+# Pages publiques avec paramètre ID : /page/ID => pages/public/page.php?id=ID
+RewriteRule ^([a-zA-Z0-9_-]+)/([0-9]+)$ pages/public/$1.php?id=$2 [L]
+
 RewriteRule ^([a-zA-Z0-9_-]+)$ pages/public/$1.php [L]
 
-# Rediriger /admin/ vers dashboard
+
 RewriteRule ^admin/$ pages/admin/dashboard.php [L]
 
-# Rediriger /admin/page vers pages/admin/page.php
 RewriteRule ^admin/([a-zA-Z0-9_-]+)$ pages/admin/$1.php [L]
