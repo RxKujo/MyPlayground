@@ -41,7 +41,6 @@ include_once 'navbar/header.php';
                     echo '<p class="card-text text-muted">' . nl2br(htmlspecialchars($tournoi['description'])) . '</p>';
                     echo '</div>';
                     echo '<div class="card-footer text-end">';
-                    // Remplace le lien par un bouton qui ouvre le modal
                     echo '<button type="button" class="btn btn-sm btn-dark me-2" data-bs-toggle="modal" data-bs-target="#avertirModal">M\'avertir</button>';
                     if ($user) {
                         echo '<a href="inscription_tournoi/' . $tournoi['id_tournoi'] . '" class="btn btn-sm btn-primary">S\'inscrire</a>';

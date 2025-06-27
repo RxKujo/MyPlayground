@@ -85,27 +85,22 @@ include_once "navbar/header.php";
                             <input id="poste-mj" name="poste[]" type="checkbox" class="btn-check" value="0">
                             <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-mj">Meneur de jeu</label>
                         </div>
-
                         <div>
                             <input id="poste-ar" name="poste[]" type="checkbox" class="btn-check" value="1">
                             <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-ar">Arrière</label>
                         </div>
-
                         <div>
                             <input id="poste-ai" name="poste[]" type="checkbox" class="btn-check" value="2">
                             <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-ai">Ailier</label>
                         </div>
-
                         <div>
                             <input id="poste-af" name="poste[]" type="checkbox" class="btn-check" value="3">
                             <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-af">Ailier fort</label>
                         </div>
-
                         <div>
                             <input id="poste-p" name="poste[]" type="checkbox" class="btn-check" value="4">
                             <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-p">Pivot</label>
                         </div>
-
                         <div>
                             <input id="poste-all" name="poste[]" type="checkbox" class="btn-check" value="5">
                             <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-all">Tous</label>

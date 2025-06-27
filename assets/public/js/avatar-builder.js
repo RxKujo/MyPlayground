@@ -42,12 +42,10 @@ async function drawAvatar() {
   ]);
 
   ctx.drawImage(baseImg, 0, 0, canvas.width, canvas.height);
-
-  // Coordonnées ajustées pour base2.png
-  ctx.drawImage(hairImg, 24, 13, 145, 140);     // cheveux au sommet du crâne
-  ctx.drawImage(eyesImg, 37, 69, 120, 60);     // yeux alignés à la tête
-  ctx.drawImage(noseImg, 30, 95, 130, 40);     // nez centré verticalement
-  ctx.drawImage(mouthImg, 57, 120, 80, 30);   // bouche sous le nez
+  ctx.drawImage(hairImg, 24, 5, 145, 160);  
+  ctx.drawImage(eyesImg, 37, 69, 120, 60);   
+  ctx.drawImage(noseImg, 30, 95, 130, 40);   
+  ctx.drawImage(mouthImg, 57, 120, 80, 30);  
 }
 
 

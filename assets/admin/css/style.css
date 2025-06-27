@@ -122,15 +122,3 @@ body {
   text-overflow: ellipsis;
 }
 
-@media (max-width: 768px) {
-  #sidebar {
-    position: relative;
-    height: auto;
-    z-index: 1;
-  }
-
-  #content {
-    margin-left: 0;
-    width: 100%;
-  }
-}
