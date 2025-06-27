@@ -34,66 +34,91 @@ include_once "navbar/header.php";
                     <div class="alert alert-success"><?php echo $_SESSION['success']; unset($_SESSION['success']); ?></div>
                 <?php endif; ?>
 
-                <form id="form_match" action="create-match-process.php" method="POST" class="bg-light p-4 rounded shadow">
-                    <div class="mb-3">
-                        <label for="nom_match" class="form-label">Nom du match</label>
-                        <input type="text" name="nom_match" class="form-control" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="localisation" class="form-label">Localisation</label>
-                        <input type="text" name="localisation" class="form-control" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="date_debut" class="form-label">Date de début</label>
-                        <input type="datetime-local" name="date_debut" class="form-control" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="date_fin" class="form-label">Date de fin</label>
-                        <input type="datetime-local" name="date_fin" class="form-control" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="categorie" class="form-label">Catégorie (joueurs par équipe)</label>
-                        <select name="categorie" class="form-select" required>
-                            <option value="0">1v1</option>
-                            <option value="1">2v2</option>
-                            <option value="2">3v3</option>
-                            <option value="3">4v4</option>
-                            <option value="4">5v5</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="niveau_min" class="form-label">Niveau minimum requis</label>
-                        <input type="number" name="niveau_min" class="form-control" min="0" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="commentaire" class="form-label">Commentaire</label>
-                        <textarea name="commentaire" class="form-control" rows="4"></textarea>
-                    </div>
-
-                    <button type="submit" class="btn btn-dark w-100">Créer le match</button>
-                </form>
-            </div>
-        </section>
+                <h3 class="mb-4">Créer une équipe</h3>
+                <p class="mb-4">Remplissez le formulaire ci-dessous pour créer une  nouvelle équipe.</p>    
+<form id="form_team" action="/create_team_process" method="POST" enctype="multipart/form-data">        <label for="nom_equipe" class="form-label">Nom de l'équipe</label>
+        <input type="text" name="nom_equipe" class="form-control" required>
     </div>
-</div>
 
-<?php include_once '../../includes/global/footer.php'; ?>
+    <div class="mb-3">
+        <label for="description" class="form-label">Description de l'équipe</label>
+        <textarea name="description" class="form-control" rows="3"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="categorie" class="form-label">Catégorie (joueurs par équipe)</label>
+        <select name="categorie" class="form-select" required>
+            <option value="0">1v1</option>
+            <option value="1">2v2</option>
+            <option value="2">3v3</option>
+            <option value="3">4v4</option>
+            <option value="4">5v5</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="categorie_age" class="form-label">Catégorie d'âge</label>
+        <select name="categorie_age" class="form-select" required>
+            <option value="" selected disabled>-- Sélectionner --</option>
+            <option value="cadet">Cadet</option>
+            <option value="junior">Junior</option>
+            <option value="senior">Senior</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="logo" class="form-label">Logo de l'équipe <span class="text-muted">(optionnel)</span></label>
+        <input type="file" name="logo" id="logo" class="form-control" accept="image/*">
+    </div>
+
+    <div class="mb-3">
+        <label for="ville" class="form-label">Ville</label>
+        <input type="text" name="ville" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="niveau_min" class="form-label">Niveau minimum requis</label>
+        <select name="niveau_min" class="form-select" required>
+            <option value="" selected disabled>-- Sélectionner --</option>
+            <option value="0">Débutant</option>
+            <option value="1">Intermédiaire</option>
+            <option value="2">Pro</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" style="font-size:1.3em;font-weight:bold;">Équipe privée ?</label>
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="privee" name="privee" value="1" onchange="toggleCodeEquipe()">
+            <label class="form-check-label" for="privee">Oui</label>
+        </div>
+    </div>
+
+    <div class="mb-3" id="codeEquipeField" style="display:none;">
+        <label for="code_equipe" class="form-label">Code d'accès (pour rejoindre l'équipe)</label>
+        <input type="text" name="code_equipe" id="code_equipe" class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label for="commentaire" class="form-label">Commentaire</label>
+        <textarea name="commentaire" class="form-control" rows="3"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-dark w-100">Créer l'équipe</button>
+</form>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const form = document.querySelector("#form_match");
-        if (form) {
-            form.addEventListener("submit", function (e) {
-                if (!confirm("Confirmer la création du match ?")) {
-                    e.preventDefault();
-                }
-            });
-        }
-    });
+function toggleCodeEquipe() {
+    const privee = document.getElementById('privee');
+    const codeField = document.getElementById('codeEquipeField');
+    if (privee.checked) {
+        codeField.style.display = 'block';
+        document.getElementById('code_equipe').setAttribute('required', 'required');
+    } else {
+        codeField.style.display = 'none';
+        document.getElementById('code_equipe').removeAttribute('required');
+        document.getElementById('code_equipe').value = '';
+    }
+}
+document.addEventListener("DOMContentLoaded", toggleCodeEquipe);
 </script>

@@ -8,23 +8,22 @@ include_once 'navbar/header.php';
 
 $message = "";
 
-
 $stmt = $pdo->query("SELECT * FROM equipe");
 $equipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_equipe = $_POST['id_equipe'] ?? null;
-    $email_form = trim($_POST['email'] ?? '');
+    $pseudo_form = trim($_POST['pseudo'] ?? '');
     $poste = trim($_POST['poste'] ?? '');
     $code_saisi = trim($_POST['code'] ?? '');
 
-    $email_session = $_SESSION['user']['email'] ?? '';
+    $pseudo_session = $_SESSION['user_info']['pseudo'] ?? '';
+    $id_utilisateur = $_SESSION['user_info']['id'] ?? null;
 
-    if (!$id_equipe || !$email_form || !$poste) {
+    if (!$id_equipe || !$pseudo_form || !$poste) {
         $message = "<div class='alert alert-danger'>Tous les champs sont obligatoires.</div>";
-    } elseif (strtolower($email_form) !== strtolower($email_session)) {
-        $message = "<div class='alert alert-danger'>L'adresse e-mail ne correspond pas à votre compte.</div>";
+    } elseif (strtolower($pseudo_form) !== strtolower($pseudo_session)) {
+        $message = "<div class='alert alert-danger'>Le pseudo ne correspond pas à votre compte.</div>";
     } else {
         $stmt = $pdo->prepare("SELECT * FROM equipe WHERE id_equipe = ?");
         $stmt->execute([$id_equipe]);
@@ -35,14 +34,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($equipe['privee'] && $equipe['code'] !== $code_saisi) {
             $message = "<div class='alert alert-danger'>Code incorrect pour cette équipe privée.</div>";
         } else {
-            $stmt = $pdo->prepare("SELECT * FROM equipe_membre WHERE id_equipe = ? AND email = ?");
-            $stmt->execute([$id_equipe, $email_form]);
+            // Vérifie si déjà membre (par id_utilisateur)
+            $stmt = $pdo->prepare("SELECT * FROM equipe_membre WHERE id_equipe = ? AND id_utilisateur = ?");
+            $stmt->execute([$id_equipe, $id_utilisateur]);
 
             if ($stmt->rowCount() > 0) {
                 $message = "<div class='alert alert-warning'>Vous êtes déjà membre de cette équipe.</div>";
             } else {
-                $stmt = $pdo->prepare("INSERT INTO equipe_membre (id_equipe, email, poste) VALUES (?, ?, ?)");
-                $stmt->execute([$id_equipe, $email_form, $poste]);
+                $stmt = $pdo->prepare("INSERT INTO equipe_membre (id_equipe, id_utilisateur, pseudo, poste) VALUES (?, ?, ?, ?)");
+                $stmt->execute([$id_equipe, $id_utilisateur, $pseudo_form, $poste]);
                 $message = "<div class='alert alert-success'>Vous avez rejoint l'équipe avec succès !</div>";
             }
         }
@@ -77,15 +77,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="mb-3">
-                <label for="email" class="form-label">Votre adresse e-mail</label>
-                <input type="email" class="form-control" name="email" id="email"
-                       value="<?= htmlspecialchars($_SESSION['user']['email'] ?? '') ?>" required readonly>
+                <label for="pseudo" class="form-label">Votre pseudo</label>
+                <input type="text" class="form-control" name="pseudo" id="pseudo"
+                       value="<?= htmlspecialchars($_SESSION['user_info']['pseudo'] ?? '') ?>" required readonly>
             </div>
 
-            <div class="mb-3">
-                <label for="poste" class="form-label">Votre poste</label>
-                <input type="text" class="form-control" name="poste" id="poste" placeholder="Ex: Meneur, Ailier..." required>
-            </div>
+<div class="mb-3">
+    <label for="poste" class="form-label">Votre poste</label>
+    <select class="form-select" name="poste" id="poste" required>
+        <option value="" selected disabled>-- Sélectionner un poste --</option>
+        <option value="Meneur">Meneur</option>
+        <option value="Arrière">Arrière</option>
+        <option value="Ailier">Ailier</option>
+        <option value="Ailier fort">Ailier fort</option>
+        <option value="Pivot">Pivot</option>
+    </select>
+</div>
 
             <button type="submit" class="btn btn-primary">Rejoindre l'équipe</button>
         </form>
