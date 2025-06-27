@@ -1,13 +1,13 @@
 <?php
+
 include_once '../../includes/global/session.php';
 notLogguedSecurity("../../index.php");
 
-$user = $_SESSION['user_info'];
+$user = $_SESSION['user_info'] ?? null;
 
 include_once $includesPublic . 'header.php';
 include_once $assetsShared . 'icons/icons.php';
 include_once 'navbar/header.php';
-
 include_once '../../includes/config/config.php'; 
 ?>
 
@@ -41,16 +41,79 @@ include_once '../../includes/config/config.php';
                     echo '<p class="card-text text-muted">' . nl2br(htmlspecialchars($tournoi['description'])) . '</p>';
                     echo '</div>';
                     echo '<div class="card-footer text-end">';
-                    echo '<a href="tournament_details.php?id=' . $tournoi['id_tournoi'] . '" class="btn btn-sm btn-dark">Voir les détails</a>';
-                    echo '</div></div></div>';
+                    // Remplace le lien par un bouton qui ouvre le modal
+                    echo '<button type="button" class="btn btn-sm btn-dark me-2" data-bs-toggle="modal" data-bs-target="#avertirModal">M\'avertir</button>';
+                    if ($user) {
+                        echo '<a href="inscription_tournoi/' . $tournoi['id_tournoi'] . '" class="btn btn-sm btn-primary">S\'inscrire</a>';
+                    } 
+                    echo '</div>';
+                    echo '</div>';
+                    echo '</div>'; // col
                 }
-                echo '</div>';
+                echo '</div>'; // row
+
+                if ($user) {
+                    echo '<a href="create_tournament" class="btn btn-success mt-4">Créer un tournoi</a>';
+                }
             }
         } catch (PDOException $e) {
             echo "<div class='alert alert-danger'>Erreur : " . $e->getMessage() . "</div>";
         }
         ?>
+        <!-- Message de confirmation -->
+        <div id="avertirMessage" class="alert alert-success text-center mt-3 d-none">
+            Vous serez désormais averti quand les inscriptions seront ouvertes.
+        </div>
     </div>
 </div>
+
+<!-- Modal Bootstrap -->
+<div class="modal fade" id="avertirModal" tabindex="-1" aria-labelledby="avertirModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="avertirModalLabel">Être averti</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        Voulez-vous être averti quand les inscriptions seront lancées&nbsp;?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
+        <button type="button" class="btn btn-primary" id="btnAvertirOui">Oui</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const btnAvertirOui = document.getElementById('btnAvertirOui');
+    const avertirModal = document.getElementById('avertirModal');
+    const avertirMessage = document.getElementById('avertirMessage');
+    let lastBtnAvertir = null;
+
+    // ✅ Ce bouton peut exister plusieurs fois (par tournoi)
+    document.querySelectorAll('.btn-avertir').forEach(button => {
+        button.addEventListener('click', function () {
+            lastBtnAvertir = this;
+        });
+    });
+
+    if (btnAvertirOui && avertirModal && avertirMessage) {
+        btnAvertirOui.addEventListener('click', function () {
+            console.log("Bouton OUI cliqué");
+            const modal = bootstrap.Modal.getOrCreateInstance(avertirModal);
+            modal.hide();
+            avertirMessage.classList.remove('d-none');
+            setTimeout(() => {
+                avertirMessage.classList.add('d-none');
+                if (lastBtnAvertir) lastBtnAvertir.focus();
+            }, 4000);
+        });
+    }
+});
+</script>
 
 <?php include_once $includesGlobal . "footer.php"; ?>
