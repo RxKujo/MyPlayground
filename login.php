@@ -184,14 +184,9 @@ $captcha_error = $_SESSION['errors']['captcha_error'] ?? null;
             const selectedShape = button.getAttribute('data-shape');
             shapeButtons.forEach(btn => btn.classList.remove('selected'));
 
-            if (selectedShape === captchaShapeText) {
-                button.classList.add('selected');
-                captchaInput.value = selectedShape;
-                submitBtn.disabled = false;
-            } else {
-                captchaInput.value = '';
-                submitBtn.disabled = true;
-            }
+            button.classList.add('selected');
+            captchaInput.value = selectedShape;
+            submitBtn.disabled = false;
         });
     });
 </script>

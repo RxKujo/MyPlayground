@@ -21,7 +21,7 @@ if ((!$username && !$email) || !$password) {
 }
 
 if (!isset($_SESSION['captcha_expected']) || strtolower($captcha) !== strtolower($_SESSION['captcha_expected'])) {
-    redirectError('captcha_error', 'Veuillez valider correctement le captcha', login);
+    redirectError('captcha_error', 'Êtes-vous un bot ? Veuillez valider correctement le captcha.', login);
 }
 
 unset($_SESSION['captcha_expected']);
