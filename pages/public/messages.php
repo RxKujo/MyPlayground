@@ -66,9 +66,8 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
                     <div class="d-flex flex-column gap-3"></div>
                 </div>
                 <div class="border-top p-3 bg-white">
-                    <input type="hidden" name="id_groupe" value="<?= $_GET['id_groupe'] ?? '' ?>">
                     <div class="input-group">
-                        <input type="text" name="message" class="form-control" placeholder="Écrire un message..." required>
+                        <input id="input-message-field" type="text" name="message" class="form-control" placeholder="Écrire un message..." required>
                         <button class="btn btn-primary" type="submit">Envoyer</button>
                     </div>
                 </div>

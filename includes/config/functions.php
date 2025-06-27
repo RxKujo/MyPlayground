@@ -323,7 +323,7 @@ function getReceivers(PDO $pdo, int $id_groupe) {
 
 function getMessagesByGroup(PDO $pdo, int $groupe_id) {
     $r = $pdo->query(
-        "SELECT e.id_message, e.id_envoyeur, e.id_groupe, e.message, e.date_envoi FROM
+        "SELECT DISTINCT e.id_message, e.id_envoyeur, e.id_groupe, e.message, e.date_envoi FROM
         echanger AS e
         INNER JOIN
         participation_groupe

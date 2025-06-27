@@ -91,7 +91,6 @@ function listenRegistrationPlayer(contentElement) {
       
         roleInputs.forEach(input => {
         input.addEventListener('change', togglePositionContainer);
-        console.log("changed");
         });
     } catch {
 

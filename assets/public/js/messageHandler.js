@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const messageContainer = document.querySelector("#message-container .d-flex");
     const messageInput = document.querySelector('input[name="message"]');
     const sendButton = document.querySelector('button[type="submit"]');
-    const groupIdInput = document.querySelector('input[name="id_groupe"]');
+    const groupIdInput = document.querySelector('#input-message-field');
     const interlocutorName = document.querySelector('#interlocutor-name');
     const interlocutorStatus = document.querySelector('#interlocutor-status');
 
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Chargement des messages
     function loadMessages(groupId) {
-        fetch(`/api/users/messages?id_groupe=${groupId}`)
+        fetch(`/api/users/messages/?id_groupe=${groupId}`)
             .then(response => response.json())
             .then(messages => {
                 messageContainer.innerHTML = "";
@@ -25,13 +25,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     const msgDiv = document.createElement("div");
                     msgDiv.classList.add("p-2", "rounded", "mb-2", "message-bubble");
 
-                    if (parseInt(msg.id_utilisateur) === parseInt(user_id)) {
+                    if (parseInt(msg.id_envoyeur) === parseInt(user_id)) {
                         msgDiv.classList.add("bg-primary", "text-white", "align-self-end");
                     } else {
                         msgDiv.classList.add("bg-white", "text-dark", "align-self-start");
                     }
 
-                    msgDiv.textContent = msg.contenu;
+                    msgDiv.textContent = msg.message;
                     messageContainer.appendChild(msgDiv);
                 });
 
@@ -52,7 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.getElementById("interlocutor-pfp").src = data.pfps[data.noms[0]];
                     document.getElementById("interlocutor-name").textContent = data.noms.join(', ');
                     document.getElementById("interlocutor-status").textContent = data.status ?? '';
-                    console.log("writing", data);
                 }
             })
             .catch(err => {
@@ -67,7 +66,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const idGroupe = this.dataset.id;
             currentGroupId = idGroupe;
             groupIdInput.value = idGroupe;
-            console.log(idGroupe, currentGroupId);
             loadInterlocutorInfo(idGroupe);
             loadMessages(idGroupe);
         });
@@ -80,11 +78,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!contenu || !id_groupe) return;
 
-        fetch('/api/users/messages', {
+        fetch('/api/users/messages/', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
             body: JSON.stringify({
                 contenu,
                 id_groupe,
@@ -92,15 +87,13 @@ document.addEventListener("DOMContentLoaded", function () {
             })
         })
         .then(response => {
-            if (!response.ok) {
-                console.log("poblem");
-                throw new Error("Erreur lors de l'envoi");
-            }
-            return response.json();
+            console.log(response);
+            response.json();
         })
         .then(data => {
             messageInput.value = "";
-            console.log("Message enovyé");
+
+            console.log(data);
             loadMessages(id_groupe);
         })
         .catch(error => {

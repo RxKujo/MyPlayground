@@ -7,6 +7,8 @@ header("Content-Type: application/json");
 $id_requester = $_SESSION['user_info']['id'];
 $method = $_SERVER['REQUEST_METHOD'];
 
+// notLogguedSecurity("../../../index.php");
+
 if ($method === 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);
     $contenu = trim($input['contenu'] ?? '');
@@ -18,19 +20,26 @@ if ($method === 'POST') {
         exit();
     }
 
-    $stmt = $pdo->prepare(
-        "INSERT INTO echanger 
-            (id_utilisateur, id_groupe, message, date_envoi)
-         VALUES (:id_utilisateur, :id_groupe, :message, NOW())");
-         
-    $stmt->execute([
-        ":id_utilisateur" => $id_requester,
-        ":id_groupe" => $id_groupe,
-        ":message" =>$contenu
-    ]);
+    try {
+        $stmt = $pdo->prepare(
+            "INSERT INTO echanger 
+                (id_envoyeur, id_groupe, message, date_envoi)
+             VALUES (:id_envoyeur, :id_groupe, :message, NOW())"
+        );
+    
+        $stmt->bindParam(":id_envoyeur", $id_requester);
+        $stmt->bindParam(":id_groupe", $id_groupe);
+        $stmt->bindParam(":message", $contenu);
+    
+        $stmt->execute();
+    } catch (Exception $e) {
+        echo json_encode(['error' => $e]);
+        exit();
+    }
 
     echo json_encode(['success' => true]);
     exit();
+
 } else if ($method === 'GET') {
     $id_groupe = filter_input(INPUT_GET, 'id_groupe', FILTER_VALIDATE_INT);
     if (!$id_groupe) {
