@@ -28,6 +28,14 @@ function getUser(PDO $pdo, int $id) {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+function getUsersFromLevel(PDO $pdo, int $level, int $limit = 0) {
+    if ($limit) {
+        $sql = "SELECT * FROM utilisateur WHERE niveau = $level LIMIT $limit";
+        $r = $pdo->query($sql);
+        return $r->fetchAll();
+    }
+    return 0;
+}
 
 function isAdmin(array $user) {
     return $user["droits"] == 1;

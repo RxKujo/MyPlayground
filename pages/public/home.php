@@ -117,14 +117,19 @@ include_once "navbar/header.php";
 
         <div class="mt-4">
             <div class="d-flex flex-column align-items-center mx-5">
-                <h3 class="fs-2 fw-bold">Recommended Partners</h3>
-                <div class="d-flex justify-content-evenly mx-auto">
-                    <button class="btn btn-dark me-5 px-4 py-2">View Profile</button>
-                    <button class="btn btn-outline-dark ms-5 px-5 py-2">Invite</button>
+                <h3 class="fs-2 fw-bold">Coéquipiers recommandés</h3>
+                <div class="container row mb-3">
+                    <?php 
+                    $partners = getUsersFromLevel($pdo, $user['niveau'], 4);
+                    foreach($partners as $partner) {
+                        echo displayCardUser($partner);
+                    }
+                    ?>
                 </div>
-            </div>
-            <div class="d-flex gap-4 recommended-profiles">
-                
+                <div class="d-flex justify-content-evenly mx-auto">
+                    <button class="btn btn-dark me-5 px-4 py-2">Voir profil</button>
+                    <button class="btn btn-outline-dark ms-5 px-5 py-2">Inviter</button>
+                </div>
             </div>
         </div>
     </div>
