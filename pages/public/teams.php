@@ -27,11 +27,11 @@ $_SESSION['current_page'] = 'teams';
             <?php unset($_SESSION['error']); ?>
         <?php endif; ?>
 
-   
-        <form method="GET" action="" class="mb-4">
-            <input type="text" name="search" placeholder="Rechercher une équipe..." class="form-control"
-                   value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
-        </form>
+<form method="GET" action="" class="mb-4 d-flex gap-2">
+    <input type="text" name="search" placeholder="Rechercher une équipe..." class="form-control"
+           value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
+    <a href="/create_team" class="btn btn-success">Créer une équipe</a>
+</form>
 
         <?php
         try {
