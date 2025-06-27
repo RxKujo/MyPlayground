@@ -546,3 +546,21 @@ function e(PDO $pdo) {
     ");
 
 }
+
+
+
+function inscrireEquipeTournoi(PDO $pdo, $id_tournoi, $id_equipe) {
+    // Vérifie si déjà inscrit
+    $stmt = $pdo->prepare("SELECT * FROM inscription_tournoi WHERE id_tournoi = ? AND id_equipe = ?");
+    $stmt->execute([$id_tournoi, $id_equipe]);
+    if ($stmt->fetch()) {
+        return ['success' => false, 'message' => 'Cette équipe est déjà inscrite à ce tournoi.'];
+    }
+
+    // Inscription
+    $stmt = $pdo->prepare("INSERT INTO inscription_tournoi (id_tournoi, id_equipe, statut) VALUES (?, ?, 'en attente')");
+    if ($stmt->execute([$id_tournoi, $id_equipe])) {
+        return ['success' => true, 'message' => 'Inscription réussie !'];
+    }
+    return ['success' => false, 'message' => 'Erreur lors de l\'inscription.'];
+}
