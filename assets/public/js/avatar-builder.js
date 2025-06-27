@@ -1,9 +1,9 @@
 const parts = {
-  base: ["base.png"],
-  hair: ["hair1.png", "hair2.png"],
-  eyes: ["eyes1.png", "eyes2.png", "eyes3.png", "eyes4.png", "eyes5.png",],
+  base: ["base2.png"],
+  hair: ["hair1.png", "hair2.png", "hair3.png", "hair4.png", "hair5.png"],
+  eyes: ["eyes1.png", "eyes2.png", "eyes3.png", "eyes4.png", "eyes5.png", "eyes6.png", "eyes7.png"],
   nose: ["nose1.png", "nose2.png", "nose3.png" ,"nose4.png" , "nose5.png"],
-  mouth: ["mouth1.png", "mouth2.png", "mouth3.png", "mouth4.png", "mouth5.png"]
+  mouth: ["mouth1.png", "mouth2.png", "mouth3.png", "mouth4.png", "mouth5.png", "mouth6.png"]
 };
 
 const currentIndex = {
@@ -41,20 +41,17 @@ async function drawAvatar() {
     loadImage(mouth)
   ]);
 
-  const centerX = canvas.width / 2;
-  const centerY = canvas.height / 2;
-  const size = 80;
-  const half = size / 2;
-
-
   ctx.drawImage(baseImg, 0, 0, canvas.width, canvas.height);
 
-
-  ctx.drawImage(hairImg, centerX - half, centerY - 100, size, size);
-  ctx.drawImage(eyesImg, centerX - half, centerY - 60, size, size); 
-  ctx.drawImage(noseImg, centerX - half, centerY - 20, size, size); 
-  ctx.drawImage(mouthImg, centerX - half, centerY + 20, size, size); 
+  // Coordonnées ajustées pour base2.png
+  ctx.drawImage(hairImg, 24, 13, 145, 140);     // cheveux au sommet du crâne
+  ctx.drawImage(eyesImg, 37, 69, 120, 60);     // yeux alignés à la tête
+  ctx.drawImage(noseImg, 30, 95, 130, 40);     // nez centré verticalement
+  ctx.drawImage(mouthImg, 57, 120, 80, 30);   // bouche sous le nez
 }
+
+
+
 
 function prevPart(part) {
   currentIndex[part] = (currentIndex[part] - 1 + parts[part].length) % parts[part].length;
