@@ -87,13 +87,10 @@ document.addEventListener("DOMContentLoaded", function () {
             })
         })
         .then(response => {
-            console.log(response);
             response.json();
         })
         .then(data => {
             messageInput.value = "";
-
-            console.log(data);
             loadMessages(id_groupe);
         })
         .catch(error => {
