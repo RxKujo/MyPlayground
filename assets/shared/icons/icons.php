@@ -50,5 +50,7 @@ $plusSquareFill = '<i class="bi bi-plus-square-fill"></i>';
 
 $peopleFill = '<i class="bi bi-people-fill"></i>';
 
+
+$envelopeFill = '<i class="bi bi-envelope-fill"></i>';
 $fileRuledFill = '<i class="bi bi-file-ruled-fill"></i>';
 ?>
