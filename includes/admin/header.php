@@ -19,9 +19,6 @@ if (!isAdmin($_SESSION['user_info'])) {
         <title>My Playground - Page Administrateur</title>
         
         <script type="module" src="/assets/admin/js/switchScript.js"></script>
-        <script src="/assets/admin/js/dynamicUserModal.js"></script>
-        <script src="/assets/admin/js/searchBar.js"></script>
-
     </head>
 
     <body>

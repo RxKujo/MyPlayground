@@ -47,4 +47,7 @@ include_once $includesAdmin . 'header.php';
     </div>
 </div>
 
+<script src="/assets/admin/js/searchBar.js"></script>
+<script src="/assets/admin/js/dynamicUserModal.js"></script>
+
 <?php include_once $includesGlobal . "footer.php"; ?>

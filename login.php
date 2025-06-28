@@ -1,7 +1,7 @@
 <?php
 
-include_once 'includes/global/session.php';
-
+include_once 'includes/config/config.php';
+include_once 'includes/config/functions.php';
 
 $stmt = $pdo->query("
     SELECT id, question, reponse FROM captcha
