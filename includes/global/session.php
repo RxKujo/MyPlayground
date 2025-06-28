@@ -29,7 +29,7 @@ if (isset($_SESSION['last_refresh'])) {
     $_SESSION['last_refresh'] = time();
 }
 
-
+logAction($pdo, $_SESSION['user_info']['id']);
 $_SESSION['last_activity'] = time();
 
 ?>
