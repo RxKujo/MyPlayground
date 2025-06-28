@@ -106,3 +106,4 @@ $_SESSION['current_page'] = 'teams';
         ?>
     </div>
 </div>
+<?php include_once $includesGlobal . "footer.php"; ?>
