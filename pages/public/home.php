@@ -115,6 +115,7 @@ include_once "navbar/header.php";
             </form>
         </div>
 
+        <?php if (!is_null($user['niveau'])) : ?>
         <div class="mt-4">
             <div class="d-flex flex-column align-items-center mx-5">
                 <h3 class="fs-2 fw-bold">Coéquipiers recommandés</h3>
@@ -132,6 +133,7 @@ include_once "navbar/header.php";
                 </div>
             </div>
         </div>
+        <?php endif; ?>
     </div>
 </div>
 
