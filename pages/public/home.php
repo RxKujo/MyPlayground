@@ -128,8 +128,8 @@ include_once "navbar/header.php";
                     ?>
                 </div>
                 <div class="d-flex justify-content-evenly mx-auto">
-                    <button class="btn btn-dark me-5 px-4 py-2">Voir profil</button>
-                    <button class="btn btn-outline-dark ms-5 px-5 py-2">Inviter</button>
+                <a href="profile" id="find-button" class="btn btn-dark m-2">Voir le profil</a>
+                <a class="btn btn-outline-dark m-2">Inviter</a>
                 </div>
             </div>
         </div>
