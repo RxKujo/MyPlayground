@@ -44,3 +44,10 @@ function sendVerificationEmail(string $email, string $prenom, string $verificati
         return false; 
     }
 }
+
+function sendMail() {
+
+    $mail = new PHPMailer(true);
+
+    $mail->isHTML();
+}

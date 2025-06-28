@@ -5,7 +5,10 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 require_once "vendor/autoload.php";
 
-include_once "includes/global/session.php";
+include_once 'includes/config/variables.php';
+include_once 'includes/config/config.php';
+include_once 'includes/config/functions.php';
+
 
 
 echo "<p>Bonjour! Ce serveur fonctionne.</p>";
