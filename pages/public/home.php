@@ -64,62 +64,6 @@ include_once "navbar/header.php";
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
             </button>
         </div> 
-
-        <form id="search-filters" class="mx-5 my-4" method="GET" action="partners">
-            <div class="mb-4 text-center">
-                <h3 class="fs-2 fw-bold">Chercher des coéquipiers</h3>
-                <p>Sélectionnez le niveau et le poste de votre partenaire idéal</p>
-            </div>
-
-            <div class="mb-4">
-                <h4>Niveau</h4>
-                <div class="d-flex flex-wrap gap-2">
-                    <?php
-                    $niveaux = ['Débutant', 'Intermédiaire', 'Avancé', 'Pro'];
-                    foreach ($niveaux as $key => $label) {
-                        echo <<<HTML
-                            <div>
-                                <input id="niveau-$key" name="niveau[]" type="checkbox" class="btn-check" value="$key">
-                                <label class="btn btn-outline-secondary" for="niveau-$key">$label</label>
-                            </div>
-                        HTML;
-                    }
-                    ?>
-                </div>
-            </div>
-
-            <div class="mb-4">
-                <h4>Poste</h4>
-                <div class="d-flex flex-wrap gap-2">
-                    <?php
-                    $postes = [
-                        'mj' => 'Meneur de jeu',
-                        'ar' => 'Arrière',
-                        'ai' => 'Ailier',
-                        'af' => 'Ailier fort',
-                        'p'  => 'Pivot',
-                        'all' => 'Tous'
-                    ];
-                    $i = 0;
-                    foreach ($postes as $id => $label) {
-                        echo <<<HTML
-                            <div>
-                                <input id="poste-$id" name="poste[]" type="checkbox" class="btn-check" value="$i">
-                                <label class="btn btn-outline-secondary" for="poste-$id">$label</label>
-                            </div>
-                        HTML;
-                        $i++;
-                    }
-                    ?>
-                </div>
-            </div>
-
-            <div class="d-flex justify-content-center gap-4 mt-5">
-                <button type="reset" class="btn btn-dark px-4 py-2">Clear</button>
-                <button type="submit" class="btn btn-outline-dark px-4 py-2">Search</button>
-            </div>
-        </form>
-
         <?php if (!is_null($user['niveau'])): ?>
             <div class="mt-5 px-5">
                 <div class="text-center mb-4">
