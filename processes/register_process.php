@@ -62,10 +62,11 @@ $message = $result['message'];
 $verificationToken = $result['token'];
 
 if ($ok) {
-    if (sendVerificationEmail($email, $prenom, $verificationToken)) {
+    $r = sendVerificationEmail($email, $prenom, $verificationToken);
+    if ($r === true) {
         $_SESSION['register_success'] = "Inscription réussie ! Vous pouvez maintenant vous connecter.";
     } else {
-        $_SESSION['register_success'] = "Inscription réussie, mais impossible d’envoyer l’email de vérification.";
+        $_SESSION['register_success'] = "Inscription réussie, mais impossible d’envoyer l’email de vérification. err=$r";
     }
     
     unset($_SESSION['form_data']);

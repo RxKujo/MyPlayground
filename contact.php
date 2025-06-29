@@ -1,24 +1,26 @@
 <?php
-include_once 'vendor/autoload.php';
-
-use Dotenv\Dotenv;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-$dotenv = Dotenv::createImmutable(__DIR__);
-$dotenv->load();
 
 include_once 'includes/global/session.php';
-include_once 'includes/config/config.php';
-include_once 'includes/config/email_functions.php';
+
+include_once $root . 'vendor/autoload.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use Dotenv\Dotenv;
+
+
+$dotenv = Dotenv::createImmutable($root);
+$dotenv->load();
+
 
 $flash_message = $_SESSION['flash_message'] ?? '';
 unset($_SESSION['flash_message']);
 
+$user = $_SESSION['user_info'];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name    = trim($_POST['name'] ?? '');
-    $email   = trim($_POST['email'] ?? '');
-    $message = trim($_POST['message'] ?? '');
+    $name    = trim($user['nom'] . " " . $user['prenom'] ?? '');
+    $email   = trim($user['email'] ?? '');
+    $message = trim(filter_input(INPUT_POST, 'message', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
 
     if ($name && filter_var($email, FILTER_VALIDATE_EMAIL) && $message) {
         try {
@@ -32,26 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $mail = new PHPMailer(true);
         try {
-            $mail->isSMTP();
-            $mail->Host       = $_ENV['MAIL_HOST'];
-            $mail->SMTPAuth   = true;
-            $mail->Username   = $_ENV['MAIL_USERNAME'];
-            $mail->Password   = $_ENV['MAIL_PASSWORD'];
-            $mail->SMTPSecure = 'tls';
-            $mail->Port       = $_ENV['MAIL_PORT'];
-            $mail->setFrom($_ENV['MAIL_FROM'], $_ENV['MAIL_FROM_NAME']);
-            $mail->addAddress($_ENV['MAIL_FROM'], $_ENV['MAIL_FROM_NAME']);
-            $mail->addReplyTo($email, $name);
-
-            $mail->isHTML(true);
-            $mail->Subject = "Nouveau message de $name";
-            $mail->Body    = "
-                <p><strong>Nom :</strong> {$name}</p>
-                <p><strong>Email :</strong> {$email}</p>
-                <p><strong>Message :</strong><br>" . nl2br(htmlspecialchars($message)) . "</p>
-            ";
-
-            $mail->send();
+            sendMail($email, $_ENV["MAIL_USERNAME"], "Contact", $message);
 
             $_SESSION['flash_message'] = "Votre message a bien été envoyé.";
             header("Location: contact.php");
@@ -89,11 +72,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form action="" method="POST" class="mx-auto" style="max-width:400px;">
             <div class="mb-3">
                 <input type="text" name="name" class="form-control" placeholder="Votre nom" required
-                    value="<?= htmlspecialchars($_POST['name'] ?? '') ?>" />
+                    value="<?= htmlspecialchars($user['nom'] . " " . $user['prenom'] ?? '') ?>" />
             </div>
             <div class="mb-3">
                 <input type="email" name="email" class="form-control" placeholder="Votre email" required
-                    value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" />
+                    value="<?= htmlspecialchars($user['email'] ?? '') ?>" />
             </div>
             <div class="mb-3">
                 <textarea name="message" class="form-control" rows="4" placeholder="Votre message" required><?= htmlspecialchars($_POST['message'] ?? '') ?></textarea>

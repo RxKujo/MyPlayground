@@ -324,19 +324,14 @@ $_SESSION['captcha_id'] = $captcha_id;
     });
 
     shapeButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const selectedShape = button.getAttribute('data-shape');
-        shapeButtons.forEach(btn => btn.classList.remove('selected'));
+        button.addEventListener('click', () => {
+            const selectedShape = button.getAttribute('data-shape');
+            shapeButtons.forEach(btn => btn.classList.remove('selected'));
 
-        if (selectedShape === captchaShapeText) {
-          button.classList.add('selected');
-          captchaInput.value = selectedShape;
-          submitBtn.disabled = false;
-        } else {
-          captchaInput.value = '';
-          submitBtn.disabled = true;
-        }
-      });
+            button.classList.add('selected');
+            captchaInput.value = selectedShape;
+            submitBtn.disabled = false;
+        });
     });
   </script>
 </body>
