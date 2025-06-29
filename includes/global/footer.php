@@ -1,3 +1,13 @@
+<?php
+
+include_once '../../includes/global/session.php';
+
+$user = $_SESSION['user_info'] ?? null;
+
+$isSubscribed = isUserSubscribed($pdo, $user['id']);
+
+?>
+
 <footer class="bg-black text-white pt-4 pb-2">
     <div class="container-fluid">
         <div class="row align-items-center justify-content-end">
@@ -11,18 +21,20 @@
                 </div>
             </div>
             
+            <?php if (!$isSubscribed): ?>
             <div class="col-md-4">
                 <form action="newsletter.php" method="POST" class="d-flex flex-column flex-sm-row align-items-center justify-content-md-end gap-2"> 
                     <button type="submit" class="btn btn-secondary" style="height: 38px;">S'abonner à la Newsletter :</button>
                     <input type="email" class="form-control text-dark" name="email" placeholder="Adresse email" required style="max-width:200px;">
                 </form>
-            </div>          
+            </div>
+            <?php else: ?>
             <div class="text-end mt-1">
                 <a href="/newsletter_unsubscribe.php" class="text-light" style="font-size: 0.75rem; text-decoration: underline;">
                     Se désabonner
                 </a>
             </div>
-
+            <?php endif; ?>
         </div>
     </div>
 </footer>

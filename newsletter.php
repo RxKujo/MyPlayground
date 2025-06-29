@@ -4,6 +4,8 @@
 include_once 'includes/global/session.php';
 include_once 'includes/config/config.php';
 
+$user = $_SESSION['user_info'];
+
 try {
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
@@ -13,8 +15,11 @@ try {
             $stmt->execute([$email]);
 
             if ($stmt->fetchColumn() == 0) {
-                $stmt = $pdo->prepare("INSERT INTO newsletter (email) VALUES (?)");
-                $stmt->execute([$email]);
+                $stmt = $pdo->prepare("INSERT INTO newsletter (id_utilisateur, email) VALUES (:id_utilisateur, :email)");
+                $stmt->execute([
+                    ':id_utilisateur' => $user['id'],
+                    ':email' => $email
+                ]);
                 header("Location: confirmation.html");
                 exit;
             } else {

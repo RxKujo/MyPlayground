@@ -362,6 +362,20 @@ function isUserOnline(PDO $pdo, int $userId) {
     return $result == 1;
 }
 
+function isUserSubscribed(PDO $pdo, int $userId) {
+    $sql = (
+        "SELECT u.id 
+        FROM utilisateur AS u 
+        INNER JOIN 
+        newsletter as n 
+        ON u.id = n.id_utilisateur 
+        WHERE $userId = u.id"
+    );
+
+    $r = $pdo->query($sql);
+    return $r->fetch(PDO::FETCH_ASSOC);
+}
+
 function makeOnline(PDO $pdo, $userId) {
     if (!isUserOnline($pdo, $userId)) {
         $sql = "UPDATE utilisateur SET is_online = 1 WHERE id = :id";
