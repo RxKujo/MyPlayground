@@ -41,15 +41,15 @@ include_once $includesAdmin . 'header.php';
                 <tbody>
                 <?php foreach ($logs as $log): ?>
                     <tr>
-                        <td><?= htmlspecialchars($log['created_at']) ?></td>
+                        <td><?= htmlspecialchars($log['created_at'] ?? "") ?></td>
                         <td><?= htmlspecialchars($log['pseudo'] ?? 'Anonyme') ?></td>
-                        <td><?= htmlspecialchars($log['script_name']) ?></td>
-                        <td><?= htmlspecialchars($log['ip']) ?></td>
-                        <td><?= htmlspecialchars($log['status']) ?></td>
-                        <td><?= htmlspecialchars($log['http_referer']) ?></td>
-                        <td><?= htmlspecialchars($log['request_uri']) ?></td>
-                        <td><?= htmlspecialchars($log['request_method']) ?></td>
-                        <td><?= htmlspecialchars($log['server_protocol']) ?></td>
+                        <td><?= htmlspecialchars($log['script_name'] ?? "") ?></td>
+                        <td><?= htmlspecialchars($log['ip'] ?? "") ?></td>
+                        <td><?= htmlspecialchars($log['status'] ?? "") ?></td>
+                        <td><?= htmlspecialchars($log['http_referer'] ?? "") ?></td>
+                        <td><?= htmlspecialchars($log['request_uri'] ?? "") ?></td>
+                        <td><?= htmlspecialchars($log['request_method'] ?? "") ?></td>
+                        <td><?= htmlspecialchars($log['server_protocol'] ?? "") ?></td>
                         <td class="truncate-cell"><?= htmlspecialchars($log['http_user_agent']) ?></td>
                     </tr>
                 <?php endforeach; ?>
