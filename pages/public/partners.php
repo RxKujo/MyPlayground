@@ -29,7 +29,12 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+function safe($value) {
+    return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
+}
+
 ?>
+
 <div class="d-flex">
     <?php
         if (isset($_SESSION)) {
@@ -101,12 +106,21 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             <div class="container py-4">
                 <h2 class="fw-bold">Coéquipiers</h2>
-                <div class="container row g-4">
-                    <?php
-                        foreach($results as $mate) {
-                            echo displayCardUser($mate);
-                        }
-                    ?>
+                <div class="row g-4">
+                    <?php foreach($results as $mate): ?>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title"><?= safe($mate['prenom'] . ' ' . $mate['nom']) ?></h5>
+                                    <p class="card-text mb-1">Pseudo : <?= safe($mate['pseudo']) ?></p>
+                                    <p class="card-text mb-1">Niveau : <?= safe($mate['niveau']) ?></p>
+                                    <p class="card-text mb-1">Poste : <?= safe($mate['poste']) ?></p>
+                                    <p class="card-text mb-3">Localisation : <?= safe($mate['localisation']) ?></p>
+                                    <a href="profil_user?id=<?= urlencode($mate['id']) ?>" class="btn btn-primary mt-auto">Profil</a>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
