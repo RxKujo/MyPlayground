@@ -24,14 +24,16 @@ function sendVerificationEmail(string $email, string $prenom, string $verificati
 
         $mail->setFrom($_ENV['MAIL_FROM'], $_ENV['MAIL_FROM_NAME']);
         $mail->addAddress($email, $prenom);
+        $mail->CharSet = 'UTF-8';
+        $mail->Encoding = 'base64';
 
         $mail->isHTML(true);
 
        
         $verification_link = $_SERVER['HTTP_HOST'] . '/verify.php?token=' . $verification_token;
 
-        $mail->Subject = htmlspecialchars('Vérifiez') . 'votre adresse email';
-        $mail->Body    = htmlspecialchars("Bonjour $prenom,<br><br>Merci de vous être inscrit. Veuillez cliquer sur le lien ci-dessous pour vérifier votre adresse email :") . "<br><br><a href='$verification_link'>$verification_link</a><br><br>Merci !";
+        $mail->Subject = 'Vérifiez votre adresse email';
+        $mail->Body    = "Bonjour $prenom,<br><br>Merci de vous être inscrit. Veuillez cliquer sur le lien ci-dessous pour vérifier votre adresse email : <br><br><a href='$verification_link'>$verification_link</a><br><br>Merci !";
 
         try {
             $mail->send();
@@ -45,9 +47,46 @@ function sendVerificationEmail(string $email, string $prenom, string $verificati
     }
 }
 
-function sendMail() {
+function sendMail(
+    string $objet, string $contenu,
+    array $user) {
+
+    global $root;
+
+    $dotenv = Dotenv::createImmutable($root);
+    $dotenv->load();
 
     $mail = new PHPMailer(true);
 
-    $mail->isHTML();
+    try {
+        $mail->isSMTP();
+        $mail->Host       = $_ENV['MAIL_HOST'];
+        $mail->SMTPAuth   = true;
+        $mail->Username   = $_ENV['MAIL_USERNAME'];
+        $mail->Password   = $_ENV['MAIL_PASSWORD'];
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = $_ENV['MAIL_PORT'];
+        $mail->isHTML();
+        $mail->CharSet = 'UTF-8';
+        $mail->Encoding = 'base64';
+        
+        $mail->setFrom($_ENV['MAIL_FROM'], $_ENV['MAIL_FROM_NAME']);
+        $mail->addAddress($user["email"], $user['prenom']);
+
+        $mail->isHTML(true);
+
+
+        $mail->Subject = $objet;
+        $mail->Body    = $contenu;
+
+        try {
+            $mail->send();
+        } catch (Exception $e) {
+            return false;
+        }
+
+        return true;
+    } catch (Exception $e) {
+        return false; 
+    }
 }
