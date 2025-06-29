@@ -10,15 +10,16 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
-$nom_match   = $_POST['nom_match'] ?? '';
-$localisation = $_POST['localisation'] ?? '';
-$date        = $_POST['date'] ?? '';
-$heure_debut = $_POST['debut'] ?? '';
-$heure_fin   = $_POST['fin'] ?? '';
-$categorie   = $_POST['categorie'] ?? '';
-$niveau_min  = $_POST['niveau_min'] ?? 0;
-$commentaire = $_POST['commentaire'] ?? '';
-$createur_id = $_SESSION['user_id'] ?? null;
+
+$nom_match   = filter_input(INPUT_POST, "nom_match", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$localisation = filter_input(INPUT_POST, "nom_match", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$date        = filter_input(INPUT_POST, "date", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$heure_debut = filter_input(INPUT_POST, "fin", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$heure_fin   = filter_input(INPUT_POST, "fin", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$categorie   = filter_input(INPUT_POST, "categorie", FILTER_VALIDATE_INT);
+$niveau_min  = filter_input(INPUT_POST, "niveau_min", FILTER_VALIDATE_INT);
+$commentaire = filter_input(INPUT_POST, "commentaire", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$createur_id = $_SESSION['user_id'];
 
 $joueurs_par_equipe = match ((int)$categorie) {
     0 => 1,
@@ -45,12 +46,27 @@ try {
     ]);
     $idTerrain = $pdo->lastInsertId();
 
-    $stmtEquipe = $pdo->prepare("INSERT INTO equipe (nom, date_creation, privee, code) VALUES (:nom, CURDATE(), 0, NULL)");
+    $stmtEquipe = $pdo->prepare(
+        "INSERT INTO equipe (nom, date_creation, privee, code, categorie_age, ville, niveau_min, commentaire, logo, id_createur) 
+        VALUES 
+        (:nom, CURDATE(), 0, NULL, NULL, NULL, :niveau_min, :commentaire, NULL, :id_createur)");
 
-    $stmtEquipe->execute([':nom' => "Équipe A"]);
+    $stmtEquipe->execute([
+        ':nom' => "Équipe A",
+        ':niveau_min' => $niveau_min,
+        ':commentaire' => $commentaire,
+        ':id_createur' => $createur_id
+    ]);
+
     $idEquipe1 = $pdo->lastInsertId();
 
-    $stmtEquipe->execute([':nom' => "Équipe B"]);
+    $stmtEquipe->execute([
+        ':nom' => "Équipe B",
+        ':niveau_min' => $niveau_min,
+        ':commentaire' => $commentaire,
+        ':id_createur' => $createur_id
+    ]);
+    
     $idEquipe2 = $pdo->lastInsertId();
 
     $stmtMatch = $pdo->prepare("
