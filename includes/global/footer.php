@@ -5,9 +5,9 @@
             <div class="col-md-7 offset-md-1 text-center text-md-start mb-3 mb-md-0">
                 <p class="mb-2">© 2025 Basketball Platform. Tous droits réservés.</p>
                 <div class="d-inline-flex gap-4">
-                    <a href="#" class="text-white text-decoration-underline">Politique de confidentialité</a>
-                    <a href="#" class="text-white text-decoration-underline">Conditions d'utilisation</a>
-                    <a href="#" class="text-white text-decoration-underline">Contact</a>
+                    <a href="privacy-policy.html" class="text-white text-decoration-underline">Politique de confidentialité</a>
+                    
+                    <a href="/contact.php" class="text-white text-decoration-underline">Contact</a>
                 </div>
             </div>
             
