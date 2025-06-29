@@ -31,7 +31,7 @@ include_once $includesAdmin . "header.php";
                     <th>Nom</th>
                     <th>Privée</th>
                     <th>Code</th>
-                    <th>Actions</th>
+                    <th>Commentaire</th>
                 </tr>
             </thead>
             <tbody id="teamsShowing">

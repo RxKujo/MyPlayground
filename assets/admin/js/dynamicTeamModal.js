@@ -7,17 +7,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const data = await response.json();
     const teams = data.teams;
+    console.log(teams);
     const userIdSession = data.waiter;
 
-    const tr = document.createElement('tr');
-
+    
     for (const team of teams) {
+        const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${team.id_equipe}</td>
             <td>${team.nom}</td>
             <td>${team.privee}</td>
             <td>${team.code ?? "Pas de code"}</td>
-            <td>${team.commentaire}</td>
+            <td>${team.commentaire ?? "Pas de commentaires"}</td>
             <td>
                 <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editTeam${team.id_equipe}">Modifier</button>
                 <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteTeam${team.id_equipe}">Supprimer</button>
