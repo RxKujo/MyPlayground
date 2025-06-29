@@ -32,6 +32,38 @@ include_once "navbar/header.php";
             </div>
         </div>
 
+        <div id="carouselActus" class="carousel slide mb-5" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="../../assets/public/img/actus1.png" class="d-block w-100" style="height: 400px; object-fit: cover;">
+                    <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
+                        <h2 class="text-white mb-3">Tournois à venir</h2>
+                        <a href="tournaments" class="btn btn-outline-light btn-lg">Voir les tournois</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="../../assets/public/img/team.png" class="d-block w-100" style="height: 400px; object-fit: cover;">
+                    <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
+                        <h2 class="text-white mb-3">Trouve ta team</h2>
+                        <a href="partners" class="btn btn-outline-light btn-lg">Trouver des coéquipiers</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="../../assets/public/img/terrain.jpg" class="d-block w-100" style="height: 400px; object-fit: cover;">
+                    <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
+                        <h2 class="text-white mb-3">Matchs organisés</h2>
+                        <a href="matches" class="btn btn-outline-light btn-lg">Voir les matchs</a>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselActus" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselActus" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
+        </div>
+
         <form id="search-filters" class="mx-5 my-4" method="GET" action="partners">
             <div class="mb-4 text-center">
                 <h3 class="fs-2 fw-bold">Chercher des coéquipiers</h3>

@@ -16,7 +16,6 @@ include_once $includesAdmin . "header.php";
     <div class="container py-5">
         <h1 class="mb-4">Gestion des utilisateurs</h1>
 
-        <!-- Statistiques -->
         <div class="row g-3 mb-4" id="statCards">
             <div class="col-md-3">
                 <div class="card text-bg-primary">
@@ -52,7 +51,6 @@ include_once $includesAdmin . "header.php";
             </div>
         </div>
 
-        <!-- Mini Chart (Rôles) -->
         <h5>Utilisateurs par rôle</h5>
 
         <div class="d-flex align-items-end mt-4">
@@ -70,7 +68,6 @@ include_once $includesAdmin . "header.php";
         </div>
 
 
-        <!-- Tableau -->
         <div class="table-responsive mt-5">
             <table class="table table-striped table-bordered align-middle">
                 <thead class="table-light">
@@ -130,7 +127,6 @@ include_once $includesAdmin . "header.php";
             document.getElementById('onlineUsers').textContent = onlineCount;
             document.getElementById('unverifiedUsers').textContent = notVerifiedCount;
 
-            // Custom Chart
             const chart = document.getElementById('roleChartBars');
             
             const maxCount = Math.max(...roleCounts) || 1;
