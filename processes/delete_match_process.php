@@ -18,7 +18,7 @@ try {
         throw new Exception("Match introuvable.");
     }
 
-    if ($match['id_createur'] != $user['id'] && !isAdmin($user)) {
+    if ($match['id_createur'] != $user['id'] && !$isAdmin) {
         throw new Exception("Non autorisé à supprimer ce match.");
     }
 
@@ -40,12 +40,13 @@ try {
 
     $pdo->commit();
 
-    if ($isAdmin && $_SERVER['HTTP_REFERER'] === $_SERVER['HTTP_HOST'] . "/admin/matches") {
+    if ($isAdmin && $_SERVER['HTTP_REFERER'] === "http://" . $_SERVER['HTTP_HOST'] . "/admin/matches") {
         header("Location: ../admin/matches");
+        exit();
     } else {
         header("Location: ../matches?success=1");
+        exit();
     }
-    exit();
 } catch (Exception $e) {
     $pdo->rollBack();
     header("Location: ../matches?error=" . urlencode($e->getMessage()));

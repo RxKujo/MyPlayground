@@ -10,6 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
+$user = $_SESSION['user_info'];
+$isAdmin = isAdmin($user);
 
 $nom_match   = filter_input(INPUT_POST, "nom_match", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $localisation = filter_input(INPUT_POST, "nom_match", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -91,6 +93,10 @@ try {
     ]);
 
     $_SESSION['success'] = "Match, équipes, terrain et réservation créés avec succès.";
+    if ($isAdmin) {
+        header('Location: ../admin/matches');
+        exit();
+    }
     header("Location: ../matches");
     exit();
 

@@ -13,8 +13,6 @@ include_once 'includes/config/functions.php';
 
 echo "<p>Bonjour! Ce serveur fonctionne.</p>";
 
-print($_SERVER['HTTP_REFERER']);
-
 
 $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
