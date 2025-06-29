@@ -11,7 +11,7 @@ $description = trim($_POST['description'] ?? '');
 
 if (!$id_match || $lieu === '' || $date_match === '' || $categorie === '' || $description === '') {
     $_SESSION['modif_success'] = "Données manquantes pour la modification du match.";
-    header("Location: ../pages/admin/matches.php");
+    header("Location: ../admin/matches");
     exit;
 }
 
@@ -23,5 +23,5 @@ try {
     $_SESSION['modif_success'] = "Erreur lors de la modification : " . $e->getMessage();
 }
 
-header("Location: ../pages/admin/matches.php");
+header("Location: ../admin/matches");
 exit;
