@@ -450,6 +450,19 @@ function getAllUsers(PDO $pdo) {
     return $r->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function getAllMatches(PDO $pdo) {
+    $r = $pdo->query(
+        "SELECT m.*, t.nom AS nom_terrain, t.localisation, u.pseudo AS createur_pseudo
+        FROM `match` m
+        LEFT JOIN reserver r ON r.id_match = m.id_match
+        LEFT JOIN terrain t ON r.id_terrain = t.id_terrain
+        LEFT JOIN utilisateur u ON m.id_createur = u.id
+        ORDER BY m.id_match DESC"
+    );
+
+    return $r->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function getAllCaptchas(PDO $pdo) {
     $r = $pdo->query("SELECT id, question, reponse FROM captchas");
     return $r->fetchAll(PDO::FETCH_ASSOC);

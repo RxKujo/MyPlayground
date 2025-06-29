@@ -1,12 +1,56 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('dynamic-modal-container');
+document.addEventListener('DOMContentLoaded', async () => {
+    const response = await fetch("/api/matches/", {
+            method: 'GET'
+    });
 
-    document.body.addEventListener('click', (e) => {
-        if (e.target.closest('.open-edit-modal')) {
-            const match = JSON.parse(e.target.closest('.open-edit-modal').dataset.match);
+    const tbody = document.getElementById('matchesShowing');
 
-            container.innerHTML = `
-                <div class="modal fade" id="editMatchModal" tabindex="-1" aria-hidden="true">
+    const data = await response.json();
+    const matches = data.matches;
+    const userIdSession = data.waiter;
+
+    if (matches.length === 0) {
+        const div = document.getElementById("nomatch");
+        div.innerHTML = "Aucun match à afficher.";
+        return;
+    }
+
+    for (const match of matches) {
+        const id = match.id_match;
+        const team1Id = match.id_equipe1;
+        const team2Id = match.id_equipe2;
+        const status = match.statut;
+        const creatorId = match.id_createur;
+        const creatorUsername = match.createur_pseudo;
+        const fieldName = match.nom_terrain;
+        const location = match.localisation;
+        const message = match.message;
+    
+        const tr = document.createElement('tr');
+    
+        tr.innerHTML = `
+            <td>${id}</td>
+            <td>${fieldName}</td>
+            <td>${location}</td>
+            <td><span class="badge bg-secondary">${status}</span></td>
+            <td>${message}</td>
+            <td>@${creatorUsername ?? "Inconnu"}</td>
+            <td>
+                <button class="btn btn-sm btn-warning me-1 open-edit-modal" data-bs-toggle="modal" data-bs-target="#editMatch${id}">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-danger me-1 open-edit-modal" data-bs-toggle="modal" data-bs-target="#deleteMatch${id}">
+                    <i class="bi bi-trash"></i>
+                </button>
+                ${generateEditModal(match)}
+                ${generateDeleteModal(match)}
+            </td>
+        `;
+        tbody.appendChild(tr);
+    }
+
+    function generateEditModal(match) {
+        return `<div class="modal fade" id="editMatch${match.id_match}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content text-dark">
                             <form method="POST" action="../../processes/edit_match_process.php">
@@ -56,9 +100,29 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
             `;
+    }
 
-            const modal = new bootstrap.Modal(document.getElementById('editMatchModal'));
-            modal.show();
-        }
-    });
+    function generateDeleteModal(match) {
+        return `
+        <div class="modal fade" id="deleteMatch${match.id_match}" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="POST" action="../../processes/delete_match_process.php">
+                <div class="modal-header">
+                  <h5 class="modal-title">Supprimer un match</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Êtes-vous sûr de vouloir supprimer ce match ?
+                  <input type="hidden" name="id" value="${match.id_match}">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                  <button type="submit" class="btn btn-danger">Supprimer</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>`;
+    }
 });

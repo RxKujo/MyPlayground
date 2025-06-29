@@ -1,4 +1,5 @@
 <?php
+
 include_once '../includes/global/session.php';
 notLogguedSecurity("../index.php");
 
@@ -7,10 +8,9 @@ if (!isset($_POST['id_match'])) {
     exit();
 }
 
-include_once '../includes/config.php';
-
 $idMatch = intval($_POST['id_match']);
-$currentUserId = $_SESSION['user_info']['id'];
+$user = $_SESSION['user_info'];
+$isAdmin = isAdmin($user);
 
 try {
     $pdo->beginTransaction();
@@ -24,7 +24,7 @@ try {
         throw new Exception("Match introuvable.");
     }
 
-    if ($match['id_createur'] != $currentUserId) {
+    if ($match['id_createur'] != $user['id']) {
         throw new Exception("Non autorisé à supprimer ce match.");
     }
 
@@ -49,7 +49,12 @@ try {
     $pdo->prepare("DELETE FROM equipe WHERE id_equipe = ?")->execute([$idEquipe2]);
 
     $pdo->commit();
-    header("Location: ../matches?success=1");
+
+    if ($isAdmin && $_SERVER['HTTP_REFERER'] === $_SERVER['HTTP_HOST'] . "/admin/matches") {
+        header("Location: ../admin/matches");
+    } else {
+        header("Location: ../matches?success=1");
+    }
     exit();
 } catch (Exception $e) {
     $pdo->rollBack();

@@ -13,9 +13,8 @@ include_once 'includes/config/functions.php';
 
 echo "<p>Bonjour! Ce serveur fonctionne.</p>";
 
-print($_SERVER['HTTP_HOST']);
+print($_SERVER['HTTP_REFERER']);
 
-var_dump($_SESSION['user_info']);
 
 
 $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
