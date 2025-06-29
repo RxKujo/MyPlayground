@@ -1,10 +1,16 @@
 <?php
+include_once 'vendor/autoload.php';
 
+use Dotenv\Dotenv;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-include_once 'vendor/autoload.php'; 
+
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
 include_once 'includes/global/session.php';
 include_once 'includes/config/config.php';
+include_once 'includes/config/email_functions.php';
 
 $flash_message = $_SESSION['flash_message'] ?? '';
 unset($_SESSION['flash_message']);
@@ -27,15 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail = new PHPMailer(true);
         try {
             $mail->isSMTP();
-            $mail->Host       = 'smtp.gmail.com';
+            $mail->Host       = $_ENV['MAIL_HOST'];
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'myplaygroundcontact@gmail.com'; 
-            $mail->Password   = 'bnrh iaek kbcw kjxd'; 
+            $mail->Username   = $_ENV['MAIL_USERNAME'];
+            $mail->Password   = $_ENV['MAIL_PASSWORD'];
             $mail->SMTPSecure = 'tls';
-            $mail->Port       = 587;
-
-            $mail->setFrom('myplaygroundcontact@gmail.com', 'MyPlayground');
-            $mail->addAddress('myplaygroundcontact@gmail.com', 'MyPlayground');
+            $mail->Port       = $_ENV['MAIL_PORT'];
+            $mail->setFrom($_ENV['MAIL_FROM'], $_ENV['MAIL_FROM_NAME']);
+            $mail->addAddress($_ENV['MAIL_FROM'], $_ENV['MAIL_FROM_NAME']);
             $mail->addReplyTo($email, $name);
 
             $mail->isHTML(true);
@@ -51,7 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['flash_message'] = "Votre message a bien été envoyé.";
             header("Location: contact.php");
             exit();
-
         } catch (Exception $e) {
             $_SESSION['flash_message'] = "Message enregistré mais erreur envoi mail : {$mail->ErrorInfo}";
             header("Location: contact.php");
@@ -67,13 +71,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8" />
     <title>Contact - MyPlayground</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 </head>
-
 <body class="bg-black text-white d-flex flex-column justify-content-center align-items-center vh-100">
     <div class="container text-center">
         <h1 class="mb-4">Contactez-nous</h1>
@@ -102,5 +104,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <a href="/home" class="btn btn-outline-light mt-4">Retour à l'accueil</a>
     </div>
 </body>
-
 </html>
