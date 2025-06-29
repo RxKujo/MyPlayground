@@ -425,7 +425,7 @@ function showPfp(PDO $pdo, array $user) {
         $base64 = base64_encode($avatarData);
         $avatarSrc = "data:image/png;base64," . $base64;
     } else {
-        $avatarSrc = "../../assets/public/img/morad.png";
+        $avatarSrc = "../../assets/public/img/profiledefault.png";
     }
 
     return $avatarSrc;
@@ -438,7 +438,7 @@ function showPfpOffline(array $user) {
         $base64 = base64_encode($avatarData);
         $avatarSrc = "data:image/png;base64," . $base64;
     } else {
-        $avatarSrc = "../../assets/public/img/morad.png";
+        $avatarSrc = "../../assets/public/img/profiledefault.png";
     }
 
     return $avatarSrc;
