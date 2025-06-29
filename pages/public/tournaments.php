@@ -77,27 +77,42 @@ if (!$aucunTournoi) {
             </a>
         </div>
 
-        <div id="reviews" class="d-flex flex-row">
-            <div class="p-5 m-5">
-                <img src="../../assets/public/img/morad.png" alt="picture">
-            </div>
+        <div id="reviews" class="px-5 py-4">
 
-            <div class="m-5">
-                <h1 class="fs-1 fw-bold">Revues des joueurs</h1>
-                <p class="fs-5">Découvrer ce que les joueurs disent à propos de vos tournois</p>
-                <div>
-                    <div class="d-flex">
-                        <a href="#" class="d-flex align-items-center text-decoration-none text-dark">
-                            <div role="img">
-                                <img class="profile-img-small" src="../../assets/public/img/morad.png" alt="picture">
-                            </div>
-                            <div class="p-2">
-                                <p class="m-0">Morad De Visch</p>
-                            </div>
-                        </a>
-                    </div>
-                </div>
+<?php
+
+$sql = "
+    SELECT u.nom, u.pseudo, a.commentaire, a.date_avis
+    FROM avis a
+    JOIN utilisateur u ON a.utilisateur_id = u.id
+    ORDER BY a.date_avis DESC
+";
+
+$stmt = $pdo->query($sql);
+$avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+<div class="m-5">
+    <h1 class="fs-1 fw-bold">Revues des joueurs</h1>
+    <p class="fs-5">Découvrez ce que les joueurs disent à propos de vos tournois</p>
+
+    <?php if (empty($avis)): ?>
+    <p class="fs-5 fst-italic text-muted">Aucun avis pour le moment.</p>
+<?php else: ?>
+    <?php foreach ($avis as $avisItem): ?>
+        <div class="d-flex align-items-start mb-4 border-bottom pb-3">
+            <div class="ms-3">
+                <p class="m-0 fw-bold"><?= htmlspecialchars($avisItem['nom']) ?> (<?= htmlspecialchars($avisItem['pseudo']) ?>)</p>
+                <p class="mb-1"><?= nl2br(htmlspecialchars($avisItem['commentaire'])) ?></p>
+                <small class="text-muted"><?= date('d/m/Y', strtotime($avisItem['date_avis'])) ?></small>
             </div>
+        </div>
+    <?php endforeach; ?>
+<?php endif; ?>
+
+</div>
+
+
         </div>
 <style>.carousel-control-prev,
 .carousel-control-next {
