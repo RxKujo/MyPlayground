@@ -1,0 +1,27 @@
+<?php
+
+session_start();
+require_once '../includes/config/config.php';
+
+$id_match = $_POST['id_match'] ?? null;
+$lieu = trim($_POST['lieu'] ?? '');
+$date_match = $_POST['date_match'] ?? '';
+$categorie = trim($_POST['categorie'] ?? '');
+$description = trim($_POST['description'] ?? '');
+
+if (!$id_match || $lieu === '' || $date_match === '' || $categorie === '' || $description === '') {
+    $_SESSION['modif_success'] = "Données manquantes pour la modification du match.";
+    header("Location: ../pages/admin/matches.php");
+    exit;
+}
+
+try {
+    $stmt = $pdo->prepare("UPDATE matchs SET lieu = ?, date_match = ?, categorie = ?, description = ? WHERE id_match = ?");
+    $stmt->execute([$lieu, $date_match, $categorie, $description, $id_match]);
+    $_SESSION['modif_success'] = "Match modifié avec succès.";
+} catch (PDOException $e) {
+    $_SESSION['modif_success'] = "Erreur lors de la modification : " . $e->getMessage();
+}
+
+header("Location: ../pages/admin/matches.php");
+exit;
