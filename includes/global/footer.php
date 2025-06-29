@@ -5,16 +5,16 @@
        
             <div class="col-md-7 offset-md-1 text-center text-md-start mb-3 mb-md-0">
                 <p class="mb-2">© 2025 Basketball Platform. Tous droits réservés.</p>
-                
-<div class="d-inline-flex gap-4">
-    <a href="/privacy-policy.html" class="btn btn-outline-light btn-sm">Politique de confidentialité</a>
-    <a href="/contact.php" class="btn btn-outline-light btn-sm">Contact</a>
-</div>
+                <div class="d-inline-flex gap-4">
+                    <a href="#" class="text-white text-decoration-underline">Politique de confidentialité</a>
+                    <a href="#" class="text-white text-decoration-underline">Conditions d'utilisation</a>
+                    <a href="#" class="text-white text-decoration-underline">Contact</a>
+                </div>
             </div>
             
             <div class="col-md-4">
                 <form action="newsletter.php" method="POST" class="d-flex flex-column flex-sm-row align-items-center justify-content-md-end gap-2">
-                    <span class="fw-bold text-primary fs-6 mb-1 mb-sm-0">ABONNE-TOI À LA NEWSLETTER</span>
+                    <span class="fw-bold     text-primary fs-6 mb-1 mb-sm-0">ABONNE-TOI À LA NEWSLETTER</span>
                     <input type="email" class="form-control bg-white text-white" name="email" placeholder="Adresse email" required style="max-width:200px;">
                     <button type="submit" class="btn btn-primary fw-bold">S'abonner</button>
                 </form>
