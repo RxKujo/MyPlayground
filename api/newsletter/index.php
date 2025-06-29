@@ -18,11 +18,11 @@ if (is_null($id_requester)) {
 if ($method === "POST") {
 
 } else if ($method === "GET") {
-    $teams = getAllTeams($pdo);
+    $news = getAllNews($pdo);
     echo json_encode([
         'success' => true,
         'id_requester' => $id_requester,
-        'teams' => $teams
+        'news' => $news
     ]);
 
 }
