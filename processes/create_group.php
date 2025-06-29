@@ -11,7 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nomGroupe = $_POST['nom'] ?? null;
     $guestsRaw = $_POST['guests'] ?? [];
 
-    // Sanitize
     $nomGroupe = trim($nomGroupe);
     $creatorId = $_SESSION['user_info']['id'];
 
@@ -22,21 +21,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     
-    // Créer le groupe
     $stmt = $pdo->prepare("INSERT INTO groupe_discussion (nom, id_createur) VALUES (:nom, :utilisateur)");
     $stmt->execute(['nom' => $nomGroupe, 'utilisateur' => $creatorId]);
     $groupId = $pdo->lastInsertId();
 
-    // Ajouter le créateur
     $stmt = $pdo->prepare("INSERT INTO participation_groupe (id_groupe, id_utilisateur) VALUES (:groupe, :utilisateur)");
     $stmt->execute(['groupe' => $groupId, 'utilisateur' => $creatorId]);
 
-    // Ajouter les invités
     foreach ($guestsRaw as $pseudo) {
         $pseudo = trim($pseudo);
         if ($pseudo === "") continue;
 
-        // Récupérer l'ID utilisateur à partir du pseudo
         $stmtUser = $pdo->prepare("SELECT id FROM utilisateur WHERE pseudo = :pseudo LIMIT 1");
         $stmtUser->execute(['pseudo' => $pseudo]);
         $user = $stmtUser->fetch();

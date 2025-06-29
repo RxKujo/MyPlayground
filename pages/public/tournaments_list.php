@@ -47,9 +47,9 @@ include_once 'navbar/header.php';
                     } 
                     echo '</div>';
                     echo '</div>';
-                    echo '</div>'; // col
+                    echo '</div>';
                 }
-                echo '</div>'; // row
+                echo '</div>';
 
                 if ($user) {
                     echo '<a href="create_tournament" class="btn btn-success mt-4">Créer un tournoi</a>';
@@ -59,14 +59,12 @@ include_once 'navbar/header.php';
             echo "<div class='alert alert-danger'>Erreur : " . $e->getMessage() . "</div>";
         }
         ?>
-        <!-- Message de confirmation -->
         <div id="avertirMessage" class="alert alert-success text-center mt-3 d-none">
             Vous serez désormais averti quand les inscriptions seront ouvertes.
         </div>
     </div>
 </div>
 
-<!-- Modal Bootstrap -->
 <div class="modal fade" id="avertirModal" tabindex="-1" aria-labelledby="avertirModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">

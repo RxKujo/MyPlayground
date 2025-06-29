@@ -1,5 +1,4 @@
 <?php
-// Sécurité de session
 include_once '../../includes/global/session.php';
 notLogguedSecurity("../../index.php");
 

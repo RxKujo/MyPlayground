@@ -3,7 +3,6 @@ session_start();
 include_once '../includes/config/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Récupération et nettoyage des données
     $nom = trim($_POST['nom_tournoi'] ?? '');
     $lieu = trim($_POST['lieu'] ?? '');
     $date_tournoi = $_POST['date_tournoi'] ?? '';
@@ -13,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $statut = $_POST['statut'] ?? '';
     $description = trim($_POST['description'] ?? '');
 
-    // Validation simple
     if (empty($nom) || empty($lieu) || empty($date_tournoi) || empty($categorie) || $age <= 0 || $nombre_utilisateurs_max <= 0 || empty($statut)) {
         $_SESSION['error'] = "Tous les champs obligatoires doivent être remplis correctement.";
         header("Location: ../create_tournament");

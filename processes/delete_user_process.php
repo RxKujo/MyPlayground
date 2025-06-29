@@ -13,9 +13,6 @@ if ($_POST['id']) {
 
 $space = filter_input(INPUT_POST, 'userspace', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-include_once '../includes/config/config.php';
-include_once '../includes/config/functions.php';
-
 $sql = 'DELETE FROM utilisateur WHERE id = :id';
 $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':id', $id);

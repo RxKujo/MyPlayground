@@ -15,7 +15,6 @@ include_once "navbar/header.php";
 
     <div class="container-fluid px-0" id="content">
 
-        <!-- Section de bienvenue -->
         <div class="d-flex align-items-center justify-content-between welcome-section px-5 py-4 flex-wrap gap-4">
             <div class="d-flex align-items-center gap-4">
                 <img class="profile-img" src="<?= $pfpSrc ?>" alt="Photo de profil"/>
@@ -33,7 +32,6 @@ include_once "navbar/header.php";
             </div>
         </div>
 
-        <!-- Formulaire de recherche -->
         <form id="search-filters" class="mx-5 my-4" method="GET" action="partners">
             <div class="mb-4 text-center">
                 <h3 class="fs-2 fw-bold">Chercher des coéquipiers</h3>
@@ -89,7 +87,6 @@ include_once "navbar/header.php";
             </div>
         </form>
 
-        <!-- Suggestions -->
         <?php if (!is_null($user['niveau'])): ?>
             <div class="mt-5 px-5">
                 <div class="text-center mb-4">

@@ -1,5 +1,4 @@
 <?php
-// filepath: c:\xampp\htdocs\MyPlayground\pages\public\inscription_tournoi.php
 
 include_once '../../includes/global/session.php';
 include_once '../../includes/config/functions.php';
