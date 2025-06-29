@@ -1,4 +1,3 @@
-
 <footer class="bg-black text-white pt-4 pb-2">
     <div class="container-fluid">
         <div class="row align-items-center justify-content-end">
@@ -13,17 +12,16 @@
             </div>
             
             <div class="col-md-4">
-                <form action="newsletter.php" method="POST" class="d-flex flex-column flex-sm-row align-items-center justify-content-md-end gap-2">
-                    <span class="fw-bold     text-primary fs-6 mb-1 mb-sm-0">ABONNE-TOI À LA NEWSLETTER</span>
-                    <input type="email" class="form-control bg-white text-white" name="email" placeholder="Adresse email" required style="max-width:200px;">
-                    <button type="submit" class="btn btn-primary fw-bold">S'abonner</button>
+                <form action="newsletter.php" method="POST" class="d-flex flex-column flex-sm-row align-items-center justify-content-md-end gap-2"> 
+                    <button type="submit" class="btn btn-secondary" style="height: 38px;">S'abonner à la Newsletter :</button>
+                    <input type="email" class="form-control text-dark" name="email" placeholder="Adresse email" required style="max-width:200px;">
                 </form>
+            </div>          
+            <div class="text-end mt-1">
+                <a href="/newsletter_unsubscribe.php" class="text-light" style="font-size: 0.75rem; text-decoration: underline;">
+                    Se désabonner
+                </a>
             </div>
-			<div class="text-end mt-1">
-  <a href="/newsletter_unsubscribe.php" class="text-secondary" style="font-size: 0.75rem; text-decoration: underline;">
-    Se désabonner
-  </a>
-</div>
 
         </div>
     </div>
