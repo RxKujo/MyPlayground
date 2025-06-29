@@ -23,7 +23,7 @@ include_once $includesAdmin . "header.php";
             }
         ?>
         <h2>Gestion des équipes</h2>
-        <button class="btn btn-success mb-3 open-new-modal">Ajouter une équipe</button>
+        <button class="btn btn-success mb-3 open-new-modal" data-bs-toggle="modal" data-bs-target="#createMatch">Ajouter une équipe</button>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -32,6 +32,7 @@ include_once $includesAdmin . "header.php";
                     <th>Privée</th>
                     <th>Code</th>
                     <th>Commentaire</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody id="teamsShowing">
