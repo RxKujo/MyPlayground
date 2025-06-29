@@ -12,7 +12,6 @@ $user = $_SESSION['user_info'];
 $niveau = isset($_GET['niveau']) ? $_GET['niveau'] : '';
 $poste = isset($_GET['poste']) ? $_GET['poste'] : '';
 
-
 $sql = "SELECT id, prenom, nom, pseudo, niveau, poste, localisation, pfp FROM utilisateur WHERE id != :id";
 $params = [':id' => $user['id']];
 
@@ -44,63 +43,60 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <section class="text-white py-5" style="background-color: #3a3a3a;">
                 <div class="text-center">
                     <h2 class="fs-1 fw-bold text-center text-white mb-4">Filtrez vos coéquipiers</h2>
-                    <p class="fs-6 text-cetner text-white mb-0">Connectez-vous avec d'autres personnes et profitez d’un match fait pour vous !</p>
+                    <p class="fs-6 text-center text-white mb-0">Connectez-vous avec d'autres personnes et profitez d’un match fait pour vous !</p>
                 </div>
             </section>
-            
+
             <div class="container py-4">
-                <h2 class="fs-2 fw-bold">Filtres</h2>
-                <div class="accordion" id="accordion-filter1">
-                    <form class="d-flex flex-row gap-4 align-items-start" method="GET" action="partners">
-                        <div style="width: 180px;">
-                            <h5>Niveau</h5>
-                            <fieldset>
-                                <div class="btn-group-vertical w-100" data-bs-toggle="buttons">
-                                    <label class="btn btn-outline-primary<?= ($niveau === '0') ? ' active' : '' ?>">
-                                        <input type="radio" name="niveau" id="lvl1" value="0" autocomplete="off" <?= ($niveau === '0') ? 'checked' : '' ?>> Débutant
-                                    </label>
-                                    <label class="btn btn-outline-primary<?= ($niveau === '1') ? ' active' : '' ?>">
-                                        <input type="radio" name="niveau" id="lvl2" value="1" autocomplete="off" <?= ($niveau === '1') ? 'checked' : '' ?>> Intermédiaire
-                                    </label>
-                                    <label class="btn btn-outline-primary<?= ($niveau === '2') ? ' active' : '' ?>">
-                                        <input type="radio" name="niveau" id="lvl3" value="2" autocomplete="off" <?= ($niveau === '2') ? 'checked' : '' ?>> Avancé
-                                    </label>
-                                    <label class="btn btn-outline-primary<?= ($niveau === '3' || $niveau === '') ? ' active' : '' ?>">
-                                        <input type="radio" name="niveau" id="anylvl" value="3" autocomplete="off" <?= ($niveau === '3' || $niveau === '') ? 'checked' : '' ?>> Tous
-                                    </label>
-                                </div>
-                            </fieldset>
-                        </div>
+                <h2 class="fs-2 fw-bold mb-4">Filtres</h2>
 
-                        <div style="width: 180px;">
-                            <h5>Poste</h5>
-                            <fieldset>
-                                <div class="btn-group-vertical w-100" data-bs-toggle="buttons">
-                                    <label class="btn btn-outline-success<?= ($poste === '0') ? ' active' : '' ?>">
-                                        <input type="radio" name="poste" id="pos1" value="0" autocomplete="off" <?= ($poste === '0') ? 'checked' : '' ?>> Meneur de jeu
-                                    </label>
-                                    <label class="btn btn-outline-success<?= ($poste === '1') ? ' active' : '' ?>">
-                                        <input type="radio" name="poste" id="pos2" value="1" autocomplete="off" <?= ($poste === '1') ? 'checked' : '' ?>> Arrière
-                                    </label>
-                                    <label class="btn btn-outline-success<?= ($poste === '2') ? ' active' : '' ?>">
-                                        <input type="radio" name="poste" id="pos3" value="2" autocomplete="off" <?= ($poste === '2') ? 'checked' : '' ?>> Ailier
-                                    </label>
-                                    <label class="btn btn-outline-success<?= ($poste === '3') ? ' active' : '' ?>">
-                                        <input type="radio" name="poste" id="pos4" value="3" autocomplete="off" <?= ($poste === '3') ? 'checked' : '' ?>> Ailier fort
-                                    </label>
-                                    <label class="btn btn-outline-success<?= ($poste === '4') ? ' active' : '' ?>">
-                                        <input type="radio" name="poste" id="pos5" value="4" autocomplete="off" <?= ($poste === '4') ? 'checked' : '' ?>> Pivot
-                                    </label>
-                                    <label class="btn btn-outline-success<?= ($poste === '5' || $poste === '') ? ' active' : '' ?>">
-                                        <input type="radio" name="poste" id="posAll" value="5" autocomplete="off" <?= ($poste === '5' || $poste === '') ? 'checked' : '' ?>> Tous
-                                    </label>
-                                </div>
-                            </fieldset>
+                <form class="row gy-4 gx-5 align-items-end" method="GET" action="partners">
+                    <div class="col-md-4">
+                        <h5 class="mb-3">Niveau</h5>
+                        <div class="btn-group-vertical w-100" data-bs-toggle="buttons">
+                            <label class="btn btn-outline-primary<?= ($niveau === '0') ? ' active' : '' ?>">
+                                <input type="radio" name="niveau" value="0" autocomplete="off" <?= ($niveau === '0') ? 'checked' : '' ?>> Débutant
+                            </label>
+                            <label class="btn btn-outline-primary<?= ($niveau === '1') ? ' active' : '' ?>">
+                                <input type="radio" name="niveau" value="1" autocomplete="off" <?= ($niveau === '1') ? 'checked' : '' ?>> Intermédiaire
+                            </label>
+                            <label class="btn btn-outline-primary<?= ($niveau === '2') ? ' active' : '' ?>">
+                                <input type="radio" name="niveau" value="2" autocomplete="off" <?= ($niveau === '2') ? 'checked' : '' ?>> Avancé
+                            </label>
+                            <label class="btn btn-outline-primary<?= ($niveau === '3' || $niveau === '') ? ' active' : '' ?>">
+                                <input type="radio" name="niveau" value="3" autocomplete="off" <?= ($niveau === '3' || $niveau === '') ? 'checked' : '' ?>> Tous
+                            </label>
                         </div>
+                    </div>
 
-                        <button type="submit" class="btn btn-primary">Valider</button>
-                    </form>
-                </div>
+                    <div class="col-md-4">
+                        <h5 class="mb-3">Poste</h5>
+                        <div class="btn-group-vertical w-100" data-bs-toggle="buttons">
+                            <label class="btn btn-outline-success<?= ($poste === '0') ? ' active' : '' ?>">
+                                <input type="radio" name="poste" value="0" autocomplete="off" <?= ($poste === '0') ? 'checked' : '' ?>> Meneur de jeu
+                            </label>
+                            <label class="btn btn-outline-success<?= ($poste === '1') ? ' active' : '' ?>">
+                                <input type="radio" name="poste" value="1" autocomplete="off" <?= ($poste === '1') ? 'checked' : '' ?>> Arrière
+                            </label>
+                            <label class="btn btn-outline-success<?= ($poste === '2') ? ' active' : '' ?>">
+                                <input type="radio" name="poste" value="2" autocomplete="off" <?= ($poste === '2') ? 'checked' : '' ?>> Ailier
+                            </label>
+                            <label class="btn btn-outline-success<?= ($poste === '3') ? ' active' : '' ?>">
+                                <input type="radio" name="poste" value="3" autocomplete="off" <?= ($poste === '3') ? 'checked' : '' ?>> Ailier fort
+                            </label>
+                            <label class="btn btn-outline-success<?= ($poste === '4') ? ' active' : '' ?>">
+                                <input type="radio" name="poste" value="4" autocomplete="off" <?= ($poste === '4') ? 'checked' : '' ?>> Pivot
+                            </label>
+                            <label class="btn btn-outline-success<?= ($poste === '5' || $poste === '') ? ' active' : '' ?>">
+                                <input type="radio" name="poste" value="5" autocomplete="off" <?= ($poste === '5' || $poste === '') ? 'checked' : '' ?>> Tous
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">Valider</button>
+                    </div>
+                </form>
             </div>
 
             <div class="container py-4">

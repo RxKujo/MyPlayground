@@ -1,7 +1,5 @@
 <?php
-
 include_once '../../includes/global/session.php';
-
 notLogguedSecurity("../../index.php");
 
 $user = $_SESSION['user_info'];
@@ -9,131 +7,109 @@ $pfpSrc = showPfp($pdo, $user);
 
 include_once $includesPublic . "header.php";
 include_once $assetsShared . 'icons/icons.php';
-
-
 include_once "navbar/header.php";
 ?>
 
 <div class="d-flex">
-    <?php
-        include_once "navbar/navbar.php";
-    ?>    
+    <?php include_once "navbar/navbar.php"; ?>
 
     <div class="container-fluid px-0" id="content">
-        <div class="d-flex align-items-center welcome-section">
-            <div class="ms-5 px-5">
+
+        <!-- Section de bienvenue -->
+        <div class="d-flex align-items-center justify-content-between welcome-section px-5 py-4 flex-wrap gap-4">
+            <div class="d-flex align-items-center gap-4">
                 <img class="profile-img" src="<?= $pfpSrc ?>" alt="Photo de profil"/>
-            </div>
-
-            <div class="me-auto">
                 <div>
-                    <h3 class="text-white mb-0">Bienvenue, <?= $user["prenom"] ?>!</h3>
-                    <span class="badge bg-dark-subtle my-2 text-black">
-                        Jouez près de chez vous
-                    </span>
-                    <span class="badge bg-dark-subtle my-2 text-black">
-                        NOUVEAUX tournois
-                    </span>
+                    <h3 class="text-white mb-1">Bienvenue, <?= $user["prenom"] ?>!</h3>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-dark-subtle text-black">Jouez près de chez vous</span>
+                        <span class="badge bg-dark-subtle text-black">NOUVEAUX tournois</span>
+                    </div>
                 </div>
             </div>
-            
-            <div class="d-flex flex-column m-auto">
-                <a href="partners" id="find-button" class="btn btn-outline-light m-2">Trouver des coéquipiers</a>
-                <a href="tournaments" id="tournament-button" class="btn btn-dark m-2">Rejoindre un tournoi</a>
+            <div class="d-flex flex-column align-items-end">
+                <a href="partners" class="btn btn-outline-light mb-2">Trouver des coéquipiers</a>
+                <a href="tournaments" class="btn btn-dark">Rejoindre un tournoi</a>
             </div>
         </div>
 
+        <!-- Formulaire de recherche -->
+        <form id="search-filters" class="mx-5 my-4" method="GET" action="partners">
+            <div class="mb-4 text-center">
+                <h3 class="fs-2 fw-bold">Chercher des coéquipiers</h3>
+                <p>Sélectionnez le niveau et le poste de votre partenaire idéal</p>
+            </div>
 
-        <div class="d-flex mt-4 mx-auto">
-            <div class="d-flex align-items-center mx-5 search-partners-section">
-                <div class="d-flex align-items-center flex-column">
-                    <h3 class="fs-2 fw-bold">Chercher des coéquipiers</h3>
-                    <p>Sélectionnez le niveau et le poste de votre partenaire idéal</p>
+            <div class="mb-4">
+                <h4>Niveau</h4>
+                <div class="d-flex flex-wrap gap-2">
+                    <?php
+                    $niveaux = ['Débutant', 'Intermédiaire', 'Avancé', 'Pro'];
+                    foreach ($niveaux as $key => $label) {
+                        echo <<<HTML
+                            <div>
+                                <input id="niveau-$key" name="niveau[]" type="checkbox" class="btn-check" value="$key">
+                                <label class="btn btn-outline-secondary" for="niveau-$key">$label</label>
+                            </div>
+                        HTML;
+                    }
+                    ?>
                 </div>
             </div>
 
-            <form id="search-filters" class="d-flex flex-column align-items-start mx-5" method="GET" action="partners">
-                <div class="my-3 me-5">
-                    <h4>Niveau</h4>
-                    <div class="d-inline-flex gap-2 flex-wrap">
-                        <div>
-                            <input id="niveau-debutant" name="niveau[]" type="checkbox" class="btn-check" value="0">
-                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="niveau-debutant">Débutant</label>
-                        </div>
-
-                        <div>
-                            <input id="niveau-intermediaire" name="niveau[]" type="checkbox" class="btn-check" value="1">
-                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="niveau-intermediaire">Intermédiaire</label>
-                        </div>
-
-                        <div>
-                            <input id="niveau-avance" name="niveau[]" type="checkbox" class="btn-check" value="2">
-                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="niveau-avance">Avancé</label>
-                        </div>
-
-                        <div>
-                            <input id="niveau-pro" name="niveau[]" type="checkbox" class="btn-check" value="3">
-                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="niveau-pro">Pro</label>
-                        </div>
-                    </div>
+            <div class="mb-4">
+                <h4>Poste</h4>
+                <div class="d-flex flex-wrap gap-2">
+                    <?php
+                    $postes = [
+                        'mj' => 'Meneur de jeu',
+                        'ar' => 'Arrière',
+                        'ai' => 'Ailier',
+                        'af' => 'Ailier fort',
+                        'p'  => 'Pivot',
+                        'all' => 'Tous'
+                    ];
+                    $i = 0;
+                    foreach ($postes as $id => $label) {
+                        echo <<<HTML
+                            <div>
+                                <input id="poste-$id" name="poste[]" type="checkbox" class="btn-check" value="$i">
+                                <label class="btn btn-outline-secondary" for="poste-$id">$label</label>
+                            </div>
+                        HTML;
+                        $i++;
+                    }
+                    ?>
                 </div>
+            </div>
 
-                <div class="my-3">
-                    <h4>Poste</h4>
-                    <div class="d-inline-flex gap-2 flex-wrap">
-                        <div>
-                            <input id="poste-mj" name="poste[]" type="checkbox" class="btn-check" value="0">
-                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-mj">Meneur de jeu</label>
-                        </div>
-                        <div>
-                            <input id="poste-ar" name="poste[]" type="checkbox" class="btn-check" value="1">
-                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-ar">Arrière</label>
-                        </div>
-                        <div>
-                            <input id="poste-ai" name="poste[]" type="checkbox" class="btn-check" value="2">
-                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-ai">Ailier</label>
-                        </div>
-                        <div>
-                            <input id="poste-af" name="poste[]" type="checkbox" class="btn-check" value="3">
-                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-af">Ailier fort</label>
-                        </div>
-                        <div>
-                            <input id="poste-p" name="poste[]" type="checkbox" class="btn-check" value="4">
-                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-p">Pivot</label>
-                        </div>
-                        <div>
-                            <input id="poste-all" name="poste[]" type="checkbox" class="btn-check" value="5">
-                            <label type="button" aria-pressed="false" class="btn btn-outline-secondary" for="poste-all">Tous</label>
-                        </div>
-                    </div>
+            <div class="d-flex justify-content-center gap-4 mt-5">
+                <button type="reset" class="btn btn-dark px-4 py-2">Clear</button>
+                <button type="submit" class="btn btn-outline-dark px-4 py-2">Search</button>
+            </div>
+        </form>
+
+        <!-- Suggestions -->
+        <?php if (!is_null($user['niveau'])): ?>
+            <div class="mt-5 px-5">
+                <div class="text-center mb-4">
+                    <h3 class="fs-2 fw-bold">Coéquipiers recommandés</h3>
                 </div>
-
-                <div class="d-flex justify-content-evenly mt-5 mx-auto">
-                    <button type="reset" id="clear-button" class="btn btn-dark me-5 px-xl py-2">Clear</button>
-                    <button type="submit" id="search-button" class="btn btn-outline-dark ms-5 px-xl py-2">Search</button>
-                </div>
-            </form>
-        </div>
-
-        <?php if (!is_null($user['niveau'])) : ?>
-        <div class="mt-4">
-            <div class="d-flex flex-column align-items-center mx-5">
-                <h3 class="fs-2 fw-bold">Coéquipiers recommandés</h3>
-                <div class="container row mb-3">
-                    <?php 
+                <div class="row mb-4">
+                    <?php
                     $partners = getUsersFromLevel($pdo, $user['niveau'], 4);
-                    foreach($partners as $partner) {
+                    foreach ($partners as $partner) {
                         echo displayCardUser($partner);
                     }
                     ?>
                 </div>
-                <div class="d-flex justify-content-evenly mx-auto">
-                <a href="profile" id="find-button" class="btn btn-dark m-2">Voir le profil</a>
-                <a class="btn btn-outline-dark m-2">Inviter</a>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="profile" class="btn btn-dark">Voir le profil</a>
+                    <a class="btn btn-outline-dark">Inviter</a>
                 </div>
             </div>
-        </div>
         <?php endif; ?>
+
     </div>
 </div>
 
