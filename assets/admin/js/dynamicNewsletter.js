@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const objet = letter.objet;
         const contenu = letter.contenu;
         const envoyeur = letter.name_requester;
-        const datePublication = letter.datePublication;
+        const datePublication = letter.date_publication;
     
         const tr = document.createElement('tr');
     
@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             <td>${id}</td>
             <td>${objet}</td>
             <td>${contenu}</td>
-            <td>${envoyeur}</td>
             <td>${datePublication}</td>
         `;
         tbody.appendChild(tr);

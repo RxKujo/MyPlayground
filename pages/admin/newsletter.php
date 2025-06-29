@@ -33,6 +33,7 @@ include_once $includesAdmin . 'header.php';
                             </div>
                             <div>
                                 <input class="form-control" name="sender" value="<?= $_SESSION['user_info']['pseudo'] ?>" disabled>
+                                <input type="hidden" name="id_sender" value="<?= $_SESSION['user_info']['id'] ?>" >
                             </div>
                         </div>
                         <div class="modal-footer">
