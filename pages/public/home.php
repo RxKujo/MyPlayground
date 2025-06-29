@@ -34,27 +34,28 @@ include_once "navbar/header.php";
 
         <div id="carouselActus" class="carousel slide mb-5" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="../../assets/public/img/actus1.png" class="d-block w-100" style="height: 400px; object-fit: cover;">
-                    <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
-                        <h2 class="text-white mb-3">Tournois à venir</h2>
-                        <a href="tournaments" class="btn btn-outline-light btn-lg">Voir les tournois</a>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="../../assets/public/img/team.png" class="d-block w-100" style="height: 400px; object-fit: cover;">
-                    <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
-                        <h2 class="text-white mb-3">Trouve ta team</h2>
-                        <a href="partners" class="btn btn-outline-light btn-lg">Trouver des coéquipiers</a>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="../../assets/public/img/terrain.jpg" class="d-block w-100" style="height: 400px; object-fit: cover;">
-                    <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
-                        <h2 class="text-white mb-3">Matchs organisés</h2>
-                        <a href="matches" class="btn btn-outline-light btn-lg">Voir les matchs</a>
-                    </div>
-                </div>
+                <?php
+                $slides = [
+                    ["img" => "../../assets/public/img/actus1.png", "title" => "Tournois à venir", "link" => "tournaments", "btn" => "Voir les tournois"],
+                    ["img" => "../../assets/public/img/team.png", "title" => "Trouve ta team", "link" => "partners", "btn" => "Trouver des coéquipiers"],
+                    ["img" => "../../assets/public/img/terrain.jpg", "title" => "Matchs organisés", "link" => "matches", "btn" => "Voir les matchs"],
+                    ["img" => "../../assets/public/img/profil.jpg", "title" => "Profil", "link" => "profile", "btn" => "Voir ton profil"],
+                ];
+
+                foreach ($slides as $index => $slide) {
+                    $active = $index === 0 ? 'active' : '';
+                    echo <<<HTML
+                        <div class="carousel-item $active position-relative">
+                            <img src="{$slide['img']}" class="d-block w-100" style="height: 400px; object-fit: cover;">
+                            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(0, 0, 0, 0.5); z-index: 1;"></div>
+                            <div class="carousel-caption d-flex flex-column justify-content-center align-items-center" style="z-index: 2;">
+                                <h2 class="text-white mb-3">{$slide['title']}</h2>
+                                <a href="{$slide['link']}" class="btn btn-outline-light btn-lg">{$slide['btn']}</a>
+                            </div>
+                        </div>
+                    HTML;
+                }
+                ?>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselActus" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -63,6 +64,61 @@ include_once "navbar/header.php";
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
             </button>
         </div> 
+
+        <form id="search-filters" class="mx-5 my-4" method="GET" action="partners">
+            <div class="mb-4 text-center">
+                <h3 class="fs-2 fw-bold">Chercher des coéquipiers</h3>
+                <p>Sélectionnez le niveau et le poste de votre partenaire idéal</p>
+            </div>
+
+            <div class="mb-4">
+                <h4>Niveau</h4>
+                <div class="d-flex flex-wrap gap-2">
+                    <?php
+                    $niveaux = ['Débutant', 'Intermédiaire', 'Avancé', 'Pro'];
+                    foreach ($niveaux as $key => $label) {
+                        echo <<<HTML
+                            <div>
+                                <input id="niveau-$key" name="niveau[]" type="checkbox" class="btn-check" value="$key">
+                                <label class="btn btn-outline-secondary" for="niveau-$key">$label</label>
+                            </div>
+                        HTML;
+                    }
+                    ?>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <h4>Poste</h4>
+                <div class="d-flex flex-wrap gap-2">
+                    <?php
+                    $postes = [
+                        'mj' => 'Meneur de jeu',
+                        'ar' => 'Arrière',
+                        'ai' => 'Ailier',
+                        'af' => 'Ailier fort',
+                        'p'  => 'Pivot',
+                        'all' => 'Tous'
+                    ];
+                    $i = 0;
+                    foreach ($postes as $id => $label) {
+                        echo <<<HTML
+                            <div>
+                                <input id="poste-$id" name="poste[]" type="checkbox" class="btn-check" value="$i">
+                                <label class="btn btn-outline-secondary" for="poste-$id">$label</label>
+                            </div>
+                        HTML;
+                        $i++;
+                    }
+                    ?>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center gap-4 mt-5">
+                <button type="reset" class="btn btn-dark px-4 py-2">Clear</button>
+                <button type="submit" class="btn btn-outline-dark px-4 py-2">Search</button>
+            </div>
+        </form>
 
         <?php if (!is_null($user['niveau'])): ?>
             <div class="mt-5 px-5">
@@ -76,10 +132,6 @@ include_once "navbar/header.php";
                         echo displayCardUser($partner);
                     }
                     ?>
-                </div>
-                <div class="d-flex justify-content-center gap-3">
-                    <a href="profile" class="btn btn-dark">Voir le profil</a>
-                    <a class="btn btn-outline-dark">Inviter</a>
                 </div>
             </div>
         <?php endif; ?>
