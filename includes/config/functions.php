@@ -496,6 +496,11 @@ function getAllTeams(PDO $pdo) {
     return $r->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function getAllTourneys(PDO $pdo) {
+    $r = $pdo->query("SELECT * FROM tournoi");
+    return $r->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function createUser(
     PDO $pdo,
 

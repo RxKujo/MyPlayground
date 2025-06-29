@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const data = await response.json();
     const teams = data.teams;
-    console.log(teams);
     const userIdSession = data.waiter;
 
     
@@ -28,6 +27,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         `;
         tbody.appendChild(tr);
     }
+
+    generateAddModal();
 
 
     function generateEditModal(team) {
@@ -93,7 +94,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
 
-    function generateDeleteModal(team) {
+    function generateAddModal() {
         return `<div class="modal fade" id="newTeamModal" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
