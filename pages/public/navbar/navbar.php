@@ -34,6 +34,7 @@ include_once '../../assets/shared/icons/icons.php';
         <?php if ($userRights == 1): ?>
             <li class="nav-item"><a class="nav-link text-black" href="admin/dashboard"><?= $personFillGear ?> Espace Administrateur</a></li>
         <?php endif; ?>
+        <li class="nav-item"><a class="nav-link text-black" href="actu" data-page="actu"><?= $newspaperFill ?> Actu NBA</a></li>
         <li class="nav-item"><a class="nav-link text-black" href="settings" data-page="settings"><?= $gearFill ?> Paramètres</a></li>
         <li class="nav-item"><a class="nav-link text-black" href="disconnect" data-page="disconnect"><?= $openedDoorFill ?> Se déconnecter</a></li>
     </ul>
