@@ -1,32 +1,32 @@
 <?php
-
 include_once '../../includes/global/session.php';
-
 notLogguedSecurity("../../index.php");
 
-$userId = $_SESSION['user_id'];
+$userId = $_SESSION['user_id'] ?? null;
 
-if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
-    $uploadDir = '../../assets/uploads/avatars/';
-    if (!file_exists($uploadDir)) {
-        mkdir($uploadDir, 0777, true);
-    }
-
-    $ext = pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION);
-    $fileName = 'avatar_' . $userId . '.' . $ext;
-    $filePath = $uploadDir . $fileName;
-
-    if (move_uploaded_file($_FILES['avatar']['tmp_name'], $filePath)) {
-        $relativePath = $filePath;
-
-        
-        $stmt = $pdo->prepare("UPDATE users SET avatar = :avatar WHERE id = :id");
-        $stmt->execute([
-            'avatar' => $relativePath,
-            'id' => $userId
-        ]);
-    }
+if (!$userId || !isset($_FILES['avatar']) || $_FILES['avatar']['error'] !== UPLOAD_ERR_OK) {
+    header("Location: profile?error=upload_failed");
+    exit;
 }
 
-header('Location: profile.php');
+$imageTmp = $_FILES['avatar']['tmp_name'];
+$imageType = mime_content_type($imageTmp);
+
+if (!in_array($imageType, ['image/jpeg', 'image/png', 'image/webp'])) {
+    header("Location: profile?error=invalid_format");
+    exit;
+}
+
+$imageData = file_get_contents($imageTmp);
+
+
+$stmt = $pdo->prepare("UPDATE utilisateur SET pfp = :pfp WHERE id = :id");
+$stmt->bindParam(':pfp', $imageData, PDO::PARAM_LOB);
+$stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+
+if ($stmt->execute()) {
+    header("Location: profile?success=avatar_uploaded");
+} else {
+    header("Location: profile?error=db_update_failed");
+}
 exit;

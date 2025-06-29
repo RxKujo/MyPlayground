@@ -2,7 +2,7 @@ const parts = {
   base: ["base2.png"],
   hair: ["hair1.png", "hair2.png", "hair3.png", "hair4.png", "hair5.png"],
   eyes: ["eyes1.png", "eyes2.png", "eyes3.png", "eyes4.png", "eyes5.png", "eyes6.png", "eyes7.png"],
-  nose: ["nose1.png", "nose2.png", "nose3.png" ,"nose4.png" , "nose5.png"],
+  nose: ["nose1.png", "nose2.png", "nose3.png", "nose4.png", "nose5.png"],
   mouth: ["mouth1.png", "mouth2.png", "mouth3.png", "mouth4.png", "mouth5.png", "mouth6.png"]
 };
 
@@ -24,6 +24,7 @@ function loadImage(src) {
 
 async function drawAvatar() {
   const canvas = document.getElementById('avatarCanvas');
+  if (!canvas) return;
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -42,14 +43,11 @@ async function drawAvatar() {
   ]);
 
   ctx.drawImage(baseImg, 0, 0, canvas.width, canvas.height);
-  ctx.drawImage(hairImg, 24, 5, 145, 160);  
-  ctx.drawImage(eyesImg, 37, 69, 120, 60);   
-  ctx.drawImage(noseImg, 30, 95, 130, 40);   
-  ctx.drawImage(mouthImg, 57, 120, 80, 30);  
+  ctx.drawImage(hairImg, 24, 5, 145, 160);
+  ctx.drawImage(eyesImg, 37, 69, 120, 60);
+  ctx.drawImage(noseImg, 30, 95, 130, 40);
+  ctx.drawImage(mouthImg, 57, 120, 80, 30);
 }
-
-
-
 
 function prevPart(part) {
   currentIndex[part] = (currentIndex[part] - 1 + parts[part].length) % parts[part].length;
@@ -77,5 +75,36 @@ function saveAvatar() {
   xhr.send('image=' + encodeURIComponent(imageData));
 }
 
+function addPhotoImportOption() {
+  const container = document.querySelector('.builder-box');
+  if (!container) return;
 
-drawAvatar();
+  const form = document.createElement('form');
+  form.id = 'import-photo-form';
+  form.method = 'POST';
+  form.enctype = 'multipart/form-data';
+  form.action = 'upload-avatar';
+  form.className = 'mt-4';
+
+  const label = document.createElement('label');
+  label.className = 'btn btn-outline-light';
+  label.htmlFor = 'avatar-file-input';
+  label.innerText = 'Importer une photo';
+
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.name = 'avatar';
+  input.accept = 'image/*';
+  input.id = 'avatar-file-input';
+  input.style.display = 'none';
+  input.onchange = () => form.submit();
+
+  label.appendChild(input);
+  form.appendChild(label);
+  container.appendChild(form);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  drawAvatar();
+  addPhotoImportOption();
+});

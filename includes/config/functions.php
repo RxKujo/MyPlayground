@@ -224,15 +224,12 @@ function notLogguedSecurity(string $pathToIndex) {
 }
 
 function getPfp(PDO $pdo, array $user) {
-    $sql = "SELECT pfp from utilisateur WHERE id = :id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        'id'=>$user['id']
-    ]);
-
-    $res = $stmt->fetch(PDO::PARAM_LOB);
-    return $res[0];
+    $stmt = $pdo->prepare("SELECT pfp FROM utilisateur WHERE id = :id");
+    $stmt->execute(['id' => $user['id']]);
+    $res = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $res['pfp'] ?? null;
 }
+
 
 function fetchColumns(PDO $pdo, string $table, array $cols) {
     $sql = "SELECT " . implode(', ', $cols) . " FROM $table";
