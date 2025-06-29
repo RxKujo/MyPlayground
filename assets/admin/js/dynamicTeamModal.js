@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         tbody.appendChild(tr);
     }
 
-    generateAddModal();
+    document.getElementById("dynamic-modal-container").innerHTML = generateAddModal();
 
 
     function generateEditModal(team) {

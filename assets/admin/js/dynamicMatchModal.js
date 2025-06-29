@@ -47,6 +47,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             </td>
         `;
         tbody.appendChild(tr);
+
+        document.getElementById("dynamic-modal-container").innerHTML = generateAddModal();
     }
 
     function generateEditModal(match) {

@@ -29,6 +29,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         tbody.appendChild(tr);
     }
 
+    const div = document.getElementById("createTourneyDiv");
+    div.appendChild(generateAddModal());
+
 
     function generateEditModal(tourney) {
         return `<div class="modal fade" id="editTeam${tourney.id_tournoi}" tabindex="-1" aria-hidden="true">
@@ -99,9 +102,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
 
-    function generateDeleteModal(team) {
-        return `<div class="modal fade" id="newTeamModal" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog">
+    function generateAddModal() {
+        let mod = document.createElement("div");
+
+        mod.innerHTML = `<div class="modal fade" id="newTeamModal" tabindex="-1" aria-hidden="true">
+                    <divsql = " class="modal-dialog">
                         <div class="modal-content">
                             <form method="POST" action="../../processes/add_team_process.php">
                                 <div class="modal-header">
@@ -134,5 +139,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>
                 </div>
             `;
+        return mod;
     }
 });

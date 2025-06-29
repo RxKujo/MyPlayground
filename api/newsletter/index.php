@@ -22,6 +22,7 @@ if ($method === "POST") {
     echo json_encode([
         'success' => true,
         'id_requester' => $id_requester,
+        'name_requester' => $_SESSION['user_info']['pseudo'],
         'news' => $news
     ]);
 

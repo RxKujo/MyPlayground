@@ -502,7 +502,7 @@ function getAllTourneys(PDO $pdo) {
 }
 
 function getAllNews(PDO $pdo) {
-    $r = $pdo->query("SELECT * FROM newletter_post");
+    $r = $pdo->query("SELECT * FROM newsletter_post");
     return $r->fetchAll(PDO::FETCH_ASSOC);
 }
 

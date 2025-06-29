@@ -21,7 +21,9 @@ include_once $includesAdmin . "header.php";
             }
         ?>
         <h2>Gestion des tournois</h2>
-        <button class="btn btn-success mb-3 open-new-modal" data-bs-toggle="modal" data-bs-target="#createMatch">Ajouter un tournoi</button>
+        <div id="createTourneyDiv">
+            <button class="btn btn-success mb-3 open-new-modal" data-bs-toggle="modal" data-bs-target="#newTeamModal">Ajouter un tournoi</button>
+        </div>
         <table class="table table-striped">
             <thead>
                 <tr>
