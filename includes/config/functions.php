@@ -491,6 +491,11 @@ function getAllCaptchas(PDO $pdo) {
 }
 
 
+function getAllTeams(PDO $pdo) {
+    $r = $pdo->query("SELECT * FROM equipe");
+    return $r->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function createUser(
     PDO $pdo,
 
