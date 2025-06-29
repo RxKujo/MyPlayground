@@ -12,7 +12,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
     exit();
 }
 
-$userId = $_GET['id'];
+$userId = (int)$_GET['id'];
 
 $sql = "SELECT pseudo, nom, prenom, date_naissance, email, tel, poste, niveau, description FROM utilisateur WHERE id = :id";
 $stmt = $pdo->prepare($sql);
@@ -47,6 +47,9 @@ function badgePoste($p) {
 
 $pfpSrc = showPfp($pdo, ['id' => $userId]);
 
+$currentUser = $_SESSION['user_info'];
+$isOwner = ($currentUser['id'] === $userId);
+
 ?>
 
 <div class="container my-5">
@@ -70,10 +73,16 @@ $pfpSrc = showPfp($pdo, ['id' => $userId]);
                         <li class="list-group-item"><strong>Niveau :</strong> <?= badgeNiveau($user['niveau']) ?></li>
                         <li class="list-group-item"><strong>Description :</strong><br><?= nl2br(htmlspecialchars($user['description'] ?? '')) ?></li>
                     </ul>
+
+                    <?php if (!$isOwner): ?>
+                        <div class="text-center mt-3">
+                            <a href="messages" class="btn btn-primary">Parler</a>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
-    </div>
+    </div>  
 </div>
 
 <?php include_once $includesGlobal . "footer.php"; ?>
