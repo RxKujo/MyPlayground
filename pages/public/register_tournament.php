@@ -16,7 +16,7 @@ if (!$id_utilisateur) {
 }
 
 
-$stmt = $pdo->prepare("SELECT id_equipe, nom FROM equipe WHERE id_capitaine = ?");
+$stmt = $pdo->prepare("SELECT id_equipe, nom FROM equipe WHERE id_capitaine  = ?");
 $stmt->execute([$id_utilisateur]);
 $equipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -38,14 +38,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$equipe) {
             $message = "<div class='alert alert-danger'>Vous n'êtes pas le capitaine de cette équipe.</div>";
         } else {
-            /
+            
             $stmt = $pdo->prepare("SELECT * FROM equipe_tournoi WHERE id_equipe = ? AND id_tournoi = ?");
             $stmt->execute([$id_equipe, $id_tournoi]);
 
             if ($stmt->rowCount() > 0) {
                 $message = "<div class='alert alert-warning'>Cette équipe est déjà inscrite à ce tournoi.</div>";
             } else {
-                // Inscrit l'équipe au tournoi
+
                 $stmt = $pdo->prepare("INSERT INTO equipe_tournoi (id_equipe, id_tournoi) VALUES (?, ?)");
                 $stmt->execute([$id_equipe, $id_tournoi]);
 

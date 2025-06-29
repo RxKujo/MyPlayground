@@ -7,7 +7,6 @@ header("Content-Type: application/json");
 $id_requester = $_SESSION['user_info']['id'];
 $method = $_SERVER['REQUEST_METHOD'];
 
-// notLogguedSecurity("../../../index.php");
 
 if ($method === 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);

@@ -8,7 +8,6 @@ include_once $includesPublic . 'header.php';
 include_once $assetsShared . 'icons/icons.php';
 include_once 'navbar/header.php';
 
-// Récupérer les tournois terminés
 include_once '../../includes/config/config.php';
 $stmt = $pdo->query("SELECT * FROM tournoi WHERE statut = 'terminé'");
 $tournoisTermines = $stmt->fetchAll(PDO::FETCH_ASSOC);
