@@ -1,16 +1,14 @@
 <?php
-
 include_once 'includes/global/session.php';
-
 include_once $root . 'vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 use Dotenv\Dotenv;
 
 
 $dotenv = Dotenv::createImmutable($root);
 $dotenv->load();
-
 
 $flash_message = $_SESSION['flash_message'] ?? '';
 unset($_SESSION['flash_message']);
@@ -34,7 +32,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $mail = new PHPMailer(true);
         try {
-            sendMail($email, $_ENV["MAIL_USERNAME"], "Contact", $message);
+            $mail->isSMTP();
+            $mail->Host       = $_ENV['MAIL_HOST'];
+            $mail->SMTPAuth   = true;
+            $mail->Username   = $_ENV['MAIL_USERNAME'];
+            $mail->Password   = $_ENV['MAIL_PASSWORD'];
+            $mail->SMTPSecure = $_ENV['MAIL_ENCRYPTION'];
+            $mail->Port       = $_ENV['MAIL_PORT'];
+
+            $mail->setFrom($_ENV['MAIL_FROM'], $_ENV['MAIL_FROM_NAME']);
+            $mail->addAddress($_ENV['MAIL_FROM'], $_ENV['MAIL_FROM_NAME']);
+            $mail->addReplyTo($email, $name);
+
+            $mail->isHTML(true);
+            $mail->Subject = "Nouveau message de $name";
+            $mail->Body    = "
+                <p><strong>Nom :</strong> {$name}</p>
+                <p><strong>Email :</strong> {$email}</p>
+                <p><strong>Message :</strong><br>" . nl2br(htmlspecialchars($message)) . "</p>
+            ";
+
+            $mail->send();
 
             $_SESSION['flash_message'] = "Votre message a bien été envoyé.";
             header("Location: contact.php");
