@@ -91,7 +91,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const avertirMessage = document.getElementById('avertirMessage');
     let lastBtnAvertir = null;
 
-    // ✅ Ce bouton peut exister plusieurs fois (par tournoi)
     document.querySelectorAll('.btn-avertir').forEach(button => {
         button.addEventListener('click', function () {
             lastBtnAvertir = this;

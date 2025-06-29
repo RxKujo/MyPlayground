@@ -34,7 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($equipe['privee'] && $equipe['code'] !== $code_saisi) {
             $message = "<div class='alert alert-danger'>Code incorrect pour cette équipe privée.</div>";
         } else {
-            // Vérifie si déjà membre (par id_utilisateur)
             $stmt = $pdo->prepare("SELECT * FROM equipe_membre WHERE id_equipe = ? AND id_utilisateur = ?");
             $stmt->execute([$id_equipe, $id_utilisateur]);
 
