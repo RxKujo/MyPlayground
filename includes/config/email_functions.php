@@ -25,8 +25,6 @@ function sendVerificationEmail(string $email, string $prenom, string $verificati
         $mail->setFrom($_ENV['MAIL_FROM'], $_ENV['MAIL_FROM_NAME']);
         $mail->addAddress($email, $prenom);
         $mail->CharSet = 'UTF-8';
-        $mail->Encoding = 'base64';
-
         $mail->isHTML(true);
 
        
@@ -38,18 +36,19 @@ function sendVerificationEmail(string $email, string $prenom, string $verificati
         try {
             $mail->send();
         } catch (Exception $e) {
-            return false;
+            return $e;
         }
 
         return true;
     } catch (Exception $e) {
-        return false; 
+        return $e; 
     }
 }
 
 function sendMail(
-    string $objet, string $contenu,
-    array $user) {
+    string $emailFrom, string $emailTo,
+    string $objet, string $contenu
+    ) {
 
     global $root;
 
@@ -66,24 +65,19 @@ function sendMail(
         $mail->Password   = $_ENV['MAIL_PASSWORD'];
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = $_ENV['MAIL_PORT'];
-        $mail->isHTML();
-        $mail->CharSet = 'UTF-8';
-        $mail->Encoding = 'base64';
-        
-        $mail->setFrom($_ENV['MAIL_FROM'], $_ENV['MAIL_FROM_NAME']);
-        $mail->addAddress($user["email"], $user['prenom']);
 
         $mail->isHTML(true);
+        $mail->CharSet = 'UTF-8';
+        $mail->Encoding = 'base64';
 
+        $mail->setFrom($emailFrom);
+        $mail->addAddress($emailTo);
 
         $mail->Subject = $objet;
         $mail->Body    = $contenu;
 
-        try {
-            $mail->send();
-        } catch (Exception $e) {
-            return false;
-        }
+        $mail->send();
+        return true;
 
         return true;
     } catch (Exception $e) {
