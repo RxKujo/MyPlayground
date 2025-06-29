@@ -28,7 +28,8 @@ $isSubscribed = isUserSubscribed($pdo, $user['id']);
                     <input type="email" class="form-control text-dark" name="email" placeholder="Adresse email" required style="max-width:200px;">
                 </form>
             </div>
-            
+
+            <?php else: ?>
             <div class="text-end mt-1">
                 <a href="/newsletter_unsubscribe.php" class="text-light" style="font-size: 0.75rem; text-decoration: underline;">
                     Se désabonner
