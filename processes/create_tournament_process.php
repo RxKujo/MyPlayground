@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validation simple
     if (empty($nom) || empty($lieu) || empty($date_tournoi) || empty($categorie) || $age <= 0 || $nombre_utilisateurs_max <= 0 || empty($statut)) {
         $_SESSION['error'] = "Tous les champs obligatoires doivent être remplis correctement.";
-        header("Location: ../pages/public/create_tournament.php");
+        header("Location: ../create_tournament");
         exit;
     }
 
@@ -25,11 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$nom, $date_tournoi, $lieu, $description, $categorie, $age, $nombre_utilisateurs_max, $statut]);
 
         $_SESSION['success'] = "Tournoi créé avec succès.";
-        header("Location: ../pages/public/tournaments.php");
+        header("Location: ../tournaments");
         exit;
     } catch (PDOException $e) {
         $_SESSION['error'] = "Erreur lors de la création du tournoi : " . $e->getMessage();
-        header("Location: ../pages/public/create_tournament.php");
+        header("Location: ../create_tournament");
         exit;
     }
 } else {
