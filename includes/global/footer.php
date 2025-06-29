@@ -10,6 +10,7 @@ $isSubscribed = isUserSubscribed($pdo, $user['id']);
 
 <footer class="bg-black text-white pt-4 pb-2">
     <div class="container-fluid">
+        <a class="btn btn-black text-black" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1&pp=ygUXbmV2ZXIgZ29ubmEgZ2l2ZSB5b3UgdXCgBwE%3D">easteregg</a>
         <div class="row align-items-center justify-content-end">
        
             <div class="col-md-7 offset-md-1 text-center text-md-start mb-3 mb-md-0">
