@@ -1,0 +1,43 @@
+@media screen and (max-width: 991px) {
+  .responsive-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .container,
+  .content {
+    padding: 10px;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .sidebar {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  h1,
+  h2,
+  h3 {
+    font-size: 1.4rem;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .show-mobile {
+    display: block !important;
+  }
+}

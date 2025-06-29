@@ -11,6 +11,9 @@ include_once $root . "includes/config/variables.php";
 include_once $includesConfig . "functions.php";
 include_once $includesConfig . "config.php";
 include_once $includesConfig . "email_functions.php";
+function includeResponsiveCSS() {
+    echo '<link rel="stylesheet" href="/assets/css/responsive.css">';
+}
 
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $inactive) && isset($_SESSION['user_id'])) {
     makeOffline($pdo, $_SESSION['user_id']);
