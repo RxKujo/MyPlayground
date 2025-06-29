@@ -2,13 +2,7 @@
 
 include_once('../includes/global/session.php');
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("location: ../index.php");
-    exit();
-}
-
-include_once $includesConfig . 'config.php';
-
+notLogguedSecurity("../index.php");
 
 $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -26,12 +20,17 @@ $niveau = ($niveau === false || $niveau === null) ? null : $niveau;
 $poste = filter_input(INPUT_POST, 'poste', FILTER_VALIDATE_INT);
 $poste = ($poste === false || $poste === null) ? null : $poste;
 
+$ff = [
+    $id, $nom, $prenom, $pseudo, $tel, $email, $role, $localisation, $description, $niveau, $poste
+];
+
+
 $sql = 'UPDATE utilisateur SET nom = :nom, prenom = :prenom, pseudo = :pseudo, poste = :poste, niveau = :niveau, tel = :tel, email = :email, role = :_role, localisation = :localisation, description = :description WHERE id = :id';
 $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':nom', $nom);
 $stmt->bindParam(':prenom', $prenom);
 $stmt->bindParam(':pseudo', $pseudo);
-$stmt->bindValue(':poste', $poste, is_null($niveau) ? PDO::PARAM_NULL : PDO::PARAM_INT);
+$stmt->bindValue(':poste', $poste, is_null($poste) ? PDO::PARAM_NULL : PDO::PARAM_INT);
 $stmt->bindValue(':niveau', $niveau, is_null($niveau) ? PDO::PARAM_NULL : PDO::PARAM_INT);
 $stmt->bindParam(':tel', $tel);
 $stmt->bindParam(':email', $email);

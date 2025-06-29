@@ -2,25 +2,9 @@
 
 include_once('../includes/global/session.php');
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("location: ../index.php");
-    exit();
-}
+notLogguedSecurity("../index.php");
 
-if ($_POST['id']) {
-    $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-} else {
-    if (isset($_SESSION) && $_SESSION['user_id']) {
-        $id = $_SESSION['user_id'];
-    } else {
-        header("location: ../index.php");
-        exit();
-    }
-}
-
-
-include_once $includesConfig . 'config.php';
-
+$id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_SPECIAL_CHARS);
 $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_SPECIAL_CHARS);
 $pseudo = filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_SPECIAL_CHARS);

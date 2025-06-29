@@ -93,6 +93,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         const role = getUserRole(user.role);
         const isAdmin = user.droits == 1;
 
+        user.niveau = parseInt(user.niveau);
+        user.poste = parseInt(user.poste);
+        user.role = parseInt(user.role);
+
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -198,14 +202,38 @@ document.addEventListener('DOMContentLoaded', async function () {
                   <div class="mb-3"><label>Email</label><input name="email" class="form-control" value="${user.email}" /></div>
                   <div class="mb-3"><label>Adresse</label><input name="localisation" class="form-control" value="${user.localisation}" /></div>
                   
-                  <div class="mb-3"><input type="hidden" name="niveau" class="form-control" value="${user.niveau}"/></div>
-                  <div class="mb-3"><input type="hidden" name="poste" class="form-control" value="${user.poste}"/></div>
-                  <div class="mb-3"><input type="hidden" name="role" class="form-control" value="${user.role}"/></div>
+                  <div class="mb-3">
+                  <label>Niveau</label>
+                    <select name="niveau" class="form-select">
+                      <option value="0" ${user.niveau === 0 ? 'selected' : ''}>Débutant</option>
+                      <option value="1" ${user.niveau === 1 ? 'selected' : ''}>Intermédiaire</option>
+                      <option value="2" ${user.niveau === 2 ? 'selected' : ''}>Avancé</option>
+                      <option value="3" ${user.niveau === 3 ? 'selected' : ''}>Pro</option>
+                    </select>
+                  </div>
 
-                  <div class="mb-3"><label>Niveau</label><input class="form-control" value="${getUserLevel(user.niveau)}"/></div>
-                  <div class="mb-3"><label>Poste</label><input class="form-control" value="${getUserPosition(user.poste)}"/></div>
-                  <div class="mb-3"><label>role</label><input class="form-control" value="${getUserRole(user.role)}"/></div>
-                  <div class="mb-3"><label>Commentaire</label><textarea name="commentaire" class="form-control" value="${user.description}"></textarea></div>
+                  <div class="mb-3">
+                  <label>Poste</label>
+                    <select name="poste" class="form-select">
+                      <option value="0" ${user.poste === 0 ? 'selected' : ''}>Meneur de jeu</option>
+                      <option value="1" ${user.poste === 1 ? 'selected' : ''}>Arrière</option>
+                      <option value="2" ${user.poste === 2 ? 'selected' : ''}>Ailier</option>
+                      <option value="3" ${user.poste === 3 ? 'selected' : ''}>Ailier fort</option>
+                      <option value="4" ${user.poste === 4 ? 'selected' : ''}>Pivot</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                  <label>Rôle</label>
+                    <select name="role" class="form-select">
+                      <option value="0" ${user.role === 0 ? 'selected' : ''}>Joueur</option>
+                      <option value="1" ${user.role === 1 ? 'selected' : ''}>Arbitre</option>
+                      <option value="2" ${user.role === 2 ? 'selected' : ''}>Organisateur</option>
+                      <option value="3" ${user.role === 3 ? 'selected' : ''}>Spectateur</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3"><label>Commentaire</label><textarea name="commentaire" class="form-control">${user.description}"</textarea></div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
