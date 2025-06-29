@@ -4,23 +4,37 @@ session_start();
 require_once '../includes/config/config.php';
 
 $id_match = $_POST['id_match'] ?? null;
-$lieu = trim($_POST['lieu'] ?? '');
-$date_match = $_POST['date_match'] ?? '';
-$categorie = trim($_POST['categorie'] ?? '');
-$description = trim($_POST['description'] ?? '');
 
-if (!$id_match || $lieu === '' || $date_match === '' || $categorie === '' || $description === '') {
-    $_SESSION['modif_success'] = "Données manquantes pour la modification du match.";
+$terrain = trim($_POST['terrain'] ?? '');
+$localisation = trim($_POST['localisation'] ?? '');
+$statut = trim($_POST['statut'] ?? '');
+$message = trim($_POST['message'] ?? '');
+$createur = trim($_POST['createur'] ?? '');
+
+if (!$id_match) {
+    $_SESSION['modif_success'] = "ID du match manquant.";
     header("Location: ../admin/matches");
     exit;
 }
 
 try {
-    $stmt = $pdo->prepare("UPDATE matchs SET lieu = ?, date_match = ?, categorie = ?, description = ? WHERE id_match = ?");
-    $stmt->execute([$lieu, $date_match, $categorie, $description, $id_match]);
+    $stmt = $pdo->prepare("
+        UPDATE `match`
+        SET 
+            message = :message,
+            statut = :statut
+        WHERE id_match = :id_match
+    ");
+
+    $stmt->execute([
+        ':message' => $message,
+        ':statut' => $statut,
+        ':id_match' => $id_match
+    ]);
+
     $_SESSION['modif_success'] = "Match modifié avec succès.";
 } catch (PDOException $e) {
-    $_SESSION['modif_success'] = "Erreur lors de la modification : " . $e->getMessage();
+    $_SESSION['modif_success'] = "Erreur : " . $e->getMessage();
 }
 
 header("Location: ../admin/matches");
