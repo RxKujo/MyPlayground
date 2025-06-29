@@ -96,4 +96,136 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Erreur lors de l'envoi du message :", error);
         });
     });
+
+
+
+// ----------------------------------------------------------------------------------
+
+
+    let allUsers = [];
+    const selectedUsers = new Set();
+
+    const guestInput = document.getElementById('guestInput');
+    const suggestionsBox = document.getElementById('suggestions');
+    const guestsContainer = document.getElementById('guests-container');
+    const hiddenGuestsInput = document.getElementById('hiddenGuests');
+
+    const groupNameInput = document.getElementById('groupName');
+    const submitButton = document.getElementById('submitGroup');
+
+    // Charger tous les utilisateurs une seule fois
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+        const res = await fetch('/api/users/static/all');
+        const data = await res.json();
+        allUsers = data.users.map(u => ({ id: u.id, pseudo: u.pseudo }));
+        } catch (err) {
+        console.error("Erreur lors du chargement des utilisateurs :", err);
+        }
+    });
+
+    function fetchSuggestionsLocal(query) {
+        return allUsers
+        .filter(user =>
+            user.pseudo.toLowerCase().includes(query.toLowerCase()) &&
+            !selectedUsers.has(user.pseudo)
+        )
+        .slice(0, 5);
+    }
+
+    function renderSuggestions(results) {
+        suggestionsBox.innerHTML = "";
+        results.forEach(user => {
+        const item = document.createElement('li');
+        item.className = "list-group-item list-group-item-action";
+        item.textContent = user.pseudo;
+        item.onclick = () => addGuest(user.pseudo);
+        suggestionsBox.appendChild(item);
+        });
+        suggestionsBox.style.display = results.length ? 'block' : 'none';
+    }
+
+    function addGuest(pseudo) {
+        if (selectedUsers.has(pseudo)) return;
+
+        selectedUsers.add(pseudo);
+
+        const badge = document.createElement('span');
+        badge.className = "badge rounded-pill bg-primary";
+        badge.textContent = pseudo;
+        badge.style.cursor = 'pointer';
+        badge.onclick = () => {
+        selectedUsers.delete(pseudo);
+        guestsContainer.removeChild(badge);
+        updateHiddenInput();
+        };
+
+        guestsContainer.appendChild(badge);
+        updateHiddenInput();
+
+        guestInput.value = "";
+        suggestionsBox.innerHTML = "";
+    }
+
+    function updateHiddenInput() {
+        hiddenGuestsInput.value = Array.from(selectedUsers).join(',');
+    }
+
+    guestInput.addEventListener('input', () => {
+        const parts = guestInput.value.split(',');
+        const lastPart = parts[parts.length - 1].trim();
+        if (lastPart.length > 0) {
+        const suggestions = fetchSuggestionsLocal(lastPart);
+        renderSuggestions(suggestions);
+        } else {
+        suggestionsBox.innerHTML = "";
+        }
+    });
+
+    guestInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault();
+        const value = guestInput.value.trim().split(',').pop().trim();
+        if (value) addGuest(value);
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!guestInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+        suggestionsBox.innerHTML = "";
+        }
+    });
+
+    submitButton.addEventListener('click', async () => {
+    const name = groupNameInput.value.trim();
+    const guests = Array.from(selectedUsers);
+
+    if (!name || guests.length === 0) {
+        alert("Veuillez entrer un nom de groupe et au moins un utilisateur.");
+        return;
+    }
+
+    try {
+        const res = await fetch('/api/users/group/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            name: name,
+            guests: guests
+        })
+        });
+
+        const result = await res.json();
+        if (res.ok) {
+            location.reload();
+        } else {
+            alert("Erreur : " + (result.error || "Impossible de créer le groupe."));
+        }
+    } catch (err) {
+        console.error(err);
+        alert("Erreur lors de la requête.");
+    }
+    });
 });

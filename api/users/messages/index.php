@@ -32,6 +32,15 @@ if ($method === 'POST') {
         $stmt->bindParam(":message", $contenu);
     
         $stmt->execute();
+
+        $r = $pdo->query("SELECT id_message FROM echanger WHERE id_groupe = $id_groupe ORDER BY date_envoi DESC LIMIT 1");
+        $id_dernier_message = $r->fetch(PDO::FETCH_COLUMN);
+
+        $stmt = $pdo->prepare("UPDATE groupe_discussion SET id_dernier_message = $id_dernier_message WHERE id = :id");
+        $stmt->execute([
+            ":id" => $id_groupe
+        ]);
+        
     } catch (Exception $e) {
         echo json_encode(['error' => $e]);
         exit();

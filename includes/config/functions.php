@@ -28,6 +28,14 @@ function getUser(PDO $pdo, int $id) {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+function getUserIdFromUsername(PDO $pdo, string $username) {
+    $r = $pdo->query(
+        "SELECT id FROM utilisateur WHERE pseudo = '$username'"
+    );
+
+    return $r->fetch(PDO::FETCH_ASSOC)['id'];
+}
+
 function getUsersFromLevel(PDO $pdo, int $level, int $limit = 0) {
     if ($limit) {
         $sql = "SELECT * FROM utilisateur WHERE niveau = $level LIMIT $limit";
@@ -347,7 +355,7 @@ function getMessage(PDO $pdo, int | null $messageId) {
         return null;
     }
     $r = $pdo->query("SELECT * FROM echanger WHERE id_message = $messageId");
-    $message = $r->fetchAll(PDO::FETCH_ASSOC);
+    $message = $r->fetch(PDO::FETCH_ASSOC);
     return $message;
 }
 
@@ -554,6 +562,19 @@ function createUser(
     }
     return ['success' => false, 'message' => "Une erreur est survenue lors de l'inscription. Veuillez réessayer."];
 }
+
+function createGroup(PDO $pdo, string $nom_groupe, int $creatorId) {
+    $stmt = $pdo->prepare("INSERT INTO groupe_discussion (nom, id_createur) VALUES (:nom, :utilisateur)");
+    $stmt->execute(['nom' => $nom_groupe, 'utilisateur' => $creatorId]);
+    $groupId = $pdo->lastInsertId();
+    return $groupId;
+}
+
+function addToGroup(PDO $pdo, int $groupId, int $userId) {
+    $stmt = $pdo->prepare("INSERT INTO participation_groupe (id_groupe, id_utilisateur) VALUES (:groupe, :utilisateur)");
+    $stmt->execute(['groupe' => $groupId, 'utilisateur' => $userId]);
+}
+
 
 function e(PDO $pdo) {
     $stmt = $pdo->query(

@@ -44,7 +44,7 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
                             <img src="<?= showPfpOffline($interlocutor) ?>" class="rounded-circle" width="48" height="48" alt="">
                             <div class="d-flex flex-column">
                                 <strong><?= $discussion['nom'] ?></strong>
-                                <small class="text-muted"><?= getMessage($pdo, $discussion["id_dernier_message"]) ?? "Envoyez votre premier message !"?></small>
+                                <small class="text-muted"><?= getMessage($pdo, $discussion['id_dernier_message'])['message'] ?? "Envoyez votre premier message !"?></small>
                             </div>
                         </a>
                     <?php endforeach; ?>
@@ -86,21 +86,37 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
             <div class="modal-body">
                 <div class="mb-3">
                     <label>Nom du groupe</label>
-                    <input class="form-control" name="nom" type="text">
+                    <input id="groupName" class="form-control" name="nom" type="text">
                 </div>
                 <div class="mb-3">
                     <label>Avec :</label>
-                    <div id="guests-container"></div>
-                    <input class="form-control" type="text" name="guests[]" id="hiddenGuests">
+                    <div id="guests-container" class="mb-2 d-flex flex-wrap gap-2"></div>
+                    <input type="text" id="guestInput" class="form-control" placeholder="Entrez un pseudo...">
+                    <ul id="suggestions" class="list-group position-absolute z-3 w-100"></ul>
+                    <input type="hidden" name="guests[]" id="hiddenGuests">
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Fermer</button>
-                <button class="btn btn-primary" type="submit">Créer</button>
+                <button id="submitGroup" class="btn btn-primary" type="submit">Créer</button>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+  
+</script>
+
+<style>
+  #suggestions {
+    top: calc(100% + 2px);
+    max-height: 200px;
+    overflow-y: auto;
+  }
+</style>
+
+
 
 
 <?php include_once $includesGlobal . 'footer.php'; ?>
