@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let currentGroupId = null;
 
-    // Chargement des messages
     function loadMessages(groupId) {
         fetch(`/api/users/messages/?id_groupe=${groupId}`)
             .then(response => response.json())
@@ -59,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Clic sur une discussion
+
     discussionLinks.forEach(link => {
         link.addEventListener("click", function (e) {
             e.preventDefault();
@@ -70,7 +69,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Envoi du message
     sendButton.addEventListener("click", function () {
         const contenu = messageInput.value.trim();
         const id_groupe = currentGroupId;
@@ -113,7 +111,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const groupNameInput = document.getElementById('groupName');
     const submitButton = document.getElementById('submitGroup');
 
-    // Charger tous les utilisateurs une seule fois
     document.addEventListener('DOMContentLoaded', async () => {
         try {
         const res = await fetch('/api/users/static/all');

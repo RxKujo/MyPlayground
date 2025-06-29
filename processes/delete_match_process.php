@@ -3,12 +3,7 @@
 include_once '../includes/global/session.php';
 notLogguedSecurity("../index.php");
 
-if (!isset($_POST['id_match'])) {
-    header('Location: ../pages/match.php');
-    exit();
-}
-
-$idMatch = intval($_POST['id_match']);
+$idMatch = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 $user = $_SESSION['user_info'];
 $isAdmin = isAdmin($user);
 
@@ -23,7 +18,7 @@ try {
         throw new Exception("Match introuvable.");
     }
 
-    if ($match['id_createur'] != $user['id']) {
+    if ($match['id_createur'] != $user['id'] && !isAdmin($user)) {
         throw new Exception("Non autorisé à supprimer ce match.");
     }
 
