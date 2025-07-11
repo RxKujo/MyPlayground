@@ -1,8 +1,8 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.querySelector('#searchUserField');
     
     
-    searchInput.addEventListener("keyup", function () {
+    searchInput.addEventListener("keyup", () => {
         const tableRows = document.querySelectorAll("tbody tr");
         const searchTerm = searchInput.value.trim().toLowerCase();
         

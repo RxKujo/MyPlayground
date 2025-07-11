@@ -44,8 +44,6 @@ include_once "navbar/header.php";
 $discussions = getAllDiscussionsNames($pdo, $user['id']);
 ?>
 
-<script>const user_id = <?= $user['id'] ?>;</script>
-
 <div class="d-flex">
     <?php include_once "navbar/reducted_navbar.php"; ?>
 
@@ -55,7 +53,7 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
                 <div class="mb-4">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <h5 class="mb-0">Messages</h5>
-                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newGroup">
+                        <button id="create-group" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newGroup">
                             <?= $plusSquareFill ?>
                         </button>
                     </div>
@@ -120,7 +118,7 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
                     <label>Avec :</label>
                     <div id="guests-container" class="mb-2 d-flex flex-wrap gap-2"></div>
                     <input type="text" id="guestInput" class="form-control" placeholder="Entrez un pseudo...">
-                    <ul id="suggestions" class="list-group position-absolute z-3 w-100"></ul>
+                    <ul id="suggestions" class="list-group z-3 w-100"></ul>
                     <input type="hidden" name="guests[]" id="hiddenGuests">
                 </div>
             </div>
@@ -150,17 +148,87 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
 </style>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    const inputField = document.getElementById('input-message-field');
-    const sendButton = document.querySelector('.btn.btn-primary[type="submit"]');
+    const guestInput = document.getElementById('guestInput');
+    const suggestionsList = document.getElementById('suggestions');
+    const guestsContainer = document.getElementById('guests-container');
+    const hiddenGuests = document.getElementById('hiddenGuests');
+    const createGroupBtn = document.getElementById('create-group');
 
-    inputField.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            sendButton.click();
+    let allUsers = [];
+
+    // Charger tous les utilisateurs quand on ouvre le modal
+    createGroupBtn.addEventListener('click', async () => {
+        const response = await fetch('/api/users/static/all');
+        const data = await response.json();
+        allUsers = data.users || [];
+    });
+
+    guestInput.addEventListener('input', () => {
+        const query = guestInput.value.trim().toLowerCase();
+        suggestionsList.innerHTML = '';
+
+        if (!query) {
+            suggestionsList.style.display = 'none';
+            return;
+        }
+
+        const filtered = allUsers
+            .filter(user => user.pseudo.toLowerCase().includes(query))
+            .filter(user => !Array.from(guestsContainer.children).some(el => el.dataset.id == user.id))
+            .slice(0, 6);
+
+        if (filtered.length === 0) {
+            suggestionsList.style.display = 'none';
+            return;
+        }
+
+        filtered.forEach(user => {
+            const li = document.createElement('li');
+            li.className = 'list-group-item list-group-item-action';
+            li.textContent = user.pseudo;
+            li.dataset.id = user.id;
+            suggestionsList.appendChild(li);
+        });
+
+        suggestionsList.style.display = 'block';
+    });
+
+    suggestionsList.addEventListener('click', e => {
+        if (e.target.tagName === 'li') {
+            const userId = e.target.dataset.id;
+            const pseudo = e.target.textContent;
+
+            const tag = document.createElement('span');
+            tag.className = 'badge bg-primary text-white p-2 rounded-pill';
+            tag.textContent = pseudo;
+            tag.dataset.id = userId;
+            tag.title = 'Cliquez pour retirer';
+            tag.style.cursor = 'pointer';
+
+            tag.addEventListener('click', () => {
+                tag.remove();
+                updateHiddenGuests();
+            });
+
+            guestsContainer.appendChild(tag);
+            guestInput.value = '';
+            suggestionsList.innerHTML = '';
+            suggestionsList.style.display = 'none';
+            updateHiddenGuests();
+        }
+    });
+
+    function updateHiddenGuests() {
+        const ids = [...guestsContainer.children].map(child => child.dataset.id);
+        hiddenGuests.value = JSON.stringify(ids);
+    }
+
+    document.addEventListener('click', (e) => {
+        if (!guestInput.contains(e.target) && !suggestionsList.contains(e.target)) {
+            suggestionsList.style.display = 'none';
         }
     });
 });
 </script>
-
 
 <?php include_once $includesGlobal . 'footer.php'; ?>
