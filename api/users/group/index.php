@@ -18,7 +18,8 @@ if ($method === "POST") {
     }
 
     $groupId = createGroup($pdo, $name, $id_requester);
-
+    addToGroup($pdo, $groupId, $id_requester);
+    
     foreach ($guests as $guest) {
         $guest = trim($guest);
         addToGroup($pdo, $groupId, getUserIdFromUsername($pdo, $guest));

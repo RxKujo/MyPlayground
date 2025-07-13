@@ -238,6 +238,10 @@ function getPfp(PDO $pdo, array $user) {
     return $res['pfp'] ?? null;
 }
 
+function getPseudoById(PDO $pdo, int $userId) {
+    $r = $pdo->query("SELECT pseudo FROM utilisateur WHERE id = $userId");
+    return $r->fetch(PDO::FETCH_COLUMN);
+}
 
 function fetchColumns(PDO $pdo, string $table, array $cols) {
     $sql = "SELECT " . implode(', ', $cols) . " FROM $table";
