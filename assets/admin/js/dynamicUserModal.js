@@ -123,8 +123,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                 ${generateSwitchModal(id, isAdmin)}
             </td>
             <td>
-                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProfile${id}">Modifier</button>
-                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteProfile${id}">Supprimer</button>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProfile${id}"}>Modifier</button>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteProfile${id}" ${id === userIdSession ? 'disabled' : ''}>Supprimer</button>
                 ${generateDeleteModal(id)}
                 ${generateEditModal(id, user)}
             </td>

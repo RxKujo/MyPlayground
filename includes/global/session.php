@@ -1,6 +1,5 @@
 <?php
 
-$inactive = 900;
 $bdd_refresh = 20;
 
 session_start();
@@ -15,13 +14,13 @@ function includeResponsiveCSS() {
     echo '<link rel="stylesheet" href="/assets/css/responsive.css">';
 }
 
-if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $inactive) && isset($_SESSION['user_id'])) {
-    makeOffline($pdo, $_SESSION['user_id']);
-    session_unset();
+if (!isUserOnline($pdo, $_SESSION['user_id'])) {
     session_destroy();
-    header("Location: /login.php");
+    
+    header("location: index.php");
     exit();
 }
+
 
 if (isset($_SESSION['last_refresh'])) {
     if (time() - $_SESSION['last_refresh'] > $bdd_refresh && isset($_SESSION['user_id'])) {

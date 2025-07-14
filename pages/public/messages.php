@@ -47,6 +47,7 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
 <div class="d-flex">
     <?php include_once "navbar/reducted_navbar.php"; ?>
 
+    <script>let user_id = <?= $user['id'] ?>;</script>
     <div class="container-fluid px-0" id="content">
         <div class="row gx-0" style="height: 100vh;">
             <div class="col-lg-3 border-end bg-white d-flex flex-column p-3" style="height: 100vh; overflow-y: auto;">

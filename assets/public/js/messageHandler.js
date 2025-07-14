@@ -1,4 +1,17 @@
-document.addEventListener("DOMContentLoaded", function () {
+async function sendMessage(content, groupId, senderId) {
+    const response = await fetch('/api/users/messages/', {
+        method: 'POST',
+        body: JSON.stringify({
+            contenu,
+            groupId,
+            senderId
+        })
+    })
+
+    return response;
+}
+
+document.addEventListener("DOMContentLoaded", async function () {
     const discussionLinks = document.querySelectorAll(".discussion-link");
     const messageContainer = document.querySelector("#message-container .d-flex");
     const messageInput = document.querySelector('input[name="message"]');
@@ -69,24 +82,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    sendButton.addEventListener("click", function () {
-        const contenu = messageInput.value.trim();
-        const id_groupe = currentGroupId;
-
+    sendButton.addEventListener("click", async () => {
         if (!contenu || !id_groupe) return;
 
-        fetch('/api/users/messages/', {
-            method: 'POST',
-            body: JSON.stringify({
-                contenu,
-                id_groupe,
-                user_id
-            })
-        })
-        .then(response => {
-            response.json();
-        })
-        .then(data => {
+        const response = await sendMessage(messageInput, id_groupe, id_envoyeur);
+        response.then(data => {
             messageInput.value = "";
             loadMessages(id_groupe);
         })
@@ -94,6 +94,30 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Erreur lors de l'envoi du message :", error);
         });
     });
+
+    messageInput.addEventListener("keydown", async (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+
+            if (!contenu || !id_groupe) return;
+
+            const response = await sendMessage(messageInput, id_groupe, id_envoyeur);
+            response.then(data => {
+                messageInput.value = "";
+                loadMessages(id_groupe);
+            })
+            .catch(error => {
+                console.error("Erreur lors de l'envoi du message :", error);
+            });
+        }
+    });
+
+
+    setInterval(() => {
+        if (currentGroupId != null) {
+            loadMessages(currentGroupId);
+        }
+    }, 200);
 
 
 
@@ -110,15 +134,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const groupNameInput = document.getElementById('groupName');
     const submitButton = document.getElementById('submitGroup');
 
-    document.addEventListener('DOMContentLoaded', async () => {
-        try {
+    try {
         const res = await fetch('/api/users/static/all');
         const data = await res.json();
         allUsers = data.users.map(u => ({ id: u.id, pseudo: u.pseudo }));
-        } catch (err) {
+    } catch (err) {
         console.error("Erreur lors du chargement des utilisateurs :", err);
-        }
-    });
+    }
 
     function fetchSuggestionsLocal(query) {
         return allUsers
