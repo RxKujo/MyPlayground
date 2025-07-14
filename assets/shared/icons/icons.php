@@ -52,6 +52,10 @@ $peopleFill = '<i class="bi bi-people-fill"></i>';
 $newspaperFill = '<i class="bi bi-newspaper"></i>';
 
 $envelopeFill = '<i class="bi bi-envelope-fill"></i>';
+
 $fileRuledFill = '<i class="bi bi-file-ruled-fill"></i>';
+
 $personLineFill = '<i class="bi bi-person-lines-fill"></i>';
+
+$banFill = '<i class="bi bi-ban-fill"></i>';
 ?>

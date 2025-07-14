@@ -472,7 +472,7 @@ function showPfpOffline(array $user) {
 
 
 function getAllUsers(PDO $pdo) {
-    $r = $pdo->query("SELECT id, nom, prenom, pseudo, localisation, email, tel, poste, droits, role, niveau, is_online, is_verified FROM utilisateur");
+    $r = $pdo->query("SELECT id, nom, prenom, pseudo, localisation, email, tel, poste, droits, role, niveau, derniere_connexion, is_online, is_verified FROM utilisateur");
     return $r->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -594,6 +594,9 @@ function addToGroup(PDO $pdo, int $groupId, int $userId) {
     $stmt->execute(['groupe' => $groupId, 'utilisateur' => $userId]);
 }
 
+function setUserLastLogin(PDO $pdo, int $userId) {
+    $r = $pdo->query("UPDATE utilisateur SET derniere_connexion = NOW() WHERE id = $userId");
+}
 
 function e(PDO $pdo) {
     $stmt = $pdo->query(

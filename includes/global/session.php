@@ -10,13 +10,20 @@ include_once $root . "includes/config/variables.php";
 include_once $includesConfig . "functions.php";
 include_once $includesConfig . "config.php";
 include_once $includesConfig . "email_functions.php";
+
 function includeResponsiveCSS() {
     echo '<link rel="stylesheet" href="/assets/css/responsive.css">';
 }
 
+
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_info'])) {
+    session_destroy();
+    header("location: index.php");
+    exit();
+}
+
 if (!isUserOnline($pdo, $_SESSION['user_id'])) {
     session_destroy();
-    
     header("location: index.php");
     exit();
 }

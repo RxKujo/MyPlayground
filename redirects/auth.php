@@ -52,6 +52,7 @@ $isPasswordCorrect = password_verify($password, $user['mdp']);
 
 $user = getUser($pdo, $user['id']);
 
+setUserLastLogin($pdo, $user['id']);
 
 if ($isPasswordCorrect) {
     $_SESSION['user_id'] = $user['id'];

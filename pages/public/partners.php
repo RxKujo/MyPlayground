@@ -111,11 +111,11 @@ function safe($value) {
                         <div class="col-md-4">
                             <div class="card">
                                 <div class="card-body d-flex flex-column">
-                                    <h5 class="card-title"><?= safe($mate['prenom'] . ' ' . $mate['nom']) ?></h5>
-                                    <p class="card-text mb-1">Pseudo : <?= safe($mate['pseudo']) ?></p>
-                                    <p class="card-text mb-1">Niveau : <?= safe($mate['niveau']) ?></p>
-                                    <p class="card-text mb-1">Poste : <?= safe($mate['poste']) ?></p>
-                                    <p class="card-text mb-3">Localisation : <?= safe($mate['localisation']) ?></p>
+                                    <h5 class="card-title"><?= htmlspecialchars($mate['prenom'] . ' ' . $mate['nom']) ?></h5>
+                                    <p class="card-text mb-1">Pseudo : <?= htmlspecialchars($mate['pseudo']) ?></p>
+                                    <p class="card-text mb-1">Niveau : <?= getUserLevel($mate) ?></p>
+                                    <p class="card-text mb-1">Poste : <?= getUserPosition($mate) ?></p>
+                                    <p class="card-text mb-3">Localisation : <?= htmlspecialchars($mate['localisation']) ?></p>
                                     <a href="profil_user?id=<?= urlencode($mate['id']) ?>" class="btn btn-primary mt-auto">Profil</a>
                                 </div>
                             </div>

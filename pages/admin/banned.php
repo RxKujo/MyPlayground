@@ -20,7 +20,7 @@ include_once $includesAdmin . 'header.php';
         <?php 
             displayAlert('modif_success', 0);
         ?>
-        <h2>Gestion des Utilisateurs</h2>
+        <h2>Gestion des Utilisateurs Bannis</h2>
         <input
             id="searchUserField"
             type="text"
@@ -36,12 +36,11 @@ include_once $includesAdmin . 'header.php';
                     <th>Prénom</th>
                     <th>Email</th>
                     <th>Rôle</th>
-                    <th>Dernière connexion</th>
-                    <th>Admin</th>
+                    <th>Banni le</th>
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody id="usersShowing">
+            <tbody id="bannedUsersShowing">
 
             </tbody>
         </table>
@@ -49,6 +48,6 @@ include_once $includesAdmin . 'header.php';
 </div>
 
 <script src="/assets/admin/js/searchBar.js"></script>
-<script src="/assets/admin/js/dynamicUserModal.js"></script>
+<script src="/assets/admin/js/dynamicBannedUserModal.js"></script>
 
 <?php include_once $includesGlobal . "footer.php"; ?>

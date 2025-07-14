@@ -78,10 +78,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             method: 'GET'
     });
 
-    const tbody = document.querySelector('#usersShowing');
+    const tbody = document.querySelector('#bannedUsersShowing');
 
     const data = await response.json();
-    const users = data.users;
+    const users = data.users.filter(user => user.is_banned);
     const userIdSession = data.waiter;
 
     for (const user of users) {
@@ -91,8 +91,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         const prenom = user.prenom;
         const email = user.email;
         const role = getUserRole(user.role);
-        const isAdmin = user.droits == 1;
-        const lastLogin = user.derniere_connexion;
 
         user.niveau = parseInt(user.niveau);
         user.poste = parseInt(user.poste);
@@ -107,23 +105,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             <td>${prenom}</td>
             <td>${email}</td>
             <td>${role}</td>
-            <td>${lastLogin}</td>
-            <td>
-                <div class="form-check form-switch">
-                    <input type="checkbox"
-                           class="form-check-input"
-                           id="switchUser${id}"
-                           data-bs-toggle="modal"
-                           data-bs-target="#confirmSwitch${id}"
-                           ${isAdmin ? 'checked' : ''}
-                           ${id === userIdSession ? 'disabled' : ''}
-                           onclick="return false;">
-                    <label class="form-check-label" for="switchUser${id}">
-                        ${isAdmin ? '<i class="bi bi-person-fill-gear"></i>' : '<i class="bi bi-person-fill"></i>'}
-                    </label>
-                </div>
-                ${generateSwitchModal(id, isAdmin)}
-            </td>
+            <td>na</td>
             <td>
                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProfile${id}"}>Modifier</button>
                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteProfile${id}" ${id === userIdSession ? 'disabled' : ''}>Supprimer</button>
