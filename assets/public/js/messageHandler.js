@@ -201,49 +201,53 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     guestInput.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ',') {
-        e.preventDefault();
-        const value = guestInput.value.trim().split(',').pop().trim();
-        if (value) addGuest(value);
+        if (e.key === 'Enter') {
+            e.preventDefault();
+
+            const values = guestInput.value.trim().split(',').map(val => val.trim());
+
+            values.forEach((value) => {
+                if (value) addGuest(value);
+            });
         }
     });
 
     document.addEventListener('click', (e) => {
         if (!guestInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
-        suggestionsBox.innerHTML = "";
+            suggestionsBox.innerHTML = "";
         }
     });
 
     submitButton.addEventListener('click', async () => {
-    const name = groupNameInput.value.trim();
-    const guests = Array.from(selectedUsers);
+        const name = groupNameInput.value.trim();
+        const guests = Array.from(selectedUsers);
 
-    if (!name || guests.length === 0) {
-        alert("Veuillez entrer un nom de groupe et au moins un utilisateur.");
-        return;
-    }
-
-    try {
-        const res = await fetch('/api/users/group/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            name: name,
-            guests: guests
-        })
-        });
-
-        const result = await res.json();
-        if (res.ok) {
-            location.reload();
-        } else {
-            alert("Erreur : " + (result.error || "Impossible de créer le groupe."));
+        if (!name || guests.length === 0) {
+            alert("Veuillez entrer un nom de groupe et au moins un utilisateur.");
+            return;
         }
-    } catch (err) {
-        console.error(err);
-        alert("Erreur lors de la requête.");
-    }
+
+        try {
+            const res = await fetch('/api/users/group/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    guests: guests
+                })
+            });
+
+            const result = await res.json();
+            if (res.ok) {
+                location.reload();
+            } else {
+                alert("Erreur : " + (result.error || "Impossible de créer le groupe."));
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Erreur lors de la requête.");
+        }
     });
 });
