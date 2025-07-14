@@ -52,6 +52,10 @@ $isPasswordCorrect = password_verify($password, $user['mdp']);
 
 $user = getUser($pdo, $user['id']);
 
+if (isBanned($pdo, $user['id'])) {
+    redirectError('login_error', "Vous êtes banni depuis le: " . $user['banned_on'], login);
+}
+
 setUserLastLogin($pdo, $user['id']);
 
 if ($isPasswordCorrect) {

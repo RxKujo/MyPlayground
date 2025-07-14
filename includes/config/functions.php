@@ -224,6 +224,11 @@ function fetchUsersFilter(PDO $pdo, string $filter, string $input) {
     return $results;    
 }
 
+function isBanned(PDO $pdo, int $userId) {
+    $r = $pdo->query("SELECT is_banned FROM utilisateur WHERE id = $userId");
+    return $r->fetch(PDO::FETCH_COLUMN);
+}
+
 function notLogguedSecurity(string $pathToIndex) {
     if (!isset($_SESSION['user_info'])) {
         header("location: " . $pathToIndex);
@@ -472,7 +477,14 @@ function showPfpOffline(array $user) {
 
 
 function getAllUsers(PDO $pdo) {
-    $r = $pdo->query("SELECT id, nom, prenom, pseudo, localisation, email, tel, poste, droits, role, niveau, derniere_connexion, is_online, is_verified FROM utilisateur");
+    $r = $pdo->query(
+        "SELECT 
+            id, nom, prenom, pseudo, 
+            localisation, email, tel, poste, 
+            droits, role, niveau, derniere_connexion, 
+            is_online, is_verified, is_banned, banned_on, 
+            ban_count 
+        FROM utilisateur");
     return $r->fetchAll(PDO::FETCH_ASSOC);
 }
 

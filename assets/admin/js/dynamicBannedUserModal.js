@@ -81,7 +81,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     const tbody = document.querySelector('#bannedUsersShowing');
 
     const data = await response.json();
-    const users = data.users.filter(user => user.is_banned);
+    const users = data.users.filter(user => user.is_banned == 1);
+    console.log(users);
     const userIdSession = data.waiter;
 
     for (const user of users) {
@@ -91,6 +92,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         const prenom = user.prenom;
         const email = user.email;
         const role = getUserRole(user.role);
+        const bannedOn = user.banned_on;
+        const banCount = user.ban_count;
 
         user.niveau = parseInt(user.niveau);
         user.poste = parseInt(user.poste);
@@ -105,43 +108,18 @@ document.addEventListener('DOMContentLoaded', async function () {
             <td>${prenom}</td>
             <td>${email}</td>
             <td>${role}</td>
-            <td>na</td>
+            <td>${bannedOn}</td>
             <td>
-                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProfile${id}"}>Modifier</button>
-                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteProfile${id}" ${id === userIdSession ? 'disabled' : ''}>Supprimer</button>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProfile${id}"}><i class="bi bi-pencil-fill"></i></button>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteProfile${id}"><i class="bi bi-trash3-fill"></i></button>
+                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#unbanProfile${id}"><i class="bi bi-unlock2-fill"></i></button>
                 ${generateDeleteModal(id)}
                 ${generateEditModal(id, user)}
+                ${generateUnbanModal(id, user)}
             </td>
         `;
         tbody.appendChild(tr);
     };
-
-
-   
-    function generateSwitchModal(id, isAdmin) {
-        return `
-        <div class="modal fade" id="confirmSwitch${id}" tabindex="-1" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <form method="POST" action="../../processes/toggle_admin_process.php">
-                <div class="modal-header">
-                  <h5 class="modal-title">Changer les droits</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  Voulez-vous ${isAdmin ? "retirer" : "attribuer"} les droits administrateur ?
-                  <input type="hidden" name="id" value="${id}">
-                  <input type="hidden" name="new_droits" value="${isAdmin ? 0 : 1}">
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                  <button type="submit" class="btn btn-primary">Confirmer</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>`;
-    }
 
     function generateDeleteModal(id) {
         return `
@@ -160,6 +138,30 @@ document.addEventListener('DOMContentLoaded', async function () {
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                   <button type="submit" class="btn btn-danger">Supprimer</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function generateUnbanModal(id) {
+        return `
+        <div class="modal fade" id="unbanProfile${id}" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="POST" action="../../processes/unban_user_process.php">
+                <div class="modal-header">
+                  <h5 class="modal-title">Grâcier un profil</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Êtes-vous sûr de vouloir grâcier cet utilisateur ?
+                  <input type="hidden" name="id" value="${id}">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                  <button type="submit" class="btn btn-danger">Valider</button>
                 </div>
               </form>
             </div>

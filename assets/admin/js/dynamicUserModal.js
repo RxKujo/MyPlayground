@@ -93,6 +93,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const role = getUserRole(user.role);
         const isAdmin = user.droits == 1;
         const lastLogin = user.derniere_connexion;
+        const isBanned = user.is_banned == 1;
 
         user.niveau = parseInt(user.niveau);
         user.poste = parseInt(user.poste);
@@ -125,10 +126,13 @@ document.addEventListener('DOMContentLoaded', async function () {
                 ${generateSwitchModal(id, isAdmin)}
             </td>
             <td>
-                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProfile${id}"}>Modifier</button>
-                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteProfile${id}" ${id === userIdSession ? 'disabled' : ''}>Supprimer</button>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProfile${id}"}><i class="bi bi-pencil-fill"></i></button>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteProfile${id}" ${id === userIdSession ? 'disabled' : ''}><i class="bi bi-trash3-fill"></i></button>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#banProfile${id}" ${id === userIdSession || isBanned ? 'disabled' : ''}><i class="bi bi-ban-fill"></i></button>
                 ${generateDeleteModal(id)}
                 ${generateEditModal(id, user)}
+                ${generateBanModal(id, user)}
+
             </td>
         `;
         tbody.appendChild(tr);
@@ -178,6 +182,30 @@ document.addEventListener('DOMContentLoaded', async function () {
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                   <button type="submit" class="btn btn-danger">Supprimer</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function generateBanModal(id) {
+        return `
+        <div class="modal fade" id="banProfile${id}" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="POST" action="../../processes/ban_user_process.php">
+                <div class="modal-header">
+                  <h5 class="modal-title">Bannir un profil</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Êtes-vous sûr de vouloir bannir cet utilisateur ?
+                  <input type="hidden" name="id" value="${id}">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                  <button type="submit" class="btn btn-danger">Bannir</button>
                 </div>
               </form>
             </div>

@@ -58,4 +58,9 @@ $fileRuledFill = '<i class="bi bi-file-ruled-fill"></i>';
 $personLineFill = '<i class="bi bi-person-lines-fill"></i>';
 
 $banFill = '<i class="bi bi-ban-fill"></i>';
+
+$trash3Fill = '<i class="bi bi-trash3-fill"></i>';
+
+$pencilFill = '<i class="bi bi-pencil-fill"></i>';
+
 ?>
