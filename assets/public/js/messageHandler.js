@@ -1,12 +1,14 @@
 async function sendMessage(content, groupId, senderId) {
+    content = content.value.trim();
+
     const response = await fetch('/api/users/messages/', {
         method: 'POST',
         body: JSON.stringify({
-            contenu,
+            content,
             groupId,
             senderId
         })
-    })
+    });
 
     return response;
 }
@@ -21,11 +23,22 @@ document.addEventListener("DOMContentLoaded", async function () {
     const interlocutorStatus = document.querySelector('#interlocutor-status');
 
     let currentGroupId = null;
+    let waiter;
+    let messageCount = 0;
 
     function loadMessages(groupId) {
         fetch(`/api/users/messages/?id_groupe=${groupId}`)
             .then(response => response.json())
             .then(messages => {
+                waiter = messages["waiter"];
+                messages = messages["messages"];
+
+                if (messageCount === messages.length) {
+                    return;
+                } else {
+                    messageCount = messages.length;
+                }
+
                 messageContainer.innerHTML = "";
 
                 if (messages.length === 0) {
@@ -43,7 +56,27 @@ document.addEventListener("DOMContentLoaded", async function () {
                         msgDiv.classList.add("bg-white", "text-dark", "align-self-start");
                     }
 
-                    msgDiv.textContent = msg.message;
+                    const textDiv = document.createElement("div");
+                    textDiv.textContent = msg.message;
+                    textDiv.classList.add("text-end")
+                    
+                    const infoSpan = document.createElement("span");
+                    infoSpan.classList.add("text-muted", "text-end");
+                    const dateSpan = document.createElement("small");
+                    dateSpan.classList.add("mt-1")
+                    const date = new Date(msg.date_envoi);
+                    const formattedDate = date.toLocaleString();
+                    const statut = msg.lu == 1 ? '<i class="bi bi-check-all text-success"></i>' : '<i class="bi bi-check-all"></i>';
+
+                    dateSpan.textContent = `${formattedDate}`;
+                    infoSpan.innerHTML;
+
+                    infoSpan.appendChild(dateSpan)
+                    infoSpan.innerHTML += ` - ${statut}`;
+
+                    msgDiv.appendChild(textDiv);
+                    msgDiv.appendChild(infoSpan);
+
                     messageContainer.appendChild(msgDiv);
                 });
 
@@ -83,12 +116,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     sendButton.addEventListener("click", async () => {
-        if (!contenu || !id_groupe) return;
-
-        const response = await sendMessage(messageInput, id_groupe, id_envoyeur);
+        const response = await sendMessage(messageInput, currentGroupId, waiter);
         response.then(data => {
             messageInput.value = "";
-            loadMessages(id_groupe);
+            loadMessages(currentGroupId);
         })
         .catch(error => {
             console.error("Erreur lors de l'envoi du message :", error);
@@ -99,12 +130,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (e.key === "Enter") {
             e.preventDefault();
 
-            if (!contenu || !id_groupe) return;
-
-            const response = await sendMessage(messageInput, id_groupe, id_envoyeur);
-            response.then(data => {
+            sendMessage(messageInput, currentGroupId, waiter)
+            .then(response => response.json())
+            .then(data => {
                 messageInput.value = "";
-                loadMessages(id_groupe);
+                loadMessages(currentGroupId);
             })
             .catch(error => {
                 console.error("Erreur lors de l'envoi du message :", error);

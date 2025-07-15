@@ -10,10 +10,10 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);
-    $contenu = trim($input['contenu'] ?? '');
-    $id_groupe = (int)($input['id_groupe'] ?? 0);
+    $content = trim($input['content'] ?? '');
+    $groupId = (int)($input['groupId'] ?? 0);
 
-    if (!$contenu || !$id_groupe || !$id_requester) {
+    if (!$content || !$groupId || !$id_requester) {
         http_response_code(400);
         echo json_encode(['error' => 'Contenu ou groupe manquant']);
         exit();
@@ -27,17 +27,17 @@ if ($method === 'POST') {
         );
     
         $stmt->bindParam(":id_envoyeur", $id_requester);
-        $stmt->bindParam(":id_groupe", $id_groupe);
-        $stmt->bindParam(":message", $contenu);
+        $stmt->bindParam(":id_groupe", $groupId);
+        $stmt->bindParam(":message", $content);
     
         $stmt->execute();
 
-        $r = $pdo->query("SELECT id_message FROM echanger WHERE id_groupe = $id_groupe ORDER BY date_envoi DESC LIMIT 1");
+        $r = $pdo->query("SELECT id_message FROM echanger WHERE id_groupe = $groupId ORDER BY date_envoi DESC LIMIT 1");
         $id_dernier_message = $r->fetch(PDO::FETCH_COLUMN);
 
         $stmt = $pdo->prepare("UPDATE groupe_discussion SET id_dernier_message = $id_dernier_message WHERE id = :id");
         $stmt->execute([
-            ":id" => $id_groupe
+            ":id" => $groupId
         ]);
         
     } catch (Exception $e) {
@@ -57,7 +57,11 @@ if ($method === 'POST') {
     }
 
     $messages = getMessagesByGroup($pdo, $id_groupe);
-    echo json_encode($messages);
+    echo json_encode([
+        "waiter" => $id_requester,
+        "messages" => $messages
+    ]);
+
     exit();
 }
 

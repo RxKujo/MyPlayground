@@ -87,7 +87,14 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
                             <div id="interlocutor-status" class="text-muted small"></div>
                         </div>
                     </div>
-                    <button class="btn btn-outline-secondary btn-sm">...</button>
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">...</button>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item">Quitter le groupe</li>
+                            <li class="dropdown-item text-danger">Supprimer le groupe</li>
+                        </ul>
+                    </div>
+                    
                 </div>
                 <div class="flex-grow-1 overflow-auto p-4" style="background-color: #f9f9f9;" id="message-container">
                     <div class="d-flex flex-column gap-3"></div>
