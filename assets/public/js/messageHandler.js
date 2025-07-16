@@ -116,8 +116,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     sendButton.addEventListener("click", async () => {
-        const response = await sendMessage(messageInput, currentGroupId, waiter);
-        response.then(data => {
+        sendMessage(messageInput, currentGroupId, waiter)
+        .then(response => response.json())
+        .then(data => {
             messageInput.value = "";
             loadMessages(currentGroupId);
         })

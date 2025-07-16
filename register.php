@@ -9,6 +9,7 @@ include_once $includesConfig . 'config.php';
 $error = $_SESSION['register_error'] ?? null;
 $success = $_SESSION['register_success'] ?? null;
 
+var_dump($_SESSION['form_data']);
 $formData = $_SESSION['form_data'] ?? [];
 unset($_SESSION['error'], $_SESSION['form_data']);
 
@@ -277,8 +278,6 @@ $_SESSION['captcha_id'] = $captcha_id;
           </div>
           <input type="text" class="form-control" id="reponse" name="reponse" />
         </div>
-
-        <input type="hidden" id="captcha-input" name="captcha" value="" />
 
         <button type="submit" id="submit-btn" class="btn btn-primary w-100" disabled>Créer un compte</button>
       </form>

@@ -1,8 +1,12 @@
 <?php
 
-include_once '../includes/global/session.php';
+session_start();
 
-include_once '../includes/config/email_functions.php';
+include_once '../includes/config/variables.php';
+include_once $includesConfig . 'functions.php';
+include_once $includesConfig . 'config.php';
+
+include_once $includesConfig . 'email_functions.php';
 
 
 $prenom = filter_input(INPUT_POST, "prenom", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -20,7 +24,7 @@ $niveau = filter_input(INPUT_POST, "niveau", FILTER_VALIDATE_INT);
 $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $confirm_password = filter_input(INPUT_POST, "confirm_password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-$captcha = filter_input(INPUT_POST, "captcha", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$captcha = filter_input(INPUT_POST, "reponse", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $captcha_expected = $_SESSION['captcha_expected'];
 
 $_SESSION['form_data'] = [
