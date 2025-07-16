@@ -521,6 +521,17 @@ function getAllNews(PDO $pdo) {
     return $r->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function getAllLogs(PDO $pdo) {
+    $r = $pdo->query(
+        "SELECT logs.*, utilisateur.pseudo
+        FROM logs
+        LEFT JOIN utilisateur ON utilisateur.id = logs.user_id
+        ORDER BY logs.created_at DESC
+    ");
+
+    return $r->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function createUser(
     PDO $pdo,
 

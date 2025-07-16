@@ -2,14 +2,6 @@
 
 include_once '../../includes/global/session.php';
 
-$stmt = $pdo->query("
-    SELECT logs.*, utilisateur.pseudo
-    FROM logs
-    LEFT JOIN utilisateur ON utilisateur.id = logs.user_id
-    ORDER BY logs.created_at DESC
-");
-$logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 include_once $includesAdmin . 'header.php';
 ?>
 
@@ -38,25 +30,13 @@ include_once $includesAdmin . 'header.php';
                         <th>Agent</th>
                     </tr>
                 </thead>
-                <tbody>
-                <?php foreach ($logs as $log): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($log['created_at'] ?? "") ?></td>
-                        <td><?= htmlspecialchars($log['pseudo'] ?? 'Anonyme') ?></td>
-                        <td><?= htmlspecialchars($log['script_name'] ?? "") ?></td>
-                        <td><?= htmlspecialchars($log['ip'] ?? "") ?></td>
-                        <td><?= htmlspecialchars($log['status'] ?? "") ?></td>
-                        <td><?= htmlspecialchars($log['http_referer'] ?? "") ?></td>
-                        <td><?= htmlspecialchars($log['request_uri'] ?? "") ?></td>
-                        <td><?= htmlspecialchars($log['request_method'] ?? "") ?></td>
-                        <td><?= htmlspecialchars($log['server_protocol'] ?? "") ?></td>
-                        <td class="truncate-cell"><?= htmlspecialchars($log['http_user_agent']) ?></td>
-                    </tr>
-                <?php endforeach; ?>
+                <tbody id="logsShowing">
+                
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 
+<script src="/assets/admin/js/dynamicLogs.js"></script>
 <?php include_once $includesGlobal . 'footer.php'; ?>

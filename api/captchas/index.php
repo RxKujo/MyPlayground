@@ -3,6 +3,8 @@
 include_once '../../includes/global/session.php';
 
 header("Content-Type: application/json");
+$waiter = $_SESSION['user_info']['id'];
+$method = $_SERVER['REQUEST_METHOD'];
 
 $captchas = getAllCaptchas($pdo);
 
