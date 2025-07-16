@@ -15,6 +15,8 @@ include_once '../../assets/shared/icons/icons.php';
         <li class="nav-item"><a class="nav-link text-white" href="teams" data-page="teams"><?= $personFill ?> Teams</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="matches" data-page="matches"><?= $personFill ?> Match</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="tournaments" data-page="tournaments"><?= $trophyFill ?> Tournaments</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="avatars" data-page="avatars"><?= $brushFill ?> Avatars</a></li>
+
         <li class="nav-item"><a class="nav-link text-white" href="newsletter" data-page="newsletter"><?= $envelopeFill ?> Newsletter</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="subscribed" data-page="subscribed"><?= $personLineFill ?> Inscrits</a></li>
         

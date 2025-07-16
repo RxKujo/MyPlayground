@@ -475,6 +475,14 @@ function showPfpOffline(array $user) {
     return $avatarSrc;
 }
 
+function getRandomCaptcha(PDO $pdo) {
+    $r = $pdo->query(
+        "SELECT id, question, reponse FROM captcha
+        ORDER BY RAND() LIMIT 1
+    ");
+
+    return $r->fetch(PDO::FETCH_ASSOC);
+}
 
 function getAllUsers(PDO $pdo) {
     $r = $pdo->query(
@@ -501,7 +509,7 @@ function getAllMatches(PDO $pdo) {
 }
 
 function getAllCaptchas(PDO $pdo) {
-    $r = $pdo->query("SELECT id, question, reponse FROM captchas");
+    $r = $pdo->query("SELECT id, question, reponse FROM captcha");
     return $r->fetchAll(PDO::FETCH_ASSOC);
 }
 

@@ -48,8 +48,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         `;
         tbody.appendChild(tr);
 
-        document.getElementById("dynamic-modal-container").innerHTML = generateAddModal();
     }
+    document.getElementById("dynamic-modal-container").innerHTML = generateAddModal();
 
     function generateEditModal(match) {
         return `<div class="modal fade" id="editMatch${match.id_match}" tabindex="-1" aria-hidden="true">
@@ -203,4 +203,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>
         `;
     }
+
 });

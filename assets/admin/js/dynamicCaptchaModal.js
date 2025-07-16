@@ -1,34 +1,40 @@
 document.addEventListener('DOMContentLoaded', async function () {
-    const response = await fetch("/api/captchas/");
+    const response = await fetch("/api/captchas/", {
+        method: 'GET'
+    });
 
-    const tbody = document.querySelector('#usersShowing');
+    const tbody = document.querySelector('#captchasShowing');
 
     const data = await response.json();
     const captchas = data.captchas;
 
     for (const captcha of captchas) {
-        const { id, question, reponse } = captcha;
+        const id = captcha.id;
+        const question = captcha.question;
+        const answer = captcha.reponse
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${id}</td>
             <td>${question}</td>
-            <td>${reponse}</td>
+            <td>${answer}</td>
             <td>
-                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editCaptcha${id}">
-                    Modifier
+                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editCaptcha${id}">
+                    <i class="bi bi-pencil"></i>
                 </button>
                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delCaptcha${id}">
-                    Supprimer
+                    <i class="bi bi-trash"></i>
                 </button>
-                ${generateEditModal(id, question, reponse)}
+                ${generateEditModal(id, question, answer)}
                 ${generateDeleteModal(id)}
             </td>
         `;
         tbody.appendChild(tr);
-    };
+    }
 
-    function generateEditModal(id, question, reponse) {
+    document.getElementById("dynamic-modal-container").innerHTML = generateAddModal();
+
+    function generateEditModal(id, question, answer) {
         return `
         <div class="modal fade" id="editCaptcha${id}" tabindex="-1" aria-labelledby="editCaptchaLabel${id}" aria-hidden="true">
             <div class="modal-dialog">
@@ -46,7 +52,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="reponse${id}">Réponse</label>
-                                <input class="form-control" id="reponse${id}" name="reponse${id}" type="text" value="${reponse}">
+                                <input class="form-control" id="reponse${id}" name="reponse${id}" type="text" value="${answer}">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -81,5 +87,35 @@ document.addEventListener('DOMContentLoaded', async function () {
                 </div>
             </div>
         </div>`;
+    }
+
+    function generateAddModal() {
+        return `<div class="modal fade" id="newCaptcha" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form method="POST" action="../../processes/add_captcha_process.php">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Ajouter un captcha</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="question">Question</label>
+                                        <input id="question" class="form-control" name="question" type="text" value="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="reponse">Réponse</label>
+                                        <input id="reponse" class="form-control" name="reponse" type="text" value="">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            `;
     }
 });

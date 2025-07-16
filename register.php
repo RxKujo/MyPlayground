@@ -1,6 +1,10 @@
 <?php
 
-include_once 'includes/global/session.php';
+session_start();
+
+include_once 'includes/config/variables.php';
+include_once $includesConfig . 'functions.php';
+include_once $includesConfig . 'config.php';
 
 $error = $_SESSION['register_error'] ?? null;
 $success = $_SESSION['register_success'] ?? null;
@@ -8,11 +12,7 @@ $success = $_SESSION['register_success'] ?? null;
 $formData = $_SESSION['form_data'] ?? [];
 unset($_SESSION['error'], $_SESSION['form_data']);
 
-$stmt = $pdo->query("
-    SELECT id, question, reponse FROM captcha
-    ORDER BY RAND() LIMIT 1
-");
-$captcha = $stmt->fetch();
+$captcha = getRandomCaptcha($pdo);
 
 $captcha_id = $captcha['id'];
 $question = $captcha['question'];
@@ -273,23 +273,9 @@ $_SESSION['captcha_id'] = $captcha_id;
 
         <div id="captcha-selection" style="display:none; margin-bottom: 15px;">
           <div class="captcha-instruction">
-            <?= htmlspecialchars($question) ?> : <strong id="captcha-shape"><?= htmlspecialchars($reponse) ?></strong>
+            <?= htmlspecialchars($question) ?>
           </div>
-          <div>
-            <?php
-            $svgShapes = [
-              'cercle' => '<svg width="40" height="40"><circle cx="20" cy="20" r="15" stroke="#555" stroke-width="2" fill="transparent" /></svg>',
-              'carre' => '<svg width="40" height="40"><rect x="7" y="7" width="26" height="26" stroke="#555" stroke-width="2" fill="transparent" /></svg>',
-              'triangle' => '<svg width="40" height="40"><polygon points="20,6 34,34 6,34" stroke="#555" stroke-width="2" fill="transparent" /></svg>',
-              'rectangle' => '<svg width="50" height="30"><rect x="2" y="5" width="46" height="20" stroke="#555" stroke-width="2" fill="transparent" /></svg>',
-            ];
-            foreach ($svgShapes as $shape => $svg) {
-              echo '<div tabindex="0" class="shape-button" data-shape="' . $shape . '" aria-label="Choisir la forme ' . $shape . '">';
-              echo $svg;
-              echo '</div>';
-            }
-            ?>
-          </div>
+          <input type="text" class="form-control" id="reponse" name="reponse" />
         </div>
 
         <input type="hidden" id="captcha-input" name="captcha" value="" />

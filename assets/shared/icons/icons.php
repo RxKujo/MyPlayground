@@ -63,4 +63,6 @@ $trash3Fill = '<i class="bi bi-trash3-fill"></i>';
 
 $pencilFill = '<i class="bi bi-pencil-fill"></i>';
 
+$brushFill = '<i class="bi bi-brush-fill"></i>';
+
 ?>

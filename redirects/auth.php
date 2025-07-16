@@ -17,7 +17,7 @@ const login = '../login.php';
 
 $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-$captcha = filter_input(INPUT_POST, "captcha", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$captcha = filter_input(INPUT_POST, "reponse", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 $_SESSION['form_data'] = ['username' => $username];
 

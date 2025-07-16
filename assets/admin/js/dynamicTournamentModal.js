@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             <td>${tourney.age ?? "Pas d'age"}</td>
             <td>${tourney.description ?? "Pas de description"}</td>
             <td>
-                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editTeam${tourney.id_tournoi}">Modifier</button>
-                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteTeam${tourney.id_tournoi}">Supprimer</button>
+                <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editTeam${tourney.id_tournoi}"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteTeam${tourney.id_tournoi}"><i class="bi bi-trash"></i></button>
                 ${generateDeleteModal(tourney)}
                 ${generateEditModal(tourney)}
             </td>

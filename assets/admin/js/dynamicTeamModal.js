@@ -19,8 +19,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             <td>${team.code ?? "Pas de code"}</td>
             <td>${team.commentaire ?? "Pas de commentaires"}</td>
             <td>
-                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editTeam${team.id_equipe}">Modifier</button>
-                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteTeam${team.id_equipe}">Supprimer</button>
+                <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editTeam${team.id_equipe}"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteTeam${team.id_equipe}"><i class="bi bi-trash"></i></button>
                 ${generateDeleteModal(team)}
                 ${generateEditModal(team)}
             </td>

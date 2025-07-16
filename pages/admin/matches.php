@@ -51,9 +51,7 @@ if (isset($_POST['actualiser'])) {
             </form>
         </div>
 
-        <button class="btn btn-sm btn-primary me-1 open-new-modal" data-bs-toggle="modal" data-bs-target="#createMatch">
-            <i class="bi bi-plus-circle"></i> Nouveau match
-        </button>
+        <button class="btn btn-success mb-3 open-new-modal" data-bs-toggle="modal" data-bs-target="#createMatch">Nouveau match</button>
 
         
 
