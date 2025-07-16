@@ -74,7 +74,7 @@ function getUserPosition(poste) {
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
-    const response = await fetch("/api/users/static/all", {
+    const response = await fetch("/api/users/static/all/", {
             method: 'GET'
     });
 
@@ -133,10 +133,23 @@ document.addEventListener('DOMContentLoaded', async function () {
                 ${generateEditModal(id, user)}
                 ${generateBanModal(id, user)}
 
-            </td>
-        `;
+            </td>`;
+                
         tbody.appendChild(tr);
-    };
+
+        const banCheckbox = document.getElementById(`bandefcheck${id}`);
+        const banDateInput = document.getElementById(`date${id}`);
+    
+        if (banCheckbox && banDateInput) {
+            banDateInput.disabled = banCheckbox.checked;
+    
+            banCheckbox.addEventListener('change', function () {
+                banDateInput.disabled = this.checked;
+            });
+        }
+
+    }
+
 
 
    
@@ -190,6 +203,16 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     function generateBanModal(id) {
+        const date = new Date();
+
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        if (month.toString().length < 2) {
+            month = '0' + month;
+        }
+        let year = date.getFullYear();
+        let currentDate = `${year}-${month}-${day}`;
+
         return `
         <div class="modal fade" id="banProfile${id}" tabindex="-1" aria-hidden="true">
           <div class="modal-dialog">
@@ -200,8 +223,22 @@ document.addEventListener('DOMContentLoaded', async function () {
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  Êtes-vous sûr de vouloir bannir cet utilisateur ?
-                  <input type="hidden" name="id" value="${id}">
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="1" id="bandefcheck${id}" name="bandef">
+                    <label class="form-check-label" for="bandefcheck${id}">
+                      Bannir définitivement
+                    </label>
+                  </div>
+                  <div class="form-control">
+                    Combien de temps voulez-vous bannir cet utilisateur ?
+                    <input type="hidden" name="id" value="${id}">
+                    <label class="form-label" for="date${id}">Date</label>
+          			<input class="form-control" id="date${id}" name="date" min="${currentDate}" type="date" />
+                  </div>
+                  <div class="form-control">
+                    <label class="form-label" for="raison${id}">Raison</label>
+                    <textarea class="form-control" id="raison${id}" name="raison"></textarea>
+                  </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>

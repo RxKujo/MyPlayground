@@ -225,8 +225,8 @@ function fetchUsersFilter(PDO $pdo, string $filter, string $input) {
 }
 
 function isBanned(PDO $pdo, int $userId) {
-    $r = $pdo->query("SELECT is_banned FROM utilisateur WHERE id = $userId");
-    return $r->fetch(PDO::FETCH_COLUMN);
+    $r = $pdo->query("SELECT date_debut, date_fin, raison FROM bannissement WHERE utilisateur_id = $userId");
+    return $r ? $r->fetch(PDO::FETCH_ASSOC) : false;
 }
 
 function notLogguedSecurity(string $pathToIndex) {
@@ -482,8 +482,7 @@ function getAllUsers(PDO $pdo) {
             id, nom, prenom, pseudo, 
             localisation, email, tel, poste, 
             droits, role, niveau, derniere_connexion, 
-            is_online, is_verified, is_banned, banned_on, 
-            ban_count 
+            is_online, is_verified, is_banned, ban_count
         FROM utilisateur");
     return $r->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -594,6 +593,20 @@ function createUser(
     return ['success' => false, 'message' => "Une erreur est survenue lors de l'inscription. Veuillez réessayer."];
 }
 
+function createBan(PDO $pdo, int $userId, string $reason, string | null $endDate) {
+    $sql = 'INSERT INTO bannissement (utilisateur_id, raison, date_debut, date_fin) VALUES (:utilisateur_id, :raison, CURDATE(), :date_fin)';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':utilisateur_id', $userId);
+    $stmt->bindParam(':raison', $reason);
+    $stmt->bindParam(':date_fin', $endDate);
+
+    $stmt->execute();
+
+    incrementUserBanCount($pdo, $userId);
+    switchUserBanStatus($pdo, $userId);
+}
+
 function createGroup(PDO $pdo, string $nom_groupe, int $creatorId) {
     $stmt = $pdo->prepare("INSERT INTO groupe_discussion (nom, id_createur) VALUES (:nom, :utilisateur)");
     $stmt->execute(['nom' => $nom_groupe, 'utilisateur' => $creatorId]);
@@ -608,6 +621,18 @@ function addToGroup(PDO $pdo, int $groupId, int $userId) {
 
 function setUserLastLogin(PDO $pdo, int $userId) {
     $r = $pdo->query("UPDATE utilisateur SET derniere_connexion = NOW() WHERE id = $userId");
+}
+
+function switchUserBanStatus(PDO $pdo, int $userId) {
+    $r = $pdo->query("UPDATE utilisateur SET is_banned = NOT is_banned WHERE id = $userId");
+}
+
+function incrementUserBanCount(PDO $pdo, int $userId) {
+    $r = $pdo->query("UPDATE utilisateur SET ban_count = ban_count + 1 WHERE id = $userId");
+}
+
+function resetUserBanCount(PDO $pdo, int $userId) {
+    $r = $pdo->query("UPDATE utilisateur SET ban_count = 0 WHERE id = $userId");
 }
 
 function e(PDO $pdo) {

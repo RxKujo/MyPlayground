@@ -30,13 +30,15 @@ include_once $includesAdmin . 'header.php';
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nom d'utilisateur</th>
                     <th>Nom</th>
                     <th>Prénom</th>
                     <th>Email</th>
                     <th>Rôle</th>
+                    <th>Raison</th>
                     <th>Banni le</th>
+                    <th>Fin de bannissement</th>
+                    <th>Banni</th>
                     <th>Actions</th>
                 </tr>
             </thead>

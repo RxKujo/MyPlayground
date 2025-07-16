@@ -74,15 +74,15 @@ function getUserPosition(poste) {
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
-    const response = await fetch("/api/users/static/all", {
+    const response = await fetch("/api/users/banned/", {
             method: 'GET'
     });
 
     const tbody = document.querySelector('#bannedUsersShowing');
 
     const data = await response.json();
-    const users = data.users.filter(user => user.is_banned == 1);
-    console.log(users);
+    
+    const users = data.users;
     const userIdSession = data.waiter;
 
     for (const user of users) {
@@ -92,7 +92,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         const prenom = user.prenom;
         const email = user.email;
         const role = getUserRole(user.role);
-        const bannedOn = user.banned_on;
+        const reason = user.raison;
+        const bannedOn = user.date_debut;
+        const endBan = user.date_fin;
         const banCount = user.ban_count;
 
         user.niveau = parseInt(user.niveau);
@@ -102,13 +104,15 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td>${id}</td>
             <td>${username}</td>
             <td>${nom}</td>
             <td>${prenom}</td>
             <td>${email}</td>
             <td>${role}</td>
+            <td>${reason}</td>
             <td>${bannedOn}</td>
+            <td>${endBan ?? "Indéfini"}</td>
+            <td>${banCount} fois</td>
             <td>
                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProfile${id}"}><i class="bi bi-pencil-fill"></i></button>
                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteProfile${id}"><i class="bi bi-trash3-fill"></i></button>

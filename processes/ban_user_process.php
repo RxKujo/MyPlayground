@@ -7,11 +7,15 @@ notLogguedSecurity("../index.php");
 $user = $_SESSION['user_info'];
 
 $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+$bandef = filter_input(INPUT_POST, 'bandef', FILTER_VALIDATE_INT);
+$raison = filter_input(INPUT_POST, "raison", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-$sql = 'UPDATE utilisateur SET is_banned = 1, banned_on = CURDATE(), ban_count = ban_count + 1 WHERE id = :id';
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':id', $id);
-$stmt->execute();
+if (!$bandef) {
+    $date_fin = filter_input(INPUT_POST, "date", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+}
+
+createBan($pdo, $id, $raison, $date_fin);
+
 
 header("Location: ../admin/users");
 exit();

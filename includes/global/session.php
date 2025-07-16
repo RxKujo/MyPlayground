@@ -18,13 +18,13 @@ function includeResponsiveCSS() {
 
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_info'])) {
     session_destroy();
-    header("location: index.php");
+    header("location: /");
     exit();
 }
 
 if (!isUserOnline($pdo, $_SESSION['user_id']) || isBanned($pdo, $_SESSION['user_id'])) {
     session_destroy();
-    header("location: index.php");
+    header("location: /");
     exit();
 }
 
