@@ -18,7 +18,7 @@ function loadImage(src) {
   return new Promise((resolve) => {
     const img = new Image();
     img.onload = () => resolve(img);
-    img.src = 'assets/public/img/' + src;
+    img.src = 'assets/public/img/avatars/' + src;
   });
 }
 
@@ -35,11 +35,11 @@ async function drawAvatar() {
   const mouth = parts.mouth[currentIndex.mouth];
 
   const [baseImg, hairImg, eyesImg, noseImg, mouthImg] = await Promise.all([
-    loadImage(base),
-    loadImage(hair),
-    loadImage(eyes),
-    loadImage(nose),
-    loadImage(mouth)
+    loadImage("base/" + base),
+    loadImage("hairs/" + hair),
+    loadImage("eyes/" + eyes),
+    loadImage("noses/" + nose),
+    loadImage("mouths/" + mouth)
   ]);
 
   ctx.drawImage(baseImg, 0, 0, canvas.width, canvas.height);

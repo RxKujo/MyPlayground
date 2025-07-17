@@ -125,7 +125,7 @@ $captcha_error = $_SESSION['errors']['captcha_error'] ?? null;
 
             <div id="captcha-selection" style="display:none; margin-bottom: 15px;">
                 <div class="captcha-instruction">
-                    <?= htmlspecialchars($question) ?>
+                    <?= $question ?>
                 </div>
                 <input type="text" class="form-control" id="reponse" name="reponse" />
             </div>

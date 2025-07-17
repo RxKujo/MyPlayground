@@ -22,7 +22,6 @@ include_once $includesAdmin . 'header.php';
                         <th>Utilisateur</th>
                         <th>Script</th>
                         <th>IP</th>
-                        <th>Statut</th>
                         <th>Référent</th>
                         <th>URI</th>
                         <th>Méthode</th>

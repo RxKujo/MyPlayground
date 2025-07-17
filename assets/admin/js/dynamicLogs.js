@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                 <td>${log.pseudo}</td>
                 <td>${log.script_name}</td>
                 <td>${log.ip}</td>
-                <td>${log.status}</td>
                 <td>${log.http_referer}</td>
                 <td>${log.request_uri}</td>
                 <td>${log.request_method}</td>
@@ -53,7 +52,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                         <td>${log.pseudo}</td>
                         <td>${log.script_name}</td>
                         <td>${log.ip}</td>
-                        <td>${log.status}</td>
                         <td>${log.http_referer}</td>
                         <td>${log.request_uri}</td>
                         <td>${log.request_method}</td>
