@@ -12,7 +12,7 @@ include_once $includesConfig . "config.php";
 include_once $includesConfig . "email_functions.php";
 
 function includeResponsiveCSS() {
-    echo '<link rel="stylesheet" href="/assets/css/responsive.css">';
+    echo '<link rel="stylesheet" href="/assets/public/css/responsive.css">';
 }
 
 
