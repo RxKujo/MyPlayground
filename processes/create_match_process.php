@@ -16,8 +16,54 @@ $isAdmin = isAdmin($user);
 $nom_match   = filter_input(INPUT_POST, "nom_match", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $localisation = filter_input(INPUT_POST, "nom_match", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $date        = filter_input(INPUT_POST, "date", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-$heure_debut = filter_input(INPUT_POST, "fin", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$date_reservation = DateTime::createFromFormat('Y-m-d', $date);
+$today = new DateTime();
+$today->setTime(0, 0, 0);
+
+if (!$date_reservation) {
+    $_SESSION['error'] = "La date fournie est invalide.";
+    $_SESSION['form_data'] = $_POST;
+    header("Location: ../create_match");
+    exit();
+}
+
+$interval = $today->diff($date_reservation);
+$days_diff = (int)$interval->format('%r%a');
+
+if ($days_diff < 0) {
+    $_SESSION['error'] = "La date ne peut pas être dans le passé.";
+    $_SESSION['form_data'] = $_POST;
+    header("Location: ../create_match");
+    exit();
+}
+
+if ($days_diff > 14) {
+    $_SESSION['error'] = "Un match ne peut pas être créé avec plus de deux semaines d'avance";
+    $_SESSION['form_data'] = $_POST;
+    header("Location: ../create_match");
+    exit();
+}
+
+$heure_debut = filter_input(INPUT_POST, "debut", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $heure_fin   = filter_input(INPUT_POST, "fin", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+$debut = DateTime::createFromFormat('H:i', $heure_debut);
+$fin = DateTime::createFromFormat('H:i', $heure_fin);
+
+if (!$debut || !$fin) {
+    $_SESSION['error'] = "Heure invalide.";
+    $_SESSION['form_data'] = $_POST;
+    header("Location: ../create_match");
+    exit();
+}
+
+if ($fin <= $debut) {
+    $_SESSION['error'] = "L'heure de fin doit être après l'heure de début.";
+    $_SESSION['form_data'] = $_POST;
+    header("Location: ../create_match");
+    exit();
+}
+
 $categorie   = filter_input(INPUT_POST, "categorie", FILTER_VALIDATE_INT);
 $niveau_min  = filter_input(INPUT_POST, "niveau_min", FILTER_VALIDATE_INT);
 $commentaire = filter_input(INPUT_POST, "commentaire", FILTER_SANITIZE_FULL_SPECIAL_CHARS);

@@ -1,7 +1,10 @@
 <?php
 include_once '../../includes/global/session.php';
 
-notLogguedSecurity("../../index.php");
+$formData = $_SESSION['form_data'] ?? [];
+unset($_SESSION['form_data']);
+
+notLogguedSecurity("/");
 
 include_once($assetsShared . 'icons/icons.php');
 include_once($includesPublic . 'header.php');
@@ -34,17 +37,19 @@ $creation_error = isset($_SESSION['match_creation_error']) ? $_SESSION['match_cr
 
 				<div class="mb-3">
 					<label class="form-label" for="nom_match">Nom du match</label>
-					<input class="form-control" id="nom_match" name="nom_match" type="text" required />
+					<input class="form-control" id="nom_match" name="nom_match" type="text" required 
+					value="<?= htmlspecialchars($formData['nom_match'] ?? '') ?>" />
 				</div>
 
 				<div class="mb-3">
 					<label class="form-label" for="localisation">Localisation</label>
-					<input class="form-control" id="localisation" name="localisation" type="text" required />
+					<input class="form-control" id="localisation" name="localisation" type="text" required 
+					value="<?= htmlspecialchars($formData['localisation'] ?? '') ?>"/>
 				</div>
 
 				<div class="mb-3">
-					<label class="form-label" for="date">Date</label>
-					<input class="form-control" id="date" name="date" type="date" required />
+					<label class="form-label" for="date" >Date</label>
+					<input class="form-control" id="date" name="date" type="date" required/>
 				</div>
 
 					<div class="mb-3">
@@ -80,7 +85,7 @@ $creation_error = isset($_SESSION['match_creation_error']) ? $_SESSION['match_cr
 				<div class="mb-3">
 					<label for="commentaire">Message ou commentaire</label>
 					<div class="form-floating">
-						<textarea class="form-control" id="commentaire" name="commentaire" style="height: 100px"></textarea>
+						<textarea class="form-control" id="commentaire" name="commentaire" style="height: 100px"><?= htmlspecialchars($formData['commentaire'] ?? '') ?></textarea>
 						<label for="commentaire">Indications supplémentaires</label>
 					</div>
 				</div>
@@ -92,5 +97,31 @@ $creation_error = isset($_SESSION['match_creation_error']) ? $_SESSION['match_cr
 		</div>
 	</div>
 </div>
+
+<?php if ($error): ?>
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-danger">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="errorModalLabel">Erreur</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        <?= htmlspecialchars($error) ?>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  const modal = new bootstrap.Modal(document.getElementById('errorModal'));
+  modal.show();
+});
+</script>
+<?php endif; ?>
 
 <?php include_once($includesGlobal . 'footer.php'); ?>
