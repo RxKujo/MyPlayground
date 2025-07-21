@@ -45,7 +45,7 @@ unset($_SESSION['error'], $_SESSION['success'], $_SESSION['form_data']);
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="date_tournoi" class="form-label">Date et heure</label>
-                    <input type="datetime-local" class="form-control" id="date_tournoi" name="date_tournoi" required>
+                    <input type="date" class="form-control" id="datePicker" name="date_tournoi"  required>
                 </div>
 
                 <div class="col-md-6">
@@ -91,4 +91,4 @@ unset($_SESSION['error'], $_SESSION['success'], $_SESSION['form_data']);
     </div>
 </div>
 
-<?php include_once('../../includes/global/footer.php'); ?>
+<?php include_once($includesGlobal . 'footer.php'); ?>
