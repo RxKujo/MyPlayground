@@ -28,6 +28,7 @@ include_once '../../assets/shared/icons/icons.php';
         <li class="nav-item"><a class="nav-link text-black" href="partners" data-page="partners"><?= $shareFill ?> Trouver des coéquipiers</a></li>
         <li class="nav-item"><a class="nav-link text-black" href="matches" data-page="matches"><?= $dribbble ?> Matchs</a></li>
         <li class="nav-item"><a class="nav-link text-black" href="tournaments" data-page="tournaments"><?= $trophyFill ?> Tournois</a></li>
+        <li class="nav-item"><a class="nav-link text-black" href="leaderboard" data-page="leaderboard"><?= $trophyFill ?> Classement</a></li>
         <li class="nav-item"><a class="nav-link text-black" href="messages" data-page="messages"><?= $chatDotFill ?> Messages</a></li>
         <li class="nav-item"><a class="nav-link text-black" href="profile" data-page="profile"><?= $personFill ?> Profil</a></li>
         <li class="nav-item"><a class="nav-link text-black" href="teams" data-page="teams"><?= $personFill ?> Équipes</a></li>

@@ -16,6 +16,7 @@ $userIsVerified = $user['is_verified'];
         <li class="nav-item"><a class="nav-link text-black" href="partners" data-page="partners"><?= $shareFill ?></a></li>
         <li class="nav-item"><a class="nav-link text-black" href="matches" data-page="matches"><?= $dribbble ?></a></li>
         <li class="nav-item"><a class="nav-link text-black" href="tournaments" data-page="tournaments"><?= $trophyFill ?></a></li>
+        <li class="nav-item"><a class="nav-link text-black" href="leaderboard" data-page="leaderboard"><?= $trophyFill ?></a></li>
         <li class="nav-item"><a class="nav-link text-black" href="messages" data-page="messages"><?= $chatDotFill ?></a></li>
         <li class="nav-item"><a class="nav-link text-black" href="profile" data-page="profile"><?= $personFill ?></a></li>
         <li class="nav-item"><a class="nav-link text-black" href="teams" data-page="teams"><?= $personFill ?></a></li>

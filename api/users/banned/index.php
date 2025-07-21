@@ -2,7 +2,7 @@
 
 include_once '../../../includes/global/session.php';
 
-notLogguedSecurity("/index.php");
+notLogguedSecurity("/");
 
 if (!isAdmin($_SESSION['user_info'])) {
     header("location: /pages/errors/401.html");   

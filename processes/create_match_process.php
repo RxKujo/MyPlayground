@@ -2,7 +2,7 @@
 
 include_once '../includes/global/session.php';
 
-notLogguedSecurity("../../index.php");
+notLogguedSecurity("/");
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     $_SESSION['error'] = "Méthode non autorisée.";

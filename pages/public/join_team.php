@@ -1,7 +1,7 @@
 <?php
 include_once '../../includes/global/session.php';
 include_once '../../includes/config/config.php';
-notLogguedSecurity("../../index.php");
+notLogguedSecurity("/");
 
 include_once $includesPublic . 'header.php';
 include_once 'navbar/header.php';

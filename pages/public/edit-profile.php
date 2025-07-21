@@ -5,7 +5,7 @@ include_once '../../includes/global/session.php';
 $error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
 unset($_SESSION['error'], $_SESSION['form_data']);
 
-notLogguedSecurity("../../index.php");
+notLogguedSecurity("/");
 
 include_once($assetsShared . 'icons/icons.php');
 

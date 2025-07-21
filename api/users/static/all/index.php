@@ -2,7 +2,7 @@
 
 include_once '../../../../includes/global/session.php';
 
-notLogguedSecurity("../../../../index.php");
+notLogguedSecurity("/");
 
 
 header("Content-Type: application/json");

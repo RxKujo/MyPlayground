@@ -2,7 +2,7 @@
 
 
 include_once '../../includes/global/session.php';
-notLogguedSecurity("../../index.php");
+notLogguedSecurity("/");
 
 
 $sql = 'SELECT id_equipe, nom, privee, code FROM equipe';

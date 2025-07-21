@@ -1,6 +1,6 @@
 <?php
 include_once '../includes/global/session.php';
-notLogguedSecurity("../index.php");
+notLogguedSecurity("/");
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['id_equipe'])) {
     header("Location: ../matches?error=Requête invalide");

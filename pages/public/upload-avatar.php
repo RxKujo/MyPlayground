@@ -1,6 +1,6 @@
 <?php
 include_once '../../includes/global/session.php';
-notLogguedSecurity("../../index.php");
+notLogguedSecurity("/");
 
 $userId = $_SESSION['user_id'] ?? null;
 

@@ -2,7 +2,7 @@
 
 include_once('../includes/global/session.php');
 
-notLogguedSecurity("../index.php");
+notLogguedSecurity("/");
 
 $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_SPECIAL_CHARS);

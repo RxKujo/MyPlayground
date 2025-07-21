@@ -1,7 +1,7 @@
 <?php 
 
 include_once '../../includes/global/session.php';
-notLogguedSecurity("../../index.php");
+notLogguedSecurity("/");
 
 include_once $assetsShared . 'icons/icons.php';
 include_once $includesAdmin . 'header.php';

@@ -1,6 +1,6 @@
 <?php
 include_once '../includes/global/session.php';
-notLogguedSecurity("../index.php");
+notLogguedSecurity("/");
 
 $user = $_SESSION['user_info'];
 $id_user = $user['id'];

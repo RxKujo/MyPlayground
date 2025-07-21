@@ -1,7 +1,7 @@
 <?php
 
 include_once '../../includes/global/session.php';
-notLogguedSecurity("../../index.php");
+notLogguedSecurity("/");
 
 $sql = 'SELECT id_tournoi, nom, date_tournoi FROM tournoi';
 $stmt = $pdo->prepare($sql);

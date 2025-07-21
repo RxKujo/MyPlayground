@@ -1,7 +1,7 @@
 <?php
 
 include_once '../includes/global/session.php';
-notLogguedSecurity("../index.php");
+notLogguedSecurity("/");
 
 $idMatch = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 $user = $_SESSION['user_info'];

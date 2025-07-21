@@ -1,6 +1,6 @@
 <?php
 include_once '../../includes/global/session.php';
-notLogguedSecurity("../../index.php");
+notLogguedSecurity("/");
 
 
 include_once($assetsShared . 'icons/icons.php');
@@ -62,12 +62,12 @@ unset($_SESSION['error'], $_SESSION['success'], $_SESSION['form_data']);
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="age" class="form-label">Âge minimum</label>
-                    <input type="number" class="form-control" id="age" name="age" min="0" required>
+                    <input type="number" class="form-control" id="age" name="age" min="13" max="80">
                 </div>
 
                 <div class="col-md-6">
-                    <label for="nombre_utilisateurs_max" class="form-label">Nombre max de participants</label>
-                    <input type="number" class="form-control" id="nombre_utilisateurs_max" name="nombre_utilisateurs_max" min="1" required>
+                    <label for="team-number" class="form-label">Nombre max d'équipes</label>
+                    <input type="number" class="form-control" id="team-number" name="team-number" min="3" max="8" required>
                 </div>
             </div>
 

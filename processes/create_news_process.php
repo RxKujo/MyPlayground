@@ -2,7 +2,7 @@
 
 include_once '../includes/global/session.php';
 
-notLogguedSecurity("../../index.php");
+notLogguedSecurity("/");
 
 $objet = filter_input(INPUT_POST, "objet", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $contenu = filter_input(INPUT_POST, "contenu", FILTER_SANITIZE_FULL_SPECIAL_CHARS);

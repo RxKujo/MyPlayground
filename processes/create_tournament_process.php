@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $date_tournoi = $_POST['date_tournoi'] ?? '';
     $categorie = $_POST['categorie'] ?? '';
     $age = intval($_POST['age'] ?? 0);
-    $nombre_utilisateurs_max = intval($_POST['nombre_utilisateurs_max'] ?? 0);
+    $nombre_utilisateurs_max = filter_input(INPUT_POST, 'team-number', FILTER_VALIDATE_INT);
     $statut = $_POST['statut'] ?? '';
     $description = trim($_POST['description'] ?? '');
 
@@ -34,3 +34,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: ../index.php");
     exit;
 }
+
+?>
