@@ -27,8 +27,31 @@ if ($method === "POST") {
 
     echo json_encode(["success" => true]);
 
-} else if ($method === "GET") {
+} else if ($method === "PUT") {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $groupId = intval($input['groupId'] ?? 0);
+    $name = trim($input['newName'] ?? "");
 
+
+    if ($name === "" || $groupId <= 0) {
+        echo json_encode(["success" => false, "error" => "Données invalides"]);
+        exit();
+    }
+
+    setGroupName($pdo, $groupId, $name);
+
+    echo json_encode(["success" => true]);
+} else if ($method === "DELETE") {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $groupId = intval($input['groupId'] ?? 0);
+
+
+    if ($groupId <= 0) {
+        echo json_encode(["success" => false, "error" => "Données invalides"]);
+        exit();
+    }
+
+    deleteGroup($pdo, $groupId);
 }
 
 

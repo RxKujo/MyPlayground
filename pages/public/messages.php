@@ -10,12 +10,16 @@ include_once $assetsShared . 'icons/icons.php';
 include_once "navbar/header.php";
 
 $discussions = getAllDiscussionsNames($pdo, $user['id']);
+
 ?>
 
 <div class="d-flex">
     <?php include_once "navbar/reducted_navbar.php"; ?>
 
-    <script>let user_id = <?= $user['id'] ?>;</script>
+    <script>
+        let user_id = <?= $user['id'] ?>;
+        let currentGroupId = null;
+    </script>
     <div class="container-fluid px-0" id="content">
         <div class="row gx-0" style="height: 100vh;">
             <div class="col-lg-3 border-end bg-white d-flex flex-column p-3" style="height: 100vh; overflow-y: auto;">
@@ -38,7 +42,7 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
                         <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3 mb-3 discussion-link" data-id="<?= $discussion['id_groupe'] ?>">
                             <img src="<?= showPfpOffline($interlocutor) ?>" class="rounded-circle" width="48" height="48" alt="">
                             <div class="d-flex flex-column">
-                                <strong><?= $discussion['nom'] ?></strong>
+                                <strong id="discussion<?=$discussion['id_groupe']?>"><?= $discussion['nom'] ?></strong>
                                 <small class="text-muted"><?= getMessage($pdo, $discussion['id_dernier_message'])['message'] ?? "Envoyez votre premier message !" ?></small>
                             </div>
                         </a>
@@ -58,8 +62,12 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
                     <div class="dropdown">
                         <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">...</button>
                         <ul class="dropdown-menu">
-                            <li class="dropdown-item">Quitter le groupe</li>
-                            <li class="dropdown-item text-danger">Supprimer le groupe</li>
+                            <li class="dropdown-item">
+                                <button id="rename-group-button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rename-group-modal">Renommer le groupe</button>
+                            </li>
+                            <li class="dropdown-item">
+                                <button id="leave-group" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-group-modal">Supprimer le groupe</button>
+                            </li>
                         </ul>
                     </div>
                     
@@ -106,14 +114,46 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
     </div>
 </div>
 
-<?php if (isset($redirectToGroup)): ?>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const link = document.querySelector(`[data-id="<?= $redirectToGroup ?>"]`);
-        if (link) link.click();
-    });
-</script>
-<?php endif; ?>
+<div class="modal fade" id="rename-group-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="rename-form" action="">
+                <div class="modal-header">
+                    <h5 class="modal-title">Renommer le groupe</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="new-group-name" class="form-label">Renommer le groupe à quel nom ?</label>
+                    <input id="new-group-name" type="text" name="new-group-name" class="form-control">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button id="rename-submit" type="submit" class="btn btn-primary">Confirmer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="delete-group-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="delete-form" action="">
+                <div class="modal-header">
+                    <h5 class="modal-title">Supprimer le groupe</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <legend>Voulez-vous vraiment supprimer le groupe ?</legend>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button id="delete-submit" type="submit" class="btn btn-primary">Confirmer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <style>
   #suggestions {
@@ -122,89 +162,7 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
     overflow-y: auto;
   }
 </style>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const guestInput = document.getElementById('guestInput');
-    const suggestionsList = document.getElementById('suggestions');
-    const guestsContainer = document.getElementById('guests-container');
-    const hiddenGuests = document.getElementById('hiddenGuests');
-    const createGroupBtn = document.getElementById('create-group');
 
-    let allUsers = [];
-
-    // Charger tous les utilisateurs quand on ouvre le modal
-    createGroupBtn.addEventListener('click', async () => {
-        const response = await fetch('/api/users/static/all');
-        const data = await response.json();
-        allUsers = data.users || [];
-    });
-
-    guestInput.addEventListener('input', () => {
-        const query = guestInput.value.trim().toLowerCase();
-        suggestionsList.innerHTML = '';
-
-        if (!query) {
-            suggestionsList.style.display = 'none';
-            return;
-        }
-
-        const filtered = allUsers
-            .filter(user => user.pseudo.toLowerCase().includes(query))
-            .filter(user => !Array.from(guestsContainer.children).some(el => el.dataset.id == user.id))
-            .slice(0, 6);
-
-        if (filtered.length === 0) {
-            suggestionsList.style.display = 'none';
-            return;
-        }
-
-        filtered.forEach(user => {
-            const li = document.createElement('li');
-            li.className = 'list-group-item list-group-item-action';
-            li.textContent = user.pseudo;
-            li.dataset.id = user.id;
-            suggestionsList.appendChild(li);
-        });
-
-        suggestionsList.style.display = 'block';
-    });
-
-    suggestionsList.addEventListener('click', e => {
-        if (e.target.tagName === 'li') {
-            const userId = e.target.dataset.id;
-            const pseudo = e.target.textContent;
-
-            const tag = document.createElement('span');
-            tag.className = 'badge bg-primary text-white p-2 rounded-pill';
-            tag.textContent = pseudo;
-            tag.dataset.id = userId;
-            tag.title = 'Cliquez pour retirer';
-            tag.style.cursor = 'pointer';
-
-            tag.addEventListener('click', () => {
-                tag.remove();
-                updateHiddenGuests();
-            });
-
-            guestsContainer.appendChild(tag);
-            guestInput.value = '';
-            suggestionsList.innerHTML = '';
-            suggestionsList.style.display = 'none';
-            updateHiddenGuests();
-        }
-    });
-
-    function updateHiddenGuests() {
-        const ids = [...guestsContainer.children].map(child => child.dataset.id);
-        hiddenGuests.value = JSON.stringify(ids);
-    }
-
-    document.addEventListener('click', (e) => {
-        if (!guestInput.contains(e.target) && !suggestionsList.contains(e.target)) {
-            suggestionsList.style.display = 'none';
-        }
-    });
-});
-</script>
+<script src="/assets/public/js/messageHandler.js"></script>
 
 <?php include_once $includesGlobal . 'footer.php'; ?>

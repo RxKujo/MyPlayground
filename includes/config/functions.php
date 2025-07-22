@@ -645,6 +645,23 @@ function setUserLastLogin(PDO $pdo, int $userId) {
     $r = $pdo->query("UPDATE utilisateur SET derniere_connexion = NOW() WHERE id = $userId");
 }
 
+function setGroupName(PDO $pdo, int $groupId, string $newName) {
+    $sql = "UPDATE groupe_discussion SET nom = :newName WHERE id = :groupId";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':newName' => $newName,
+        ':groupId' => $groupId
+    ]);
+}
+
+function deleteGroup(PDO $pdo, int $groupId) {
+    $r = $pdo->query("UPDATE groupe_discussion SET id_dernier_message = NULL WHERE id = $groupId");
+    $r = $pdo->query("DELETE FROM echanger WHERE id_groupe = $groupId");
+
+    $r = $pdo->query("DELETE FROM participation_groupe WHERE id_groupe = $groupId");
+    $r = $pdo->query("DELETE FROM groupe_discussion WHERE id = $groupId");
+}
+
 function switchUserBanStatus(PDO $pdo, int $userId) {
     $r = $pdo->query("UPDATE utilisateur SET is_banned = NOT is_banned WHERE id = $userId");
 }
