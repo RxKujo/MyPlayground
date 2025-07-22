@@ -5,38 +5,6 @@ notLogguedSecurity("/");
 $user = $_SESSION['user_info'];
 $pfpSrc = showPfp($pdo, $user);
 
-if (isset($_GET['with'])) {
-    $id_autre = intval($_GET['with']);
-
-    if ($id_autre !== $user['id']) {
-        $stmt = $pdo->prepare("SELECT gd.id_groupe 
-            FROM groupe_discussion gd
-            JOIN echanger e1 ON gd.id_groupe = e1.id_groupe
-            JOIN echanger e2 ON gd.id_groupe = e2.id_groupe
-            WHERE e1.id_utilisateur = :user1 AND e2.id_utilisateur = :user2
-            GROUP BY gd.id_groupe
-            HAVING COUNT(DISTINCT e1.id_utilisateur) = 1 AND COUNT(DISTINCT e2.id_utilisateur) = 1");
-        $stmt->execute(['user1' => $user['id'], 'user2' => $id_autre]);
-        $existing = $stmt->fetch();
-
-        if (!$existing) {
-            $pseudo1 = getPseudoById($pdo, $user['id']);
-            $pseudo2 = getPseudoById($pdo, $id_autre);
-            $name = "Discussion entre $pseudo1 et $pseudo2";
-
-            $pdo->prepare("INSERT INTO groupe_discussion (nom) VALUES (?)")->execute([$name]);
-            $id_groupe = $pdo->lastInsertId();
-
-            $pdo->prepare("INSERT INTO echanger (id_utilisateur, id_groupe) VALUES (?, ?), (?, ?)")
-                ->execute([$user['id'], $id_groupe, $id_autre, $id_groupe]);
-        } else {
-            $id_groupe = $existing['id_groupe'];
-        }
-
-        $redirectToGroup = $id_groupe;
-    }
-}
-
 include_once $includesPublic . "header.php";
 include_once $assetsShared . 'icons/icons.php';
 include_once "navbar/header.php";

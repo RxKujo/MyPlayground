@@ -54,6 +54,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                         msgDiv.classList.add("bg-primary", "text-white", "align-self-end");
                     } else {
                         msgDiv.classList.add("bg-white", "text-dark", "align-self-start");
+                        const pseudoDiv = document.createElement("div");
+                        pseudoDiv.textContent = "@" + msg.pseudo || "Utilisateur inconnu";
+                        pseudoDiv.classList.add("fw-bold", "mb-1");
+                        msgDiv.appendChild(pseudoDiv);
                     }
 
                     const textDiv = document.createElement("div");
