@@ -683,6 +683,10 @@ function deleteGroup(PDO $pdo, int $groupId) {
     $r = $pdo->query("DELETE FROM groupe_discussion WHERE id = $groupId");
 }
 
+function leaveGroup(PDO $pdo, int $groupId, int $userId) {
+    $r = $pdo->query("DELETE FROM participation_groupe WHERE id_groupe = $groupId AND id_utilisateur = $userId");
+}
+
 function switchUserBanStatus(PDO $pdo, int $userId) {
     $r = $pdo->query("UPDATE utilisateur SET is_banned = NOT is_banned WHERE id = $userId");
 }

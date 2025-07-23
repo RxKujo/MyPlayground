@@ -1,6 +1,4 @@
 async function sendMessage(content, groupId, senderId) {
-    content = content.value.trim();
-
     const response = await fetch('/api/users/messages/', {
         method: 'POST',
         headers: {
@@ -16,35 +14,29 @@ async function sendMessage(content, groupId, senderId) {
     return await response.json();
 }
 
-async function renameGroup(newName, groupId) {
-    newName = newName.value.trim();
-
+async function actionGroup(method, data) {
     const response = await fetch('/api/users/group/', {
-        method: 'PUT',
+        method: method,
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            newName,
-            groupId
-        })
-    })
+        body: JSON.stringify(data)
+    });
 
     return await response.json();
 }
 
-async function deleteGroup(groupId) {
-    const response = await fetch('/api/users/group/', {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            groupId
-        })
-    });
+async function renameGroup(newNameInput, groupId) {
+    const newName = newNameInput.value.trim();
+    return await actionGroup('PUT', { newName, groupId });
+}
 
-    return await response.json();
+async function deleteGroup(groupId) {
+    return await actionGroup('DELETE', { groupId });
+}
+
+async function leaveGroup(groupId) {
+    return await actionGroup('PATCH', { groupId });
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -57,6 +49,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     const renameNewNameField = document.querySelector("#new-group-name");
 
     const deleteForm = document.querySelector('#delete-form');
+
+    const leaveForm = document.querySelector('#leave-form');
 
     const groupIdInput = document.querySelector('#input-message-field');
     const interlocutorName = document.querySelector('#interlocutor-name');
@@ -159,10 +153,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     sendButton.addEventListener("click", async () => {
-        sendMessage(messageInput, currentGroupId, waiter)
+        let message = messageInput.value.trim();
+        sendMessage(message, currentGroupId, waiter)
         .then(data => {
-            messageInput.value = "";
-            loadMessages(currentGroupId);
+        messageInput.value = "";
+        loadMessages(currentGroupId);
         })
         .catch(error => {
             console.error("Erreur lors de l'envoi du message :", error);
@@ -172,8 +167,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     messageInput.addEventListener("keydown", async (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
-
-            sendMessage(messageInput, currentGroupId, waiter)
+            
+            let message = messageInput.value.trim();
+            sendMessage(message, currentGroupId, waiter)
             .then(data => {
                 messageInput.value = "";
                 loadMessages(currentGroupId);
@@ -195,6 +191,14 @@ document.addEventListener("DOMContentLoaded", async function () {
     deleteForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         let result = await deleteGroup(currentGroupId);
+        if (result.success) {
+            location.reload();
+        }
+    })
+
+    leaveForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        let result = await leaveGroup(currentGroupId);
         if (result.success) {
             location.reload();
         }

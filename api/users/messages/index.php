@@ -48,14 +48,15 @@ if ($method === 'POST') {
     echo json_encode(['success' => true]);
     exit();
 
-} else if ($method === 'GET') {
-    $id_groupe = filter_input(INPUT_GET, 'id_groupe', FILTER_VALIDATE_INT);
-    if (!$id_groupe) {
-        http_response_code(400);
-        echo json_encode(['error' => 'ID du groupe manquant']);
-        exit();
-    }
+} else if ($method === 'PATCH') {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $content = trim($input['content'] ?? '');
+    $groupId = (int)($input['groupId'] ?? 0);
+    $senderId = (int)($input['senderId'] ?? 0);
 
+    if ($senderId === -99) {
+
+    }
     $messages = getMessagesByGroup($pdo, $id_groupe);
     echo json_encode([
         "waiter" => $id_requester,
@@ -64,6 +65,5 @@ if ($method === 'POST') {
 
     exit();
 }
-
 
 ?>

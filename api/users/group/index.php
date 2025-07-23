@@ -52,8 +52,19 @@ if ($method === "POST") {
     }
 
     deleteGroup($pdo, $groupId);
+} else if ($method === "PATCH") {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $groupId = intval($input['groupId'] ?? 0);
+
+
+    if ($groupId <= 0) {
+        echo json_encode(["success" => false, "error" => "Données invalides"]);
+        exit();
+    }
+
+    leaveGroup($pdo, $groupId, $id_requester);
 }
 
-
 exit();
+
 ?>

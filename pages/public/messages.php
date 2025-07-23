@@ -35,9 +35,10 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
                 </div>
 
                 <div class="list-group">
-                    <?php foreach ($discussions as $discussion):
+                    <?php 
+                    foreach ($discussions as $discussion):
                         $interlocutor = getFirstUserInDiscussion($pdo, $discussion['id_groupe'], $user['id']);
-                        if (!$interlocutor) continue;
+                        if ($interlocutor):
                     ?>
                         <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3 mb-3 discussion-link" data-id="<?= $discussion['id_groupe'] ?>">
                             <img src="<?= showPfpOffline($interlocutor) ?>" class="rounded-circle" width="48" height="48" alt="">
@@ -46,7 +47,18 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
                                 <small class="text-muted"><?= getMessage($pdo, $discussion['id_dernier_message'])['message'] ?? "Envoyez votre premier message !" ?></small>
                             </div>
                         </a>
-                    <?php endforeach; ?>
+
+                    <?php else: ?>
+                        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3 mb-3 discussion-link" data-id="<?= $discussion['id_groupe'] ?>">
+                            <img src="<?= showPfp($pdo, $user) ?>" class="rounded-circle" width="48" height="48" alt="">
+                            <div class="d-flex flex-column">
+                                <strong id="discussion<?=$discussion['id_groupe']?>"><?= $discussion['nom'] ?></strong>
+                                <small class="text-muted"><?= getMessage($pdo, $discussion['id_dernier_message'])['message'] ?? "Envoyez votre premier message !" ?></small>
+                            </div>
+                        </a>
+                    <?php 
+                        endif;
+                    endforeach; ?>
                 </div>
             </div>
 
@@ -66,7 +78,10 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
                                 <button id="rename-group-button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rename-group-modal">Renommer le groupe</button>
                             </li>
                             <li class="dropdown-item">
-                                <button id="leave-group" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-group-modal">Supprimer le groupe</button>
+                                <button id="delete-group" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-group-modal">Supprimer le groupe</button>
+                            </li>
+                            <li class="dropdown-item">
+                                <button id="leave-group" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#leave-group-modal">Quitter le groupe</button>
                             </li>
                         </ul>
                     </div>
@@ -149,6 +164,26 @@ $discussions = getAllDiscussionsNames($pdo, $user['id']);
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                     <button id="delete-submit" type="submit" class="btn btn-primary">Confirmer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="leave-group-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="leave-form" action="">
+                <div class="modal-header">
+                    <h5 class="modal-title">Quitter le groupe</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <legend>Voulez-vous vraiment quitter le groupe ?</legend>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button id="leave-submit" type="submit" class="btn btn-primary">Confirmer</button>
                 </div>
             </form>
         </div>
