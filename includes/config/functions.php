@@ -37,13 +37,28 @@ function getUserIdFromUsername(PDO $pdo, string $username) {
 }
 
 function getUsersFromLevel(PDO $pdo, int $level, int $limit = 0) {
-    if ($limit) {
-        $sql = "SELECT * FROM utilisateur WHERE niveau = $level LIMIT $limit";
-        $r = $pdo->query($sql);
-        return $r->fetchAll();
+    $sql = "
+        SELECT 
+            u.*, v.ville AS ville_nom
+        FROM utilisateur u
+        LEFT JOIN villes_cp v ON u.ville_id = v.id
+        WHERE u.niveau = :level
+    ";
+
+    if ($limit > 0) {
+        $sql .= " LIMIT :limit";
     }
-    return 0;
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':level', $level, PDO::PARAM_INT);
+    if ($limit > 0) {
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    }
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
 
 function isAdmin(array $user) {
     return $user["droits"] == 1;
@@ -261,7 +276,7 @@ function displayCardUser(array $user) {
     $nom = $user['nom'];
     $niveau = getUserLevel($user);
     $poste = getUserPosition($user);
-    $localisation = $user['localisation'];
+    $ville = $user['ville_nom'] ?? 'Inconnue';
 
     $html = '
     <div class="col-sm-6 col-md-4 col-lg-3">
@@ -273,7 +288,7 @@ function displayCardUser(array $user) {
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><strong>Niveau :</strong> ' . htmlspecialchars($niveau) . '</li>
                     <li class="list-group-item"><strong>Poste :</strong> ' . htmlspecialchars($poste) . '</li>
-                    <li class="list-group-item"><strong>Localisation :</strong> ' . htmlspecialchars($localisation ?? "Inconnu") . '</li>
+                    <li class="list-group-item"><strong>Ville :</strong> ' . htmlspecialchars($ville) . '</li>
                 </ul>
             </div>
         </div>
@@ -490,11 +505,15 @@ function getRandomCaptcha(PDO $pdo) {
 function getAllUsers(PDO $pdo) {
     $r = $pdo->query(
         "SELECT 
-            id, nom, prenom, pseudo, 
-            localisation, email, tel, poste, 
-            droits, role, niveau, derniere_connexion, 
-            is_online, is_verified, is_banned, ban_count
-        FROM utilisateur");
+            u.id, u.nom, u.prenom, u.pseudo, 
+            u.tel, u.email, u.poste, u.role, u.niveau, 
+            u.derniere_connexion, u.is_online, u.is_verified, 
+            u.is_banned, u.ban_count, u.ville_id,
+            v.ville AS ville_nom
+        FROM utilisateur u
+        LEFT JOIN villes_cp v ON u.ville_id = v.id"
+    );
+
     return $r->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -562,7 +581,9 @@ function createUser(
     string $confirm_password,
 
     string $captcha,
-    string $captcha_expected
+    string $captcha_expected,
+
+    int $ville_id
 ) {
     if (!$prenom || !$nom || !$email || !$tel || !$naissance || !$adresse || !$pseudo || !$password || !$confirm_password) {
         return ['success' => false, 'message' => "Tous les champs sont obligatoires."];
@@ -588,9 +609,9 @@ function createUser(
 
     $sql = 
     "INSERT INTO utilisateur 
-    (pseudo, prenom, nom, date_naissance, email, mdp, tel, poste, role, localisation, niveau, description, email_verification_token, is_verified) 
+    (pseudo, prenom, nom, date_naissance, email, mdp, tel, poste, role, ville_id, niveau, description, email_verification_token, is_verified) 
     VALUES 
-    (:pseudo, :prenom, :nom, :naissance, :email, :mdp, :tel, :poste, :role, :localisation, :niveau, :description, :token, :is_verified)";
+    (:pseudo, :prenom, :nom, :naissance, :email, :mdp, :tel, :poste, :role, :ville_id, :niveau, :description, :token, :is_verified)";
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':pseudo', $pseudo);
@@ -602,7 +623,7 @@ function createUser(
     $stmt->bindParam(':tel', $tel);
     $stmt->bindParam(':poste', $position);
     $stmt->bindParam(':role', $role);
-    $stmt->bindParam(':localisation', $adresse);
+    $stmt->bindParam(':ville_id', $ville_id, PDO::PARAM_INT);
     $stmt->bindParam(':niveau', $niveau);
     $description = ""; 
     $stmt->bindParam(':description', $description);
@@ -712,4 +733,9 @@ function inscrireEquipeTournoi(PDO $pdo, $id_tournoi, $id_equipe) {
         return ['success' => true, 'message' => 'Inscription réussie !'];
     }
     return ['success' => false, 'message' => 'Erreur lors de l\'inscription.'];
+}
+
+function getAllCities(PDO $pdo) {
+    $r = $pdo->query("SELECT id, ville, code_postal FROM villes_cp");
+    return $r->fetchAll(PDO::FETCH_ASSOC);
 }

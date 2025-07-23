@@ -9,7 +9,6 @@ include_once $includesConfig . 'config.php';
 $error = $_SESSION['register_error'] ?? null;
 $success = $_SESSION['register_success'] ?? null;
 
-var_dump($_SESSION['form_data']);
 $formData = $_SESSION['form_data'] ?? [];
 unset($_SESSION['error'], $_SESSION['form_data']);
 
@@ -157,10 +156,12 @@ $_SESSION['captcha_id'] = $captcha_id;
           <input type="date" class="form-control" id="naissance" name="naissance"
             value="<?= htmlspecialchars($formData['naissance'] ?? '') ?>" required>
         </div>
-        <div class="mb-3">
-          <label for="adresse" class="form-label">Adresse*</label>
-          <input type="text" class="form-control" id="adresse" name="adresse"
-            value="<?= htmlspecialchars($formData['adresse'] ?? '') ?>" required>
+        <div class="mb-3 position-relative">
+          <label for="ville_input" class="form-label">Ville*</label>
+          <input type="text" class="form-control" id="ville_input" name="ville_text" autocomplete="off"
+            value="<?= htmlspecialchars($formData['ville_text'] ?? '') ?>" required>
+          <input type="hidden" id="ville_id" name="ville_id" value="<?= htmlspecialchars($formData['ville_id'] ?? '') ?>">
+          <div id="ville_suggestions" class="list-group position-absolute w-100" style="z-index: 9999;"></div>
         </div>
         <div class="mb-3">
           <label for="pseudo" class="form-label">Nom d'utilisateur*</label>
@@ -288,6 +289,7 @@ $_SESSION['captcha_id'] = $captcha_id;
     </div>
   </div>
   <script src="assets/shared/js/captchaScript.js"></script>
+  <script src="assets/shared/js/cityManager.js"></script>
 </body>
 
 </html>

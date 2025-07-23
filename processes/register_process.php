@@ -16,6 +16,7 @@ $tel = filter_input(INPUT_POST, "tel", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $naissance = filter_input(INPUT_POST, "naissance", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $adresse = filter_input(INPUT_POST, "adresse", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $pseudo = filter_input(INPUT_POST, "pseudo", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$ville_id = filter_input(INPUT_POST, "ville_id", FILTER_VALIDATE_INT);
 
 $role = filter_input(INPUT_POST, "role", FILTER_VALIDATE_INT);
 $position = filter_input(INPUT_POST, "position", FILTER_VALIDATE_INT);
@@ -37,6 +38,15 @@ $_SESSION['form_data'] = [
     'pseudo' => $pseudo
 ];
 
+$stmt = $pdo->prepare("SELECT id FROM villes_cp WHERE id = ?");
+$stmt->execute([$ville_id]);
+if ($stmt->rowCount() === 0) {
+    $_SESSION['register_error'] = "Ville invalide.";
+    $_SESSION['form_data']['ville_id'] = $ville_id;
+    $_SESSION['form_data']['ville_text'] = $_POST['ville_text'] ?? '';
+    header("Location: ../register.php");
+    exit;
+}
 
 unset($_SESSION['captcha_expected']);
 
@@ -58,7 +68,9 @@ $result = createUser(
     $confirm_password,
 
     $captcha,
-    $captcha_expected
+    $captcha_expected,
+
+    $ville_id
 );
 
 $ok = $result['success'];

@@ -57,10 +57,20 @@ $role = getUserRole($user);
 					<input class="form-control" id="email" name="email" type="email" value="<?= $user['email'] ?>"/>
 				</div>
 
-				<div class="mb-3">
-					<label class="form-label" for="localisation">Adresse</label>
-					<input class="form-control" id="localisation" name="localisation" type="text" value="<?= $user['localisation'] ?>"/>
+				<div class="mb-3 position-relative">
+					<label class="form-label" for="ville_input">Ville</label>
+					<input 
+						type="text" 
+						class="form-control" 
+						id="ville_input" 
+						name="ville_text" 
+						autocomplete="off" 
+						value="<?= htmlspecialchars($user['ville_nom'] ?? '') ?>"
+					/>
+					<input type="hidden" id="ville_id" name="ville_id" value="<?= htmlspecialchars($user['ville_id'] ?? '') ?>">
+					<div id="ville_suggestions" class="list-group position-absolute w-100" style="z-index: 9999;"></div>
 				</div>
+
 				
 				<div class="mb-3">
 					<label class="form-label" for="niveau">Niveau</label>
@@ -112,6 +122,7 @@ $role = getUserRole($user);
 		</div>
 	</div>
 </div>
+<script src="../../assets/shared/js/cityManager.js"></script>
 
 <?php
 include_once('../../includes/global/footer.php');
