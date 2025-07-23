@@ -12,7 +12,7 @@ $user = $_SESSION['user_info'];
 $niveau = isset($_GET['niveau']) ? $_GET['niveau'] : '';
 $poste = isset($_GET['poste']) ? $_GET['poste'] : '';
 
-$sql = "SELECT id, prenom, nom, pseudo, niveau, poste, localisation, pfp FROM utilisateur WHERE id != :id";
+$sql = "SELECT u.id, u.prenom, u.nom, u.pseudo, u.niveau, u.poste, u.ville_id, u.pfp, v.ville AS ville_nom, v.code_postal AS cp FROM utilisateur AS u JOIN villes_cp AS v ON v.id = u.ville_id WHERE u.id != :id";
 $params = [':id' => $user['id']];
 
 if ($niveau !== '' && $niveau !== '3') {
@@ -115,7 +115,7 @@ function safe($value) {
                                     <p class="card-text mb-1">Pseudo : <?= htmlspecialchars($mate['pseudo']) ?></p>
                                     <p class="card-text mb-1">Niveau : <?= getUserLevel($mate) ?></p>
                                     <p class="card-text mb-1">Poste : <?= getUserPosition($mate) ?></p>
-                                    <p class="card-text mb-3">Localisation : <?= htmlspecialchars($mate['localisation']) ?></p>
+                                    <p class="card-text mb-3">Ville : <?= $mate['ville_nom'] ?> (<?= $mate['cp'] ?>)</p>
                                     <a href="profil_user?id=<?= urlencode($mate['id']) ?>" class="btn btn-primary mt-auto">Profil</a>
                                 </div>
                             </div>

@@ -36,6 +36,7 @@ include_once $includesAdmin . 'header.php';
                     <th>Prénom</th>
                     <th>Email</th>
                     <th>Rôle</th>
+                    <th>Ville</th>
                     <th>Dernière connexion</th>
                     <th>Admin</th>
                     <th>Actions</th>
@@ -50,5 +51,6 @@ include_once $includesAdmin . 'header.php';
 
 <script src="/assets/admin/js/searchBar.js"></script>
 <script src="/assets/admin/js/dynamicUserModal.js"></script>
+<script src="/assets/shared/js/cityManager.js"></script>
 
 <?php include_once $includesGlobal . "footer.php"; ?>

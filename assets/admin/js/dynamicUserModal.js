@@ -94,6 +94,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const isAdmin = user.droits == 1;
         const lastLogin = user.derniere_connexion;
         const isBanned = user.is_banned == 1;
+        const nom_ville = user.ville_nom;
 
         user.niveau = parseInt(user.niveau);
         user.poste = parseInt(user.poste);
@@ -108,6 +109,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             <td>${prenom}</td>
             <td>${email}</td>
             <td>${role}</td>
+            <td>${nom_ville}</td>
             <td>${lastLogin}</td>
             <td>
                 <div class="form-check form-switch">
@@ -145,6 +147,47 @@ document.addEventListener('DOMContentLoaded', async function () {
     
             banCheckbox.addEventListener('change', function () {
                 banDateInput.disabled = this.checked;
+            });
+        }
+        // Initialiser l'autocomplétion pour le champ ville de cet utilisateur
+        const villeInput = document.getElementById(`ville_input${id}`);
+        const villeHidden = document.getElementById(`ville_id${id}`);
+        const villeSuggestions = document.getElementById(`ville_suggestions${id}`);
+    
+        if (villeInput && villeHidden && villeSuggestions) {
+            villeInput.addEventListener('input', async () => {
+                const query = villeInput.value;
+                if (query.length < 2) {
+                    villeSuggestions.innerHTML = '';
+                    return;
+                }
+    
+                try {
+                    const res = await fetch('/api/cities?q=' + encodeURIComponent(query));
+                    const data = await res.json();
+                    villeSuggestions.innerHTML = '';
+    
+                    (data.cities || []).forEach(city => {
+                        const item = document.createElement('div');
+                        item.className = 'list-group-item list-group-item-action';
+                        item.textContent = `${city.ville} (${city.code_postal})`;
+                        item.addEventListener('click', () => {
+                            villeInput.value = `${city.ville} (${city.code_postal})`;
+                            villeHidden.value = city.id;
+                            villeSuggestions.innerHTML = '';
+                        });
+                        villeSuggestions.appendChild(item);
+                    });
+                } catch (err) {
+                    console.error("Erreur lors de la récupération des villes :", err);
+                }
+            });
+    
+            // Fermer les suggestions quand on clique en dehors
+            document.addEventListener('click', (e) => {
+                if (!villeSuggestions.contains(e.target) && e.target !== villeInput) {
+                    villeSuggestions.innerHTML = '';
+                }
             });
         }
 
@@ -267,7 +310,14 @@ document.addEventListener('DOMContentLoaded', async function () {
                   <div class="mb-3"><label>Nom d'utilisateur</label><input name="pseudo" class="form-control" value="${user.pseudo}" /></div>
                   <div class="mb-3"><label>Téléphone</label><input name="tel" class="form-control" value="${user.tel}" /></div>
                   <div class="mb-3"><label>Email</label><input name="email" class="form-control" value="${user.email}" /></div>
-                  <div class="mb-3"><label>Adresse</label><input name="localisation" class="form-control" value="${user.localisation}" /></div>
+                  
+                  <div class="mb-3 position-relative">
+                    <label for="ville_input${id}" class="form-label">Ville*</label>
+                    <input type="text" class="form-control" id="ville_input${id}" name="ville_text" autocomplete="off"
+                      value="${user.ville_nom}" required>
+                    <input type="hidden" id="ville_id${id}" name="ville_id" value="${user.ville_id}">
+                    <div id="ville_suggestions${id}" class="list-group position-absolute w-100" style="z-index: 9999;"></div>
+                  </div>
                   
                   <div class="mb-3">
                   <label>Niveau</label>
@@ -309,6 +359,7 @@ document.addEventListener('DOMContentLoaded', async function () {
               </form>
             </div>
           </div>
-        </div>`;
+        </div>
+        `;
     }
 });

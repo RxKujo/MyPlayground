@@ -14,7 +14,6 @@ $nom = filter_input(INPUT_POST, "nom", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
 $tel = filter_input(INPUT_POST, "tel", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $naissance = filter_input(INPUT_POST, "naissance", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-$adresse = filter_input(INPUT_POST, "adresse", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $pseudo = filter_input(INPUT_POST, "pseudo", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $ville_id = filter_input(INPUT_POST, "ville_id", FILTER_VALIDATE_INT);
 
@@ -34,7 +33,6 @@ $_SESSION['form_data'] = [
     'email' => $email,
     'tel' => $tel,
     'naissance' => $naissance,
-    'adresse' => $adresse,
     'pseudo' => $pseudo
 ];
 
@@ -58,7 +56,6 @@ $result = createUser(
     $email,
     $tel,
     $naissance,
-    $adresse,
     $pseudo,
     $role,
     $position,

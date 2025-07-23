@@ -71,7 +71,7 @@ include_once "navbar/header.php";
                 </div>
                 <div class="row mb-4">
                     <?php
-                    $partners = getUsersFromLevel($pdo, $user['niveau'], 4);
+                    $partners = getUsersFromLevel($pdo, $user, 4);
                     foreach ($partners as $partner) {
                         echo displayCardUser($partner);
                     }

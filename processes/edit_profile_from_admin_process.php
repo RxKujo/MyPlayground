@@ -11,7 +11,7 @@ $pseudo = filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_SPECIAL_CHARS);
 $tel = filter_input(INPUT_POST, 'tel', FILTER_SANITIZE_SPECIAL_CHARS);
 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
 $role = filter_input(INPUT_POST, 'role', FILTER_VALIDATE_INT);
-$localisation = filter_input(INPUT_POST, 'localisation', FILTER_SANITIZE_SPECIAL_CHARS);
+$ville_id = filter_input(INPUT_POST, 'ville_id', FILTER_VALIDATE_INT);
 $description = filter_input(INPUT_POST, 'commentaire', FILTER_SANITIZE_SPECIAL_CHARS);
 
 $niveau = filter_input(INPUT_POST, 'niveau', FILTER_VALIDATE_INT);
@@ -25,7 +25,7 @@ $ff = [
 ];
 
 
-$sql = 'UPDATE utilisateur SET nom = :nom, prenom = :prenom, pseudo = :pseudo, poste = :poste, niveau = :niveau, tel = :tel, email = :email, role = :_role, localisation = :localisation, description = :description WHERE id = :id';
+$sql = 'UPDATE utilisateur SET nom = :nom, prenom = :prenom, pseudo = :pseudo, poste = :poste, niveau = :niveau, tel = :tel, email = :email, role = :_role, ville_id = :ville_id, description = :description WHERE id = :id';
 $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':nom', $nom);
 $stmt->bindParam(':prenom', $prenom);
@@ -35,7 +35,7 @@ $stmt->bindValue(':niveau', $niveau, is_null($niveau) ? PDO::PARAM_NULL : PDO::P
 $stmt->bindParam(':tel', $tel);
 $stmt->bindParam(':email', $email);
 $stmt->bindParam(':_role', $role);
-$stmt->bindParam(':localisation', $localisation);
+$stmt->bindParam(':ville_id', $ville_id);
 $stmt->bindParam(':description', $description);
 
 $stmt->bindParam(':id', $id);
@@ -43,6 +43,6 @@ $stmt->bindParam(':id', $id);
 $stmt->execute();
 
 $_SESSION['modif_success'] = "Le compte a été modifié avec succès !";
-header("location: ../admin/users");
+header("location: /admin/users");
 
 ?>

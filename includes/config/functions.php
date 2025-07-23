@@ -36,13 +36,13 @@ function getUserIdFromUsername(PDO $pdo, string $username) {
     return $r->fetch(PDO::FETCH_ASSOC)['id'];
 }
 
-function getUsersFromLevel(PDO $pdo, int $level, int $limit = 0) {
+function getUsersFromLevel(PDO $pdo, array $user, int $limit = 0) {
     $sql = "
         SELECT 
             u.*, v.ville AS ville_nom
         FROM utilisateur u
         LEFT JOIN villes_cp v ON u.ville_id = v.id
-        WHERE u.niveau = :level
+        WHERE u.niveau = :level AND u.id != :user_id
     ";
 
     if ($limit > 0) {
@@ -50,7 +50,9 @@ function getUsersFromLevel(PDO $pdo, int $level, int $limit = 0) {
     }
 
     $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':level', $level, PDO::PARAM_INT);
+    $stmt->bindValue(':level', $user['niveau'], PDO::PARAM_INT);
+    $stmt->bindValue(':user_id', $user['id'], PDO::PARAM_INT);
+
     if ($limit > 0) {
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
     }
@@ -507,6 +509,7 @@ function getAllUsers(PDO $pdo) {
         "SELECT 
             u.id, u.nom, u.prenom, u.pseudo, 
             u.tel, u.email, u.poste, u.role, u.niveau, 
+            u.droits, 
             u.derniere_connexion, u.is_online, u.is_verified, 
             u.is_banned, u.ban_count, u.ville_id,
             v.ville AS ville_nom
@@ -570,7 +573,6 @@ function createUser(
     string $email,
     string $tel,
     string $naissance,
-    string $adresse,
     string $pseudo,
     
     int $role,
@@ -585,7 +587,7 @@ function createUser(
 
     int $ville_id
 ) {
-    if (!$prenom || !$nom || !$email || !$tel || !$naissance || !$adresse || !$pseudo || !$password || !$confirm_password) {
+    if (!$prenom || !$nom || !$email || !$tel || !$naissance || !$pseudo || !$password || !$confirm_password || !$ville_id) {
         return ['success' => false, 'message' => "Tous les champs sont obligatoires."];
     } else if ($password !== $confirm_password) {
         return ['success' => false, 'message' => "Les mots de passe ne correspondent pas."];
