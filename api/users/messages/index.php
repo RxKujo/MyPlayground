@@ -64,6 +64,23 @@ if ($method === 'POST') {
     ]);
 
     exit();
-}
+} else if ($method === 'GET') {
+    $id_groupe = filter_input(INPUT_GET, 'id_groupe', FILTER_VALIDATE_INT);
 
+    if (!$id_groupe) {
+        http_response_code(400);
+        
+        echo json_encode(['error' => 'ID du groupe manquant']);
+
+        exit();
+    }
+
+    $messages = getMessagesByGroup($pdo, $id_groupe);
+    echo json_encode([
+        "waiter" => $id_requester,
+        "messages" => $messages
+    ]);
+    exit();
+
+}
 ?>
