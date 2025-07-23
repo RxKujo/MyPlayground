@@ -345,11 +345,14 @@ function getReceivers(PDO $pdo, int $id_groupe) {
 
 function getMessagesByGroup(PDO $pdo, int $groupe_id) {
     $r = $pdo->query(
-        "SELECT DISTINCT e.id_message, e.id_envoyeur, e.id_groupe, e.message, e.date_envoi, e.lu FROM
+        "SELECT DISTINCT e.id_message, e.id_envoyeur, u.pseudo, e.id_groupe, e.message, e.date_envoi, e.lu FROM
         echanger AS e
         INNER JOIN
         participation_groupe
         ON participation_groupe.id_groupe = e.id_groupe
+        INNER JOIN
+        utilisateur as u 
+        ON u.id = e.id_envoyeur 
         WHERE participation_groupe.id_groupe = $groupe_id
         ORDER BY date_envoi ASC"
     );
@@ -640,6 +643,23 @@ function addToGroup(PDO $pdo, int $groupId, int $userId) {
 
 function setUserLastLogin(PDO $pdo, int $userId) {
     $r = $pdo->query("UPDATE utilisateur SET derniere_connexion = NOW() WHERE id = $userId");
+}
+
+function setGroupName(PDO $pdo, int $groupId, string $newName) {
+    $sql = "UPDATE groupe_discussion SET nom = :newName WHERE id = :groupId";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':newName' => $newName,
+        ':groupId' => $groupId
+    ]);
+}
+
+function deleteGroup(PDO $pdo, int $groupId) {
+    $r = $pdo->query("UPDATE groupe_discussion SET id_dernier_message = NULL WHERE id = $groupId");
+    $r = $pdo->query("DELETE FROM echanger WHERE id_groupe = $groupId");
+
+    $r = $pdo->query("DELETE FROM participation_groupe WHERE id_groupe = $groupId");
+    $r = $pdo->query("DELETE FROM groupe_discussion WHERE id = $groupId");
 }
 
 function switchUserBanStatus(PDO $pdo, int $userId) {

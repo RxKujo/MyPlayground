@@ -3,6 +3,9 @@ async function sendMessage(content, groupId, senderId) {
 
     const response = await fetch('/api/users/messages/', {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
             content,
             groupId,
@@ -10,7 +13,38 @@ async function sendMessage(content, groupId, senderId) {
         })
     });
 
-    return response;
+    return await response.json();
+}
+
+async function renameGroup(newName, groupId) {
+    newName = newName.value.trim();
+
+    const response = await fetch('/api/users/group/', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            newName,
+            groupId
+        })
+    })
+
+    return await response.json();
+}
+
+async function deleteGroup(groupId) {
+    const response = await fetch('/api/users/group/', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            groupId
+        })
+    });
+
+    return await response.json();
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -18,15 +52,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     const messageContainer = document.querySelector("#message-container .d-flex");
     const messageInput = document.querySelector('input[name="message"]');
     const sendButton = document.querySelector('button[type="submit"]');
+    
+    const renameForm = document.querySelector('#rename-form');
+    const renameNewNameField = document.querySelector("#new-group-name");
+
+    const deleteForm = document.querySelector('#delete-form');
+
     const groupIdInput = document.querySelector('#input-message-field');
     const interlocutorName = document.querySelector('#interlocutor-name');
     const interlocutorStatus = document.querySelector('#interlocutor-status');
 
-    let currentGroupId = null;
     let waiter;
     let messageCount = 0;
 
-    function loadMessages(groupId) {
+    async function loadMessages(groupId) {
         fetch(`/api/users/messages/?id_groupe=${groupId}`)
             .then(response => response.json())
             .then(messages => {
@@ -54,6 +93,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                         msgDiv.classList.add("bg-primary", "text-white", "align-self-end");
                     } else {
                         msgDiv.classList.add("bg-white", "text-dark", "align-self-start");
+                        const pseudoDiv = document.createElement("div");
+                        pseudoDiv.textContent = "@" + msg.pseudo || "Utilisateur inconnu";
+                        pseudoDiv.classList.add("fw-bold", "mb-1");
+                        msgDiv.appendChild(pseudoDiv);
                     }
 
                     const textDiv = document.createElement("div");
@@ -117,7 +160,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     sendButton.addEventListener("click", async () => {
         sendMessage(messageInput, currentGroupId, waiter)
-        .then(response => response.json())
         .then(data => {
             messageInput.value = "";
             loadMessages(currentGroupId);
@@ -132,7 +174,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             e.preventDefault();
 
             sendMessage(messageInput, currentGroupId, waiter)
-            .then(response => response.json())
             .then(data => {
                 messageInput.value = "";
                 loadMessages(currentGroupId);
@@ -143,12 +184,32 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     });
 
-
-    setInterval(() => {
-        if (currentGroupId != null) {
-            loadMessages(currentGroupId);
+    renameForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        let result = await renameGroup(renameNewNameField, currentGroupId);
+        if (result.success) {
+            location.reload();
         }
-    }, 200);
+    })
+
+    deleteForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        let result = await deleteGroup(currentGroupId);
+        if (result.success) {
+            location.reload();
+        }
+    })
+
+    let loading = false;
+    
+    setInterval(() => {
+        if (currentGroupId != null && !loading) {
+            loading = true;
+            loadMessages(currentGroupId).finally(() => {
+                loading = false;
+            });
+        }
+    }, 500);
 
 
 

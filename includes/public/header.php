@@ -10,11 +10,6 @@
 	    <title>My PlayGround</title>
 
         <script type="module" src="../../assets/public/js/pageScript.js"></script>
-        <script src="../../assets/public/js/messageHandler.js"></script>
-       
-    <meta charset="UTF-8">
-    <title>Mon Projet</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <?php includeResponsiveCSS(); ?>
 

@@ -21,3 +21,5 @@ try {
     header("Location: ..//matches?error=Erreur lors de la suppression");
     exit();
 }
+
+?>
