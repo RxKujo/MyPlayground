@@ -149,7 +149,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                 banDateInput.disabled = this.checked;
             });
         }
-        // Initialiser l'autocomplétion pour le champ ville de cet utilisateur
         const villeInput = document.getElementById(`ville_input${id}`);
         const villeHidden = document.getElementById(`ville_id${id}`);
         const villeSuggestions = document.getElementById(`ville_suggestions${id}`);
@@ -170,9 +169,9 @@ document.addEventListener('DOMContentLoaded', async function () {
                     (data.cities || []).forEach(city => {
                         const item = document.createElement('div');
                         item.className = 'list-group-item list-group-item-action';
-                        item.textContent = `${city.ville} (${city.code_postal})`;
+                        item.textContent = `${city.nom} (${city.code_postal})`;
                         item.addEventListener('click', () => {
-                            villeInput.value = `${city.ville} (${city.code_postal})`;
+                            villeInput.value = `${city.nom} (${city.code_postal})`;
                             villeHidden.value = city.id;
                             villeSuggestions.innerHTML = '';
                         });
@@ -183,7 +182,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                 }
             });
     
-            // Fermer les suggestions quand on clique en dehors
             document.addEventListener('click', (e) => {
                 if (!villeSuggestions.contains(e.target) && e.target !== villeInput) {
                     villeSuggestions.innerHTML = '';
@@ -350,7 +348,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     </select>
                   </div>
 
-                  <div class="mb-3"><label>Commentaire</label><textarea name="commentaire" class="form-control">${user.description}"</textarea></div>
+                  <div class="mb-3"><label>Commentaire</label><textarea name="commentaire" class="form-control">${user.description}</textarea></div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>

@@ -20,9 +20,9 @@ function isAuthenticated(array $session) {
 }
 
 function getUser(PDO $pdo, int $id) {
-    $sql = "SELECT u.*, v.ville AS ville_nom, v.code_postal
+    $sql = "SELECT u.*, v.nom AS ville_nom, v.code_postal
             FROM utilisateur u
-            LEFT JOIN villes_cp v ON u.ville_id = v.id
+            LEFT JOIN ville v ON u.ville_id = v.id
             WHERE u.id = :id";
     
     $stmt = $pdo->prepare($sql);
@@ -43,9 +43,9 @@ function getUserIdFromUsername(PDO $pdo, string $username) {
 function getUsersFromLevel(PDO $pdo, array $user, int $limit = 0) {
     $sql = "
         SELECT 
-            u.*, v.ville AS ville_nom
+            u.*, v.nom AS ville_nom
         FROM utilisateur u
-        LEFT JOIN villes_cp v ON u.ville_id = v.id
+        LEFT JOIN ville v ON u.ville_id = v.id
         WHERE u.niveau = :level AND u.id != :user_id
     ";
 
@@ -60,8 +60,8 @@ function getUsersFromLevel(PDO $pdo, array $user, int $limit = 0) {
     if ($limit > 0) {
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
     }
-    $stmt->execute();
 
+    $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -280,8 +280,8 @@ function displayCardUser(array $user) {
     $pseudo = $user['pseudo'];
     $prenom = $user['prenom'];
     $nom = $user['nom'];
-    $niveau = getUserLevel($user);
-    $poste = getUserPosition($user);
+    $niveau = getUserLevel($user['niveau']);
+    $poste = getUserPosition($user['poste']);
     $ville = $user['ville_nom'] ?? 'Inconnue';
 
     $html = '
@@ -516,9 +516,9 @@ function getAllUsers(PDO $pdo) {
             u.droits, 
             u.derniere_connexion, u.is_online, u.is_verified, 
             u.is_banned, u.ban_count, u.ville_id,
-            v.ville AS ville_nom
+            v.nom AS ville_nom
         FROM utilisateur u
-        LEFT JOIN villes_cp v ON u.ville_id = v.id"
+        LEFT JOIN ville v ON u.ville_id = v.id"
     );
 
     return $r->fetchAll(PDO::FETCH_ASSOC);
@@ -746,6 +746,6 @@ function inscrireEquipeTournoi(PDO $pdo, $id_tournoi, $id_equipe) {
 }
 
 function getAllCities(PDO $pdo) {
-    $r = $pdo->query("SELECT id, ville, code_postal FROM villes_cp");
+    $r = $pdo->query("SELECT id, nom AS ville_nom, code_postal FROM ville");
     return $r->fetchAll(PDO::FETCH_ASSOC);
 }

@@ -112,7 +112,7 @@ $role = getUserRole($user);
 				<div class="mb-3">
 					<label for="commentaire">Commentaire</label>
 					<div class="form-floating">
-						<textarea class="form-control" id="commentaire" name="commentaire" style="height: 100px"></textarea>
+						<textarea class="form-control" id="commentaire" name="commentaire" style="height: 100px"><?= htmlspecialchars($user['description'] ?? '') ?></textarea>
 						<label for="commentaire">Commente ici</label>
 					</div>
 				</div>

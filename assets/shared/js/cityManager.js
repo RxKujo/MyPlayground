@@ -17,9 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
     (data.cities || []).forEach(city => {
       const item = document.createElement('div');
       item.className = 'list-group-item list-group-item-action';
-      item.textContent = `${city.ville} (${city.code_postal})`;
+      item.textContent = `${city.nom} (${city.code_postal})`;
       item.addEventListener('click', () => {
-        input.value = `${city.ville} (${city.code_postal})`;
+        input.value = `${city.nom} (${city.code_postal})`;
         hidden.value = city.id;
         suggestions.innerHTML = '';
       });
