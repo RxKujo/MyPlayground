@@ -31,7 +31,7 @@ $role = getUserRole($user);
 		<div class="form-container">
 
 			<form method="POST" action="../../processes/edit_profile_process.php">
-				<input class="form-control" name="id" type="hidden" value="" />
+				<input class="form-control" name="id" type="hidden" value="<?php $user['id'] ?>" />
 				
 				<div class="mb-3">
 					<label class="form-label" for="nom">Nom</label>

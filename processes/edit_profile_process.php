@@ -4,7 +4,7 @@ include_once('../includes/global/session.php');
 
 notLogguedSecurity("/");
 
-$id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+$id = $_SESSION['user_id'];
 $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_SPECIAL_CHARS);
 $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_SPECIAL_CHARS);
 $pseudo = filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -18,11 +18,12 @@ $description = filter_input(INPUT_POST, 'commentaire', FILTER_SANITIZE_SPECIAL_C
 $niveau = filter_input(INPUT_POST, 'niveau', FILTER_VALIDATE_INT);
 $niveau = ($niveau === false || $niveau === null) ? null : $niveau;
 
-$stmt = $pdo->prepare("SELECT id FROM villes_cp WHERE id = ?");
+$stmt = $pdo->prepare("SELECT id FROM ville WHERE id = ?");
 $stmt->execute([$ville_id]);
+
 if ($stmt->rowCount() === 0) {
     $_SESSION['error'] = "Ville invalide.";
-    header("location: ../pages/public/edit-profile.php");
+    header("location: ../edit-profile");
     exit();
 }
 
@@ -33,23 +34,34 @@ $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':nom', $nom);
 $stmt->bindParam(':prenom', $prenom);
 $stmt->bindParam(':pseudo', $pseudo);
-$stmt->bindParam(':poste', $poste);
+$stmt->bindParam(':poste', $poste, PDO::PARAM_INT);
 $stmt->bindValue(':niveau', $niveau, is_null($niveau) ? PDO::PARAM_NULL : PDO::PARAM_INT);
-$stmt->bindParam(':tel', $tel);
-$stmt->bindParam(':email', $email);
-$stmt->bindParam(':_role', $role);
-$stmt->bindParam(':description', $description);
+$stmt->bindParam(':tel', $tel, PDO::PARAM_STR);
+$stmt->bindParam(':email', $email, PDO::PARAM_STR);
+$stmt->bindParam(':_role', $role, PDO::PARAM_INT);
+$stmt->bindParam(':description', $description, PDO::PARAM_STR);
 $stmt->bindParam(':ville_id', $ville_id, PDO::PARAM_INT);
-
 
 $stmt->bindParam(':id', $id);
 
-$stmt->execute();
+$stmt->bindParam(':id', $id);
+
+if (!$stmt->execute()) {
+    echo "Erreur lors de l'exécution :";
+    var_dump($stmt->errorInfo());
+    exit;
+}
+
+if ($stmt->rowCount() === 0) {
+    echo "Aucune ligne modifiée. Soit les données n'ont pas changé, soit l'ID est invalide.";
+    exit;
+}
+
 
 $stmt = $pdo->prepare('
-    SELECT u.*, v.ville AS ville_nom 
+    SELECT u.*, v.nom AS ville_nom 
     FROM utilisateur u
-    LEFT JOIN villes_cp v ON u.ville_id = v.id
+    LEFT JOIN ville v ON u.ville_id = v.id
     WHERE u.id = :id
 ');
 $stmt->execute([':id' => $id]);
