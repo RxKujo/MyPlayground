@@ -20,9 +20,13 @@ function isAuthenticated(array $session) {
 }
 
 function getUser(PDO $pdo, int $id) {
-    $sql = "SELECT * FROM utilisateur WHERE id = :id";
+    $sql = "SELECT u.*, v.ville AS ville_nom, v.code_postal
+            FROM utilisateur u
+            LEFT JOIN villes_cp v ON u.ville_id = v.id
+            WHERE u.id = :id";
+    
     $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
 
     return $stmt->fetch(PDO::FETCH_ASSOC);

@@ -65,9 +65,10 @@ $role = getUserRole($user);
 						id="ville_input" 
 						name="ville_text" 
 						autocomplete="off" 
-						value="<?= htmlspecialchars($user['ville_nom'] ?? '') ?>"
+						value="<?= htmlspecialchars(($user['ville_nom'] ?? '') . (!empty($user['code_postal']) ? ' (' . $user['code_postal'] . ')' : '')) ?>"
 					/>
 					<input type="hidden" id="ville_id" name="ville_id" value="<?= htmlspecialchars($user['ville_id'] ?? '') ?>">
+
 					<div id="ville_suggestions" class="list-group position-absolute w-100" style="z-index: 9999;"></div>
 				</div>
 
