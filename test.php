@@ -7,7 +7,10 @@ include_once 'includes/config/functions.php';
 
 echo "<p>Bonjour! Ce serveur fonctionne.</p>";
 
-echo isBanned($pdo, getUser($pdo, 1));
+$users = computeDistances($pdo, 5);
+foreach ($users as $user) {
+    echo $user['nom'] . " est à " . $user['distance_km'] . " km<br>";
+}
 
 
 // $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_FULL_SPECIAL_CHARS);

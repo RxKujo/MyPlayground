@@ -12,22 +12,7 @@ $user = $_SESSION['user_info'];
 $niveau = isset($_GET['niveau']) ? $_GET['niveau'] : '';
 $poste = isset($_GET['poste']) ? $_GET['poste'] : '';
 
-$sql = "SELECT u.id, u.prenom, u.nom, u.pseudo, u.niveau, u.poste, u.ville_id, u.pfp, v.ville AS ville_nom, v.code_postal AS cp FROM utilisateur AS u JOIN villes_cp AS v ON v.id = u.ville_id WHERE u.id != :id";
-$params = [':id' => $user['id']];
-
-if ($niveau !== '' && $niveau !== '3') {
-    $sql .= " AND niveau = :niveau";
-    $params[':niveau'] = $niveau;
-}
-
-if ($poste !== '' && $poste !== '5') {
-    $sql .= " AND poste = :poste";
-    $params[':poste'] = $poste;
-}
-
-$stmt = $pdo->prepare($sql);
-$stmt->execute($params);
-$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$results = computeDistances($pdo, $user['id']);
 
 function safe($value) {
     return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
@@ -115,7 +100,7 @@ function safe($value) {
                                     <p class="card-text mb-1">Pseudo : <?= htmlspecialchars($mate['pseudo']) ?></p>
                                     <p class="card-text mb-1">Niveau : <?= getUserLevel($mate) ?></p>
                                     <p class="card-text mb-1">Poste : <?= getUserPosition($mate) ?></p>
-                                    <p class="card-text mb-3">Ville : <?= $mate['ville_nom'] ?> (<?= $mate['cp'] ?>)</p>
+                                    <p class="card-text mb-3">Ville : <?= $mate['ville_nom'] ?> (<?= $mate['cp'] ?>) à <?= $mate['distance_km'] ?> km</p>
                                     <a href="profil_user?id=<?= urlencode($mate['id']) ?>" class="btn btn-primary mt-auto">Profil</a>
                                 </div>
                             </div>
